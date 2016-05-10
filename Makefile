@@ -5,7 +5,7 @@ mpiCompress.o: MPI/mpiCompress.c
 	mpicc -c MPI/mpiCompress.c
 
 CudaCompress.o: GPU/CudaCompress.cu
-	nvcc -c GPU/CudaCompress.cu
+	nvcc -c GPU/CudaCompress.cu -arch=sm_35
 
 clean:
 	rm -rf *.o CudaCompress mpiCompress

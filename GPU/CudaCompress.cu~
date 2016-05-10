@@ -11,8 +11,8 @@ __global__ void compress(unsigned char *input, unsigned int *offset, struct tabl
 	unsigned int pos = blockIdx.x*blockDim.x + threadIdx.x;
 	
 	/*if(pos == 0)
-		memcpy(d_table, table, 256 * sizeof(struct table));
-	__syncthreads();*/
+		memcpy(d_table, table, 256 * sizeof(struct table));*/
+	__syncthreads();
 	
 	for(i = pos; i < nints; i += blockDim.x)
 	{

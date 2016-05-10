@@ -63,6 +63,7 @@ main(int argc, char* argv[])
 		frequency[data[i]]++;
 
 	// initialize nodes and build Huffman tree
+	printf("Building Huffman tree:\n");
 	for (i = 0; i < 256; i++)
 		if (frequency[i] > 0){
 			node++;
@@ -78,6 +79,7 @@ main(int argc, char* argv[])
 	}
 	
 	// build dictionary (h_table)
+	printf("Creating dictionary\n");
 	bitvalue(head, bit, size);
 
 	// calculate byte offsets (h_offset) and round to nearest byte
