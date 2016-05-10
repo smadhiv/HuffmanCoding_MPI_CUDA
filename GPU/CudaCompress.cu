@@ -1,18 +1,18 @@
-#include "header.h"
+#include "../MPI/header.h"
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
 #include<time.h>
 
-__global__ void compress(unsigned char *input, unsigned int *offset, struct table *table, unsigned char *temp, unsigned int nints){
-    	struct table d_table[256];
+__global__ void compress(unsigned char *input, unsigned int *offset, struct table *d_table, unsigned char *temp, unsigned int nints){
+    	// struct table d_table[256];
 
 	unsigned int i, j, k;
 	unsigned int pos = blockIdx.x*blockDim.x + threadIdx.x;
 	
-	if(pos == 0)
+	/*if(pos == 0)
 		memcpy(d_table, table, 256 * sizeof(struct table));
-	__syncthreads();
+	__syncthreads();*/
 	
 	for(i = pos; i < nints; i += blockDim.x)
 	{
@@ -72,10 +72,6 @@ extern "C" void gpuCompress(unsigned int nints, unsigned char *h_input, unsigned
 	if (error!= cudaSuccess)
 		printf("err_4: %s\n", cudaGetErrorString(error));
 	
-	// query device memory
-	cudaMemGetInfo(&mem_free, &mem_total);
-	printf("Total GPU space available after cudaMalloc: %u\n", mem_free/1000000);
-	
 	// set GPU memory
 	error = cudaMemcpy(d_input, h_input, nints*sizeof(unsigned char), cudaMemcpyHostToDevice);
 	if (error!= cudaSuccess)
@@ -89,7 +85,7 @@ extern "C" void gpuCompress(unsigned int nints, unsigned char *h_input, unsigned
 
 	// query device memory
 	cudaMemGetInfo(&mem_free, &mem_total);
-	printf("Total GPU space available after cudaMemcpy: %u\n", mem_free/1000000);
+	printf("Total GPU space available after cudaMemcpyHostToDevice: %u\n", mem_free/1000000);
 
 	// launch cuda kernel
 	compress<<<1, 1024>>>(d_input, d_offset, d_table, d_temp, nints);
@@ -108,7 +104,7 @@ extern "C" void gpuCompress(unsigned int nints, unsigned char *h_input, unsigned
 
 	// query device memory
 	cudaMemGetInfo(&mem_free, &mem_total);
-	printf("Total GPU space available after cudaMemcpy compressed file to host: %u\n", mem_free/1000000);
+	printf("Total GPU space available after cudaMemcpyDeviceToHost: %u\n", mem_free/1000000);
 	
 	// cleanup
 	cudaFree(d_input);

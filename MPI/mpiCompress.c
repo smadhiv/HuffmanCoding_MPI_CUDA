@@ -1,10 +1,24 @@
 #include "mpi.h"
-#include "header_mpi.h"
+#include "header.h"
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
 #include<unistd.h>
 #include<time.h>
+
+// global variables
+struct table h_table[256];
+unsigned char bit[255];
+unsigned char size = 0;
+struct analysis huff[512];
+struct analysis *head;
+
+// prototypes
+void sort(int i, int node, int arr);
+void buildtree(int i, int node, int arr);
+void bitvalue(struct analysis *root, unsigned char bit[], unsigned char size);
+void printtree(struct analysis *tree);
+void gpuCompress(unsigned int nints, unsigned char *h_input, unsigned int *h_offset, struct table *h_table);
 
 main(int argc, char* argv[])
 {
@@ -15,8 +29,11 @@ main(int argc, char* argv[])
 	unsigned int node = 0, arr = 0;
 	unsigned char *data, *compdata;
 	unsigned char tgt = 0, tgtlength = 0;
-	FILE *uncompressed;
 	double start, end;
+	
+	
+	
+	FILE *uncompressed;
 
 	// query host info
 	unsigned char *name = malloc(deviceNameLength * sizeof(unsigned char));
@@ -90,7 +107,6 @@ main(int argc, char* argv[])
 	
 	// launch GPU handler
 	// note: this is not the kernel but a C wrapper for kernel
-	printf("Stepping into kernel wrapper\n");
 	gpuCompress(nints, data, h_offset, h_table);
 	
 	// calculate length of compressed data
@@ -139,6 +155,7 @@ main(int argc, char* argv[])
 // sort nodes based on frequency
 void sort(int i, int node, int arr){
 	int a, b;
+	struct analysis temp;
 	for (a = arr; a < node - 1 + i; a++)
 		for (b = arr; b < node - 1 + i; b++)
 			if (huff[b].count > huff[b + 1].count){
@@ -171,6 +188,7 @@ void bitvalue(struct analysis *root, unsigned char bit[], unsigned char size){
 	}
 
 	if (root->left == NULL && root->right == NULL){
+		printf("%u\n", root->letter);
 		h_table[root->letter].size = size;
 		memcpy(h_table[root->letter].bit, bit, size * sizeof(unsigned char));
 	}
@@ -183,7 +201,6 @@ void printtree(struct analysis *tree){
 		printtree(tree->left);
 		printtree(tree->right);
 	}
-	else{
+	else
 		printf("%d\t%d\n", tree->letter, tree->count);
-	}
 }
