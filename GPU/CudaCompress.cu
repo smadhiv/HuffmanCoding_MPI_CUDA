@@ -4,15 +4,15 @@
 #include<string.h>
 #include<time.h>
 
-__global__ void compress(unsigned char *input, unsigned int *offset, struct table *d_table, unsigned char *temp, unsigned int nints){
-    	//struct table d_table[256];
+__global__ void compress(unsigned char *input, unsigned int *offset, struct table *table, unsigned char *temp, unsigned int nints){
+    	struct table d_table[256];
 
 	unsigned int i, j, k;
 	unsigned int pos = blockIdx.x*blockDim.x + threadIdx.x;
 	
-	/*if(pos == 0)
+	if(pos == 0)
 		memcpy(d_table, table, 256 * sizeof(struct table));
-	__syncthreads();*/
+	__syncthreads();
 	
 	for(i = pos; i < nints; i += blockDim.x)
 	{
@@ -47,10 +47,8 @@ extern "C" void gpuCompress(unsigned int nints, unsigned char *h_input, unsigned
 	cudaError_t error; 
 	size_t mem_free, mem_total, mem_req;
 
-	printf("Inside kernel wrapper\n");
-
 	// query device memory
-	cudaMemGetInfo(&mem_free, &mem_total);
+	error = cudaMemGetInfo(&mem_free, &mem_total);
 	printf("Total GPU memory: %u\n", mem_total/1000000);
 	printf("Total GPU space available: %u\n", mem_free/1000000);
 
