@@ -30,6 +30,9 @@ main(int argc, char* argv[])
 	unsigned char *data, *compdata;
 	unsigned char tgt = 0, tgtlength = 0;
 	double start, end;
+	
+	
+	
 	FILE *uncompressed;
 
 	// query host info
@@ -164,6 +167,8 @@ void sort(int i, int node, int arr){
 
 // build tree based on sort result
 void buildtree(int i, int node, int arr){
+	free(head);
+	head = (struct analysis *)malloc(sizeof(struct analysis));
 	head->count = huff[arr].count + huff[arr + 1].count;
 	head->left = &huff[arr];
 	head->right = &huff[arr + 1];

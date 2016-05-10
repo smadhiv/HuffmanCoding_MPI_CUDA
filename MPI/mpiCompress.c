@@ -188,7 +188,6 @@ void bitvalue(struct analysis *root, unsigned char bit[], unsigned char size){
 	}
 
 	if (root->left == NULL && root->right == NULL){
-		printf("%u\n", root->letter);
 		h_table[root->letter].size = size;
 		memcpy(h_table[root->letter].bit, bit, size * sizeof(unsigned char));
 	}
