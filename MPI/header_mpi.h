@@ -8,11 +8,11 @@
 
 struct table
 {
-	unsigned char bit[60];
+	unsigned char bit[255];
 	unsigned char size;
 }h_table[256];
 
-unsigned char bit[100], size = 0;
+unsigned char bit[255], size = 0;
 
 struct analysis
 {

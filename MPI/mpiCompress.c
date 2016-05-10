@@ -52,7 +52,6 @@ main(int argc, char* argv[])
 
 	// find the frequency of each symbols
 	frequency = calloc(256, sizeof(unsigned int));
-	
 	// open file in each process and read data and allocate memory for compressed data
 	MPI_File_open(MPI_COMM_WORLD, argv[1], MPI_MODE_RDONLY, MPI_INFO_NULL, &srcfile);
 	MPI_File_seek(srcfile, rank * datasize, MPI_SEEK_SET);
@@ -62,9 +61,9 @@ main(int argc, char* argv[])
 	for (i = 0; i < nints; i++){
 		frequency[data[i]]++;
 	}
-	
+
 	compblocklength = malloc(nprocs * sizeof(unsigned int));
-	
+
 	// initialize nodes of huffman tree
 	for (i = 0; i < 256; i++){
 		if (frequency[i] > 0){
@@ -85,7 +84,6 @@ main(int argc, char* argv[])
 	
 	// build h_table having the bit sequence and its length
 	bitvalue(head, bit, size);
-	
 
 	// calculate h_offset
 	// this block converts each character to its code book value in bytes and calculate offset
@@ -184,13 +182,14 @@ void bitvalue(struct analysis *root, unsigned char bit[], unsigned char size){
 
 	if (root->left == NULL && root->right == NULL){
 		h_table[root->letter].size = size;
-		memcpy(h_table[root->letter].bit, bit, size*sizeof(unsigned char));
+		memcpy(h_table[root->letter].bit, bit, size * sizeof(unsigned char));
 	}
 }
 
 // function to print the tree
 void printtree(struct analysis *tree){
 	if (tree->left != NULL || tree->right != NULL){
+		printf("im here\n");
 		printtree(tree->left);
 		printtree(tree->right);
 	}

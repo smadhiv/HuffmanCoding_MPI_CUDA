@@ -4,15 +4,14 @@
 #include<string.h>
 #include<time.h>
 
-__global__ void compress(unsigned char *input, unsigned int *offset, struct table *table, unsigned char *temp, unsigned int nints)
-{
-	__shared__ struct table d_table[256];
+__global__ void compress(unsigned char *input, unsigned int *offset, struct table *table, unsigned char *temp, unsigned int nints){
+    __global__ struct table d_table[256];
 
 	unsigned int i, j, k;
 	unsigned int pos = blockIdx.x*blockDim.x + threadIdx.x;
 	
-	if(pos == 0);
-		memcpy(d_table, table, 256*sizeof(struct table));
+	if(pos == 0)
+		memcpy(d_table, table, 256 * sizeof(struct table));
 	__syncthreads();
 	
 	for(i = pos; i < nints; i += blockDim.x)
@@ -41,17 +40,27 @@ __global__ void compress(unsigned char *input, unsigned int *offset, struct tabl
 	__syncthreads();
 }
 
-extern "C" void gpuCompress(unsigned int nints, unsigned char *h_input, unsigned int *h_offset, struct table *h_table)
-{
+extern "C" void gpuCompress(unsigned int nints, unsigned char *h_input, unsigned int *h_offset, struct table *h_table){
 	unsigned char *d_input, *d_temp;
 	unsigned int *d_offset;
 	struct table *d_table;
-	cudaError_t error;
-
+	cudaError_t error; 
+	size_t mem_free, mem_total, mem_req;
+	
+	// get device memory
+	cudaMemGetInfo(&mem_free, &mem_total);
+	
+	// get required memory value
+	// mem_req = Number of bytes to compress + offset array + size of table + input file size
+	mem_req = (nints*sizeof(unsigned char) + (nints + 1) * sizeof(unsigned int) + 256 * sizeof(table) + h_offset[nints] * sizeof(unsigned char))/1000000;
+	printf("Total GPU Memory : %u\nTotal GPU space available : %u\nTotal GPU space required in MB : %u\n", mem_total/1000000, mem_free/1000000, mem_req);
+										
+	// handle memory transfers
 	error = cudaMalloc((void **)&d_input, nints*sizeof(unsigned char));
 	if (error != cudaSuccess)
 			printf("erro_1: %s\n", cudaGetErrorString(error));
-		
+	
+	
 	error = cudaMalloc((void **)&d_offset, (nints + 1)*sizeof(unsigned int));
 	if (error != cudaSuccess)
 			printf("erro_3: %s\n", cudaGetErrorString(error));
@@ -67,12 +76,9 @@ extern "C" void gpuCompress(unsigned int nints, unsigned char *h_input, unsigned
 	if (error!= cudaSuccess)
 			printf("erro_5: %s\n", cudaGetErrorString(error));
 	
-	
-	printf("Total GPU space: %.3fMB\n", (nints*sizeof(unsigned char) +
-										//(h_offset[nints]/8)*sizeof(unsigned char) +
-										(nints + 1)*sizeof(unsigned int) +
-										256*sizeof(table) +
-										h_offset[nints]*sizeof(unsigned char))/1000000.0);
+		// get device memory
+	cudaMemGetInfo(&mem_free, &mem_total);
+	printf("Total GPU space available After Malloc: %u\n", mem_free/1000000);
 	
 	error = cudaMemcpy(d_input, h_input, nints*sizeof(unsigned char), cudaMemcpyHostToDevice);
 	if (error!= cudaSuccess)
@@ -88,24 +94,28 @@ extern "C" void gpuCompress(unsigned int nints, unsigned char *h_input, unsigned
 	if (error!= cudaSuccess)
 				printf("erro_8: %s\n", cudaGetErrorString(error));
 
+	cudaMemGetInfo(&mem_free, &mem_total);
+	printf("Total GPU space available After Memcpy: %u\n", mem_free/1000000);
+
 	compress<<<1, 1024>>>(d_input, d_offset, d_table, d_temp, nints);
 	
+	cudaMemGetInfo(&mem_free, &mem_total);
+	printf("Total GPU space available After Kernel: %u\n", mem_free/1000000);
+
 	cudaMemcpy(h_input, d_input, ((h_offset[nints]/8))*sizeof(unsigned char), cudaMemcpyDeviceToHost);
-	
-	//DEBUG PRINT TABLE
-	/*struct table *out_table = (struct table *)malloc(256*sizeof(struct table));
-	cudaMemcpy(out_table, d_table, 256*sizeof(table), cudaMemcpyDeviceToHost);
-	for(int i = 0; i < 256; i++)
-		printf("%d\t%d\t\n", h_table[i].size, out_table[i].size);
-	free(out_table);*/
 	
 	cudaError_t error_final = cudaGetLastError();
 	if (error_final != cudaSuccess)
 		printf("erro_final: %s\n", cudaGetErrorString(error_final));
+
+	cudaMemGetInfo(&mem_free, &mem_total);
+	printf("Total GPU space available After Memcpy to host: %u\n", mem_free/1000000);
 	
 	cudaFree(d_input);
 	cudaFree(d_offset);
 	cudaFree(d_table);
 	cudaFree(d_temp);
+	cudaMemGetInfo(&mem_free, &mem_total);
+	printf("Total GPU space available After mem free: %u\n", mem_free/1000000);
 }
 

@@ -8,6 +8,6 @@
 
 struct table
 {
-	unsigned char bit[60];
+	unsigned char bit[255];
 	unsigned char size;
 };
