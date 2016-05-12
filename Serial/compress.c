@@ -6,11 +6,11 @@
 
 struct table
 {
-	unsigned int bit[100];
-	unsigned int size;
+	unsigned char bit[255];
+	unsigned char size;
 }table[256];
 
-unsigned int bit[100], size;
+unsigned int bit[255], size;
 struct analysis
 {
 	unsigned char letter;
@@ -23,16 +23,15 @@ struct analysis huff[512], temp;
 
 void sort(int, int, int);
 void buildtree(int, int, int);
-void bitvalue(struct analysis *, unsigned int bit[], int);
+void bitvalue(struct analysis *, unsigned char bit[], unsigned char);
 
 //void printtree(struct analysis *);
 
 
-main(int argc, char *argv[])
-{
+main(int argc, char *argv[]){
 	clock_t start, end;
-	unsigned int i, j, node = 0, arr = 0, filelength, bit[100], size = 0, frequency[256], compressedlength = 0, cpu_time_used;
-	unsigned char *uncompressed, tgt = 0, tgtlength = 0;
+	unsigned int i, j, node = 0, arr = 0, filelength, frequency[256], compressedlength = 0, cpu_time_used, outSize = 0;
+	unsigned char *uncompressed, tgt = 0, tgtlength = 0, bit[255], size = 0, *compressedData;
 	FILE *source, *compressed;
 	
 	// start time measure
@@ -52,37 +51,33 @@ main(int argc, char *argv[])
 
 	// allocate required memory and read the file to memory
 
-	uncompressed = (unsigned char *)malloc(filelength*sizeof(unsigned char));
+	uncompressed = malloc(filelength*sizeof(unsigned char));
+	compressedData = malloc(filelength*sizeof(unsigned char));
 	fread(uncompressed, sizeof(unsigned char), filelength, source);
 
 	// find the frequency of each symbols
 
-	for (i = 0; i<256; i++)
-	{
+	for (i = 0; i<256; i++){
 		frequency[i] = 0;
 	}
-	for (i = 0; i<filelength; i++)
-	{
+	for (i = 0; i<filelength; i++){
 		frequency[uncompressed[i]]++;
 	}
 
 	// initialize nodes of huffman tree
 
-	for (i = 0; i<256; i++)
-	{
-		if (frequency[i]>0)
-		{
+	for (i = 0; i<256; i++){
+		if (frequency[i]>0){
+			huff[node].count = frequency[i];
+			huff[node].letter = i;
+			huff[node].left = NULL;
+			huff[node].right = NULL;
 			node++;
-			huff[node - 1].count = frequency[i];
-			huff[node - 1].letter = i;
-			huff[node - 1].left = NULL;
-			huff[node - 1].right = NULL;
 		}
 	}
 
 	// build tree 
-	for (i = 0; i < node - 1; i++)
-	{
+	for (i = 0; i < node - 1; i++){
 		arr = 2 * i;
 		sort(i, node, arr);
 		buildtree(i, node, arr);
@@ -99,23 +94,18 @@ main(int argc, char *argv[])
 
 	// compress
 
-	for (i = 0; i < filelength; i++)
-	{
-		for (j = 0; j < table[uncompressed[i]].size; j++)
-		{
-			if (table[uncompressed[i]].bit[j] == 0)
-			{
+	for (i = 0; i < filelength; i++){
+		for (j = 0; j < table[uncompressed[i]].size; j++){
+			if (table[uncompressed[i]].bit[j] == 0){
 				tgt = tgt << 1;
 				tgtlength++;
 			}
-			else
-			{
+			else{
 				tgt = (tgt << 1) | 01;
 				tgtlength++;
 			}
-			if (tgtlength == 8)
-			{
-				fputc(tgt, compressed);
+			if (tgtlength == 8){
+				compressedData[compressedlength] = tgt;
 				tgtlength = 0;
 				tgt = 00;
 				compressedlength++;
@@ -123,16 +113,15 @@ main(int argc, char *argv[])
 		}
 	}
 
-	if (tgtlength != 0)
-	{
-		for (i = 0; (unsigned char)i < 8 - tgtlength; i++)
-		{
+	if (tgtlength != 0){
+		for (i = 0; (unsigned char)i < 8 - tgtlength; i++){
 			tgt = tgt << 1;
 		}
-		fputc(tgt, compressed);
+		compressedData[compressedlength] = tgt;
 		compressedlength++;
 	}
-
+	fwrite(compressedData, sizeof(unsigned char), compressedlength, compressed);
+	
 	// close the file
 
 	fclose(compressed);
@@ -147,15 +136,11 @@ main(int argc, char *argv[])
 
 // sort nodes based on frequency
 
-void sort(int i, int node, int arr)
-{
+void sort(int i, int node, int arr){
 	int a, b;
-	for (a = arr; a < node - 1 + i; a++)
-	{
-		for (b = arr; b < node - 1 + i; b++)
-		{
-			if (huff[b].count > huff[b + 1].count)
-			{
+	for (a = arr; a < node - 1 + i; a++){
+		for (b = arr; b < node - 1 + i; b++){
+			if (huff[b].count > huff[b + 1].count){
 				temp = huff[b];
 				huff[b] = huff[b + 1];
 				huff[b + 1] = temp;
@@ -169,7 +154,7 @@ void sort(int i, int node, int arr)
 void buildtree(int i, int node, int arr)
 {
 	free(head);
-	head = (struct analysis *)malloc(sizeof(struct analysis));
+	head = malloc(sizeof(struct analysis));
 	head->count = huff[arr].count + huff[arr + 1].count;
 	head->left = &huff[arr];
 	head->right = &huff[arr + 1];
@@ -178,32 +163,22 @@ void buildtree(int i, int node, int arr)
 
 // get bit sequence for each char value
 
-void bitvalue(struct analysis *root, unsigned int bit[], int size)
+void bitvalue(struct analysis *root, unsigned char bit[], unsigned char size)
 {
 	//int i;
-	if (root->left)
-	{
+	if (root->left){
 		bit[size] = 0;
 		bitvalue(root->left, bit, size + 1);
 	}
 
-	if (root->right)
-	{
+	if (root->right){
 		bit[size] = 1;
 		bitvalue(root->right, bit, size + 1);
 	}
 
-	if (root->left == NULL && root->right == NULL)
-	{
+	if (root->left == NULL && root->right == NULL){
 		table[root->letter].size = size;
-		memcpy(table[root->letter].bit, bit, size*sizeof(unsigned int));
-		/*
-		printf("\nchar %c\t size %d\n", root->letter, size);
-		for (i = 0; i < size;i++)
-		{
-		printf("%d", table[root->letter].bit[i]);
-		}
-		*/
+		memcpy(table[root->letter].bit, bit, size * sizeof(unsigned char));
 	}
 }
 
