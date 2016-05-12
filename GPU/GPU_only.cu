@@ -26,20 +26,22 @@ struct analysis
 	unsigned int count;
 	struct analysis *left, *right;
 };
-
 struct analysis *head, *current;
 struct analysis huff[512], temp;
 
+// Function prototypes
 void sort(int, int, int);
 void buildtree(int, int, int);
 void bitvalue(struct analysis *root, unsigned char *bit, unsigned char size);
 
+// cuda function
 __global__ void compress(unsigned char *input, unsigned int *offset, struct table_struct *d_table, unsigned char *temp, unsigned int filelength,unsigned int flag){
 	unsigned int i, j, k;
 	__shared__ struct  table_struct table;
 	memcpy(&table, d_table, sizeof(struct table_struct));
 	unsigned int pos = blockIdx.x*blockDim.x + threadIdx.x;
 	
+	// when shared memory is sufficient
 	if(flag == 0){
 		for(i = pos; i < filelength; i += blockDim.x){
 			for(k = 0; k < table.sizeDict[input[i]]; k++){
@@ -47,6 +49,7 @@ __global__ void compress(unsigned char *input, unsigned int *offset, struct tabl
 			}
 		}
 	}
+	// use constant memory and shared memory
 	else{
 		for(i = pos; i < filelength; i += blockDim.x){
 			for(k = 0; k < table.sizeDict[input[i]]; k++){
@@ -70,7 +73,6 @@ __global__ void compress(unsigned char *input, unsigned int *offset, struct tabl
 			}
 		}
 	}
-	__syncthreads();
 }
 
 int main(int argc, char **argv){
@@ -155,7 +157,7 @@ int main(int argc, char **argv){
 	error = cudaMalloc((void **)&d_temp, h_offset[filelength] * sizeof(unsigned char));
 	if (error!= cudaSuccess)
 			printf("erro_5: %s\n", cudaGetErrorString(error));
-	//cudaMemcpyToSymbol (d_bitDict, max_bitDict, 256 * 255 * sizeof(unsigned char));
+	cudaMemcpyToSymbol (d_bitDict, max_bitDict, 256 * 255 * sizeof(unsigned char));
 		
 	//memcpy
 	error = cudaMemcpy(d_input, h_input, filelength*sizeof(unsigned char), cudaMemcpyHostToDevice);
@@ -237,6 +239,7 @@ void bitvalue(struct analysis *root, unsigned char *bit, unsigned char size){
 
 	if (root->left == NULL && root->right == NULL){
 		h_table.sizeDict[root->letter] = size;
+			
 		if(size < 192){
 			memcpy(h_table.bitDict[root->letter], bit, size * sizeof(unsigned char));
 		}
