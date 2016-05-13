@@ -1,3 +1,0 @@
-nvcc -c  p_comp.o p_comp.cu
-#g++ -o  p_comp p_comp.o -L /software/cuda-toolkit/5.5.22/lib64 -lcudart
-g++ -o  p_comp p_comp.o -L /opt/cuda-toolkit/5.5.22/lib64 -lcudart
