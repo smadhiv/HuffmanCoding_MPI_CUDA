@@ -1,5 +1,5 @@
 all: mpiCompress.o CudaCompress.o
-	mpicc -o bin/MPICudaCompress cudaCompress.o -L /opt/cuda-toolkit/5.5.22/lib64 -lcudart mpiCompress.o 
+	mpicc -o bin/MPICudaCompress CudaCompress.o -L /opt/cuda-toolkit/5.5.22/lib64 -lcudart mpiCompress.o 
 	rm -rf *.o
 
 mpiCompress.o: MPI/mpiCompress.c
