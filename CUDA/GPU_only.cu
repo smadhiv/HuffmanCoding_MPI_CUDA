@@ -35,10 +35,11 @@ void buildtree(int, int, int);
 void bitvalue(struct analysis *root, unsigned char *bit, unsigned char size);
 
 // cuda function
-__global__ void compress(unsigned char *input, unsigned int *offset, struct table_struct *d_table, unsigned char *temp, unsigned int filelength,unsigned int flag){
-	unsigned int i, j, k;
+__global__ void compress(unsigned char *input, unsigned int *offset, struct table_struct *d_table, unsigned char *temp, unsigned int d_filelength, unsigned int flag){
 	__shared__ struct  table_struct table;
 	memcpy(&table, d_table, sizeof(struct table_struct));
+	unsigned filelength = d_filelength;
+	unsigned int i, j, k;
 	unsigned int pos = blockIdx.x*blockDim.x + threadIdx.x;
 	
 	// when shared memory is sufficient
@@ -144,6 +145,14 @@ int main(int argc, char **argv){
 	
 	//////////////BEGIN PARALLEL//////////////////
 	
+	size_t mem_free, mem_total, mem_req;
+	mem_req = 2 + (filelength * sizeof(unsigned char) + (filelength + 1) * sizeof(unsigned int) + sizeof(h_table) + h_offset[filelength] * sizeof(unsigned char))/1000000;
+	printf("Total GPU space required: %u\n", mem_req);
+	// query device memory
+	error = cudaMemGetInfo(&mem_free, &mem_total);
+	printf("Total GPU memory: %u\n", mem_total/1000000);
+	printf("Total GPU space available: %u\n", mem_free/1000000);
+	
 	//malloc
 	error = cudaMalloc((void **)&d_input, filelength * sizeof(unsigned char));
 	if (error != cudaSuccess)
@@ -157,7 +166,6 @@ int main(int argc, char **argv){
 	error = cudaMalloc((void **)&d_temp, h_offset[filelength] * sizeof(unsigned char));
 	if (error!= cudaSuccess)
 			printf("erro_5: %s\n", cudaGetErrorString(error));
-	cudaMemcpyToSymbol (d_bitDict, max_bitDict, 256 * 255 * sizeof(unsigned char));
 		
 	//memcpy
 	error = cudaMemcpy(d_input, h_input, filelength*sizeof(unsigned char), cudaMemcpyHostToDevice);
@@ -169,9 +177,13 @@ int main(int argc, char **argv){
 	error = cudaMemcpy(d_table, &h_table, sizeof(table_struct), cudaMemcpyHostToDevice);
 	if (error!= cudaSuccess)
 			printf("erro_8: %s\n", cudaGetErrorString(error));
-
-	cudaMemset(d_temp, 0, h_offset[filelength] * sizeof(unsigned char));
+		
+	if(flag == 1){
+		cudaMemcpyToSymbol (d_bitDict, max_bitDict, 256 * 255 * sizeof(unsigned char));
+	}
 	
+	// initialize d_temp 
+	cudaMemset(d_temp, 0, h_offset[filelength] * sizeof(unsigned char));
 	//run kernel and copy output
 	//cudaDeviceSynchronize();
 	compress<<<1, 1024>>>(d_input, d_offset, d_table, d_temp, filelength, flag);
@@ -239,7 +251,6 @@ void bitvalue(struct analysis *root, unsigned char *bit, unsigned char size){
 
 	if (root->left == NULL && root->right == NULL){
 		h_table.sizeDict[root->letter] = size;
-			
 		if(size < 192){
 			memcpy(h_table.bitDict[root->letter], bit, size * sizeof(unsigned char));
 		}
