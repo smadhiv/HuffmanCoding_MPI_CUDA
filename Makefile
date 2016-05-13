@@ -10,4 +10,4 @@ CudaCompress.o: CUDA/cudaCompress.cu
 
 clean:
 	rm -rf *.o
-	rm bin/*
+	rm bin/*.*
