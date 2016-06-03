@@ -1,133 +1,114 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
 #include<time.h>
 
-struct table
-{
-	unsigned char bit[255];
-	unsigned char size;
-}table[256];
+struct huffmanDictionary{
+	unsigned char bitSequence[255];
+	unsigned char bitSequenceLength;
+}huffmanDictionary[256];
 
-unsigned int bit[255], size;
-struct analysis
-{
+struct huffmanTree{
 	unsigned char letter;
 	unsigned int count;
-	struct analysis *left, *right;
+	struct huffmanTree *left, *right;
 };
 
-struct analysis *head, *current;
-struct analysis huff[512], temp;
+struct huffmanTree *head_huffmanTreeNode;
+struct huffmanTree huffmanTreeNode[512], temp_huffmanTreeNode;
 
-void sort(int, int, int);
-void buildtree(int, int, int);
-void bitvalue(struct analysis *, unsigned char bit[], unsigned char);
+void sortHuffmanTree(int, int, int);
+void buildHuffmanTree(int, int, int);
+void buildHuffmanDictionary(struct huffmanTree *, unsigned char *, unsigned char);
 
-//void printtree(struct analysis *);
-
-
-main(int argc, char *argv[]){
+main(int argc, char **argv){
 	clock_t start, end;
-	unsigned int i, j, node = 0, arr = 0, filelength, frequency[256], compressedlength = 0, cpu_time_used, outSize = 0;
-	unsigned char *uncompressed, tgt = 0, tgtlength = 0, bit[255], size = 0, *compressedData;
-	FILE *source, *compressed;
+	unsigned int cpu_time_used;
+	unsigned int i, j;
+	unsigned int distinctCharacterCount, combinedHuffmanNodes, frequency[256], inputFileLength, compressedFileLength;
+	unsigned char *inputFileData, *compressedData, writeBit = 0, bitsFilled = 0, bitSequence[255], bitSequenceLength = 0;
+	FILE *inputFile, *compressedFile;
 	
 	// start time measure
-
 	start = clock();
-
-	// open source and target compressed file
-
-	compressed = fopen(argv[2], "wb");
-	source = fopen(argv[1], "rb");
-
-	// find length of source file
-
-	fseek(source, 0, SEEK_END);
-	filelength = ftell(source);
-	fseek(source, 0, SEEK_SET);
-
-	// allocate required memory and read the file to memory
-
-	uncompressed = malloc(filelength*sizeof(unsigned char));
-	compressedData = malloc(filelength*sizeof(unsigned char));
-	fread(uncompressed, sizeof(unsigned char), filelength, source);
-
+	
+	// read input file, get filelength and data
+	inputFile = fopen(argv[1], "rb");
+	fseek(inputFile, 0, SEEK_END);
+	inputFileLength = ftell(inputFile);
+	fseek(inputFile, 0, SEEK_SET);
+	inputFileData = malloc(inputFileLength * sizeof(unsigned char));
+	fread(inputFileData, sizeof(unsigned char), inputFileLength, inputFile);
+	fclose(inputFile);	
+	
 	// find the frequency of each symbols
-
-	for (i = 0; i<256; i++){
+	for (i = 0; i < 256; i++){
 		frequency[i] = 0;
 	}
-	for (i = 0; i<filelength; i++){
-		frequency[uncompressed[i]]++;
+	for (i = 0; i < inputFileLength; i++){
+		frequency[inputFileData[i]]++;
 	}
 
 	// initialize nodes of huffman tree
-
-	for (i = 0; i<256; i++){
-		if (frequency[i]>0){
-			huff[node].count = frequency[i];
-			huff[node].letter = i;
-			huff[node].left = NULL;
-			huff[node].right = NULL;
-			node++;
+	distinctCharacterCount = 0;
+	for (i = 0; i < 256; i++){
+		if (frequency[i] > 0){
+			huffmanTreeNode[distinctCharacterCount].count = frequency[i];
+			huffmanTreeNode[distinctCharacterCount].letter = i;
+			huffmanTreeNode[distinctCharacterCount].left = NULL;
+			huffmanTreeNode[distinctCharacterCount].right = NULL;
+			distinctCharacterCount++;
 		}
 	}
 
 	// build tree 
-	for (i = 0; i < node - 1; i++){
-		arr = 2 * i;
-		sort(i, node, arr);
-		buildtree(i, node, arr);
+	for (i = 0; i < distinctCharacterCount - 1; i++){
+		combinedHuffmanNodes = 2 * i;
+		sortHuffmanTree(i, distinctCharacterCount, combinedHuffmanNodes);
+		buildHuffmanTree(i, distinctCharacterCount, combinedHuffmanNodes);
 	}
 	
-	// build table having the bit sequence and its length
-
-	bitvalue(head, bit, size);
-
-	// write the header to the file 
-	
-	fwrite(&filelength, sizeof(unsigned int), 1, compressed);
-	fwrite(frequency, sizeof(unsigned int), 256, compressed);
+	// build table having the bitSequence sequence and its length
+	buildHuffmanDictionary(head_huffmanTreeNode, bitSequence, bitSequenceLength);
 
 	// compress
-
-	for (i = 0; i < filelength; i++){
-		for (j = 0; j < table[uncompressed[i]].size; j++){
-			if (table[uncompressed[i]].bit[j] == 0){
-				tgt = tgt << 1;
-				tgtlength++;
+	compressedData = malloc(inputFileLength * sizeof(unsigned char));
+	compressedFileLength = 0;
+	for (i = 0; i < inputFileLength; i++){
+		for (j = 0; j < huffmanDictionary[inputFileData[i]].bitSequenceLength; j++){
+			if (huffmanDictionary[inputFileData[i]].bitSequence[j] == 0){
+				writeBit = writeBit << 1;
+				bitsFilled++;
 			}
 			else{
-				tgt = (tgt << 1) | 01;
-				tgtlength++;
+				writeBit = (writeBit << 1) | 01;
+				bitsFilled++;
 			}
-			if (tgtlength == 8){
-				compressedData[compressedlength] = tgt;
-				tgtlength = 0;
-				tgt = 00;
-				compressedlength++;
+			if (bitsFilled == 8){
+				compressedData[compressedFileLength] = writeBit;
+				bitsFilled = 0;
+				writeBit = 0;
+				compressedFileLength++;
 			}
 		}
 	}
 
-	if (tgtlength != 0){
-		for (i = 0; (unsigned char)i < 8 - tgtlength; i++){
-			tgt = tgt << 1;
+	if (bitsFilled != 0){
+		for (i = 0; (unsigned char)i < 8 - bitsFilled; i++){
+			writeBit = writeBit << 1;
 		}
-		compressedData[compressedlength] = tgt;
-		compressedlength++;
+		compressedData[compressedFileLength] = writeBit;
+		compressedFileLength++;
 	}
-	fwrite(compressedData, sizeof(unsigned char), compressedlength, compressed);
 	
-	// close the file
-
-	fclose(compressed);
+	// write src filelength, header and compressed data to output file
+	compressedFile = fopen(argv[2], "wb");
+	fwrite(&inputFileLength, sizeof(unsigned int), 1, compressedFile);
+	fwrite(frequency, sizeof(unsigned int), 256, compressedFile);
+	fwrite(compressedData, sizeof(unsigned char), compressedFileLength, compressedFile);
+	fclose(compressedFile);
 
 	// calculate run duration
-
 	end = clock();
 	cpu_time_used = ((end - start)) * 1000 / CLOCKS_PER_SEC;
 	printf("\ntime taken %d seconds and %d milliseconds\n\n", cpu_time_used / 1000, cpu_time_used % 1000);
@@ -135,66 +116,44 @@ main(int argc, char *argv[]){
 }
 
 // sort nodes based on frequency
-
-void sort(int i, int node, int arr){
+void sortHuffmanTree(int i, int distinctCharacterCount, int mergedHuffmanNodes){
 	int a, b;
-	for (a = arr; a < node - 1 + i; a++){
-		for (b = arr; b < node - 1 + i; b++){
-			if (huff[b].count > huff[b + 1].count){
-				temp = huff[b];
-				huff[b] = huff[b + 1];
-				huff[b + 1] = temp;
+	for (a = mergedHuffmanNodes; a < distinctCharacterCount - 1 + i; a++){
+		for (b = mergedHuffmanNodes; b < distinctCharacterCount - 1 + i; b++){
+			if (huffmanTreeNode[b].count > huffmanTreeNode[b + 1].count){
+				temp_huffmanTreeNode = huffmanTreeNode[b];
+				huffmanTreeNode[b] = huffmanTreeNode[b + 1];
+				huffmanTreeNode[b + 1] = temp_huffmanTreeNode;
 			}
 		}
 	}
 }
 
 // build tree based on sort result
-
-void buildtree(int i, int node, int arr)
-{
-	free(head);
-	head = malloc(sizeof(struct analysis));
-	head->count = huff[arr].count + huff[arr + 1].count;
-	head->left = &huff[arr];
-	head->right = &huff[arr + 1];
-	huff[node + i] = *head;
+void buildHuffmanTree(int i, int distinctCharacterCount, int mergedHuffmanNodes){
+	free(head_huffmanTreeNode);
+	head_huffmanTreeNode = malloc(sizeof(struct huffmanTree));
+	head_huffmanTreeNode->count = huffmanTreeNode[mergedHuffmanNodes].count + huffmanTreeNode[mergedHuffmanNodes + 1].count;
+	head_huffmanTreeNode->left = &huffmanTreeNode[mergedHuffmanNodes];
+	head_huffmanTreeNode->right = &huffmanTreeNode[mergedHuffmanNodes + 1];
+	huffmanTreeNode[distinctCharacterCount + i] = *head_huffmanTreeNode;
 }
 
-// get bit sequence for each char value
-
-void bitvalue(struct analysis *root, unsigned char bit[], unsigned char size)
-{
-	//int i;
+// get bitSequence sequence for each char value
+void buildHuffmanDictionary(struct huffmanTree *root, unsigned char *bitSequence, unsigned char bitSequenceLength){
 	if (root->left){
-		bit[size] = 0;
-		bitvalue(root->left, bit, size + 1);
+		bitSequence[bitSequenceLength] = 0;
+		buildHuffmanDictionary(root->left, bitSequence, bitSequenceLength + 1);
 	}
 
 	if (root->right){
-		bit[size] = 1;
-		bitvalue(root->right, bit, size + 1);
+		bitSequence[bitSequenceLength] = 1;
+		buildHuffmanDictionary(root->right, bitSequence, bitSequenceLength + 1);
 	}
 
 	if (root->left == NULL && root->right == NULL){
-		table[root->letter].size = size;
-		memcpy(table[root->letter].bit, bit, size * sizeof(unsigned char));
+		huffmanDictionary[root->letter].bitSequenceLength = bitSequenceLength;
+		memcpy(huffmanDictionary[root->letter].bitSequence, bitSequence, bitSequenceLength * sizeof(unsigned char));
 	}
 }
 
-// function to print the tree
-
-/*
-void printtree(struct analysis *tree)
-{
-if (tree->left != NULL || tree->right != NULL)
-{
-printtree(tree->left);
-printtree(tree->right);
-}
-else
-{
-printf("%d\t%d\n", tree->letter, tree->count);
-}
-}
-*/
