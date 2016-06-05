@@ -1,14 +1,12 @@
-// table struct
-struct table
+struct huffmanDictionary
 {
-	unsigned char bit[255];
-	unsigned char size;
-};
+	unsigned char bitSequence[256][191];
+	unsigned char bitSequenceLength[256];
+}huffmanDictionary;
 
-// tree node struct
-struct analysis
+struct huffmanTree
 {
 	unsigned char letter;
 	unsigned int count;
-	struct analysis *left, *right;
+	struct huffmanTree *left, *right;
 };
