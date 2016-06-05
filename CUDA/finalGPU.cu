@@ -7,71 +7,67 @@
 #include<string.h>
 #include<time.h>
 
-//4294967295
-
-// To handle worst case huffman tree
-__constant__ unsigned char d_bitDict[256][255];
-unsigned char max_bitDict[256][255];
-unsigned int flag = 0;
-
-// struct to store dictionary
-struct table_struct
+struct huffmanDictionary
 {
-	unsigned char bitDict[256][191];
-	unsigned char sizeDict[256];
-}h_table;
+	unsigned char bitSequence[256][191];
+	unsigned char bitSequenceLength[256];
+}huffmanDictionary;
 
-// huffman tree
-struct analysis
+struct huffmanTree
 {
 	unsigned char letter;
 	unsigned int count;
-	struct analysis *left, *right;
+	struct huffmanTree *left, *right;
 };
-struct analysis *head, *current;
-struct analysis huff[512], temp;
+struct huffmanTree *head_huffmanTreeNode;
+struct huffmanTree huffmanTreeNode[512], temp_huffmanTreeNode;
+
+// handles when constant memory is needed to access bit sequence of length > 191
+__constant__ unsigned char d_bitSequenceConstMemory[256][255];
+unsigned char bitSequenceConstMemory[256][255];
+unsigned int constMemoryFlag = 0;
 
 // Function prototypes
-void sort(int, int, int);
-void buildtree(int, int, int);
-void bitvalue(struct analysis *root, unsigned char *bit, unsigned char size);
+void sortHuffmanTree(int, int, int);
+void buildHuffmanTree(int, int, int);
+void buildHuffmanDictionary(struct huffmanTree *, unsigned char *, unsigned char);
 
 // cuda function
-__global__ void compress(unsigned char *d_input, unsigned int *d_offset, struct table_struct *d_table, unsigned char *d_temp, unsigned int d_filelength, unsigned int flag){
-	__shared__ struct  table_struct table;
-	memcpy(&table, d_table, sizeof(struct table_struct));
-	unsigned int filelength = d_filelength;
+__global__ void compress(unsigned char *d_inputFileData, unsigned int *d_compressedDataOffset, struct huffmanDictionary *d_huffmanDictionary, unsigned char *d_byteCompressedData, unsigned int d_inputFileLength, unsigned int constMemoryFlag){
+	__shared__ struct  huffmanDictionary table;
+	memcpy(&table, d_huffmanDictionary, sizeof(struct huffmanDictionary));
+	unsigned int inputFileLength = d_inputFileLength;
 	unsigned int i, j, k;
 	unsigned int pos = blockIdx.x * blockDim.x + threadIdx.x;
 	
 	// when shared memory is sufficient
-	if(flag == 0){
-		for(i = pos; i < filelength; i += blockDim.x){
-			for(k = 0; k < table.sizeDict[d_input[i]]; k++){
-				d_temp[d_offset[i]+k] = table.bitDict[d_input[i]][k];
+	if(constMemoryFlag == 0){
+		for(i = pos; i < inputFileLength; i += blockDim.x){
+			for(k = 0; k < table.bitSequenceLength[d_inputFileData[i]]; k++){
+				d_byteCompressedData[d_compressedDataOffset[i]+k] = table.bitSequence[d_inputFileData[i]][k];
 			}
 		}
 	}
 	// use constant memory and shared memory
 	else{
-		for(i = pos; i < filelength; i += blockDim.x){
-			for(k = 0; k < table.sizeDict[d_input[i]]; k++){
+		for(i = pos; i < inputFileLength; i += blockDim.x){
+			for(k = 0; k < table.bitSequenceLength[d_inputFileData[i]]; k++){
 				if(k < 191)
-					d_temp[d_offset[i]+k] = table.bitDict[d_input[i]][k];
+					d_byteCompressedData[d_compressedDataOffset[i]+k] = table.bitSequence[d_inputFileData[i]][k];
 				else
-					d_temp[d_offset[i]+k] = d_bitDict[d_input[i]][k];
+					d_byteCompressedData[d_compressedDataOffset[i]+k] = d_bitSequenceConstMemory[d_inputFileData[i]][k];
 			}
 		}
 	}
 	__syncthreads();
 	
-	for(i = pos * 8; i < d_offset[filelength]; i += blockDim.x * 8){
+	for(i = pos * 8; i < d_compressedDataOffset[inputFileLength]; i += blockDim.x * 8){
 		for(j = 0; j < 8; j++){
-			if(d_temp[i + j] == 0){
-				d_input[i / 8] = d_input[i / 8] << 1;
+			if(d_byteCompressedData[i + j] == 0){
+				d_inputFileData[i / 8] = d_inputFileData[i / 8] << 1;
 			}
 			else{
-				d_input[i / 8] = (d_input[i / 8] << 1) | 1;
+				d_inputFileData[i / 8] = (d_inputFileData[i / 8] << 1) | 1;
 			}
 		}
 	}
@@ -79,156 +75,149 @@ __global__ void compress(unsigned char *d_input, unsigned int *d_offset, struct 
 }
 
 // cuda function
-__global__ void compressOverflow(unsigned char *d_input, unsigned int *d_offset, struct table_struct *d_table, unsigned char *d_temp, unsigned char *d_temp_overflow, unsigned int d_filelength, unsigned int flag, unsigned int overflowPosition){
-	__shared__ struct  table_struct table;
-	memcpy(&table, d_table, sizeof(struct table_struct));
-	unsigned int filelength = d_filelength;
+__global__ void compress(unsigned char *d_inputFileData, unsigned int *d_compressedDataOffset, struct huffmanDictionary *d_huffmanDictionary, unsigned char *d_byteCompressedData, unsigned char *d_temp_overflow, unsigned int d_inputFileLength, unsigned int constMemoryFlag, unsigned int overflowPosition){
+	__shared__ struct  huffmanDictionary table;
+	memcpy(&table, d_huffmanDictionary, sizeof(struct huffmanDictionary));
+	unsigned int inputFileLength = d_inputFileLength;
 	unsigned int i, j, k;
 	unsigned int pos = blockIdx.x * blockDim.x + threadIdx.x;
 	unsigned int offset_overflow;
 	
 	// when shared memory is sufficient
-	if(flag == 0){
+	if(constMemoryFlag == 0){
 		for(i = pos; i < overflowPosition; i += blockDim.x){
-			for(k = 0; k < table.sizeDict[d_input[i]]; k++){
-				d_temp[d_offset[i]+k] = table.bitDict[d_input[i]][k];
+			for(k = 0; k < table.bitSequenceLength[d_inputFileData[i]]; k++){
+				d_byteCompressedData[d_compressedDataOffset[i]+k] = table.bitSequence[d_inputFileData[i]][k];
 			}
 		}
-		for(i = overflowPosition + pos; i < filelength - 1; i += blockDim.x){
-			for(k = 0; k < table.sizeDict[d_input[i + 1]]; k++){
-				d_temp_overflow[d_offset[i + 1] + k] = table.bitDict[d_input[i + 1]][k];
+		for(i = overflowPosition + pos; i < inputFileLength - 1; i += blockDim.x){
+			for(k = 0; k < table.bitSequenceLength[d_inputFileData[i + 1]]; k++){
+				d_temp_overflow[d_compressedDataOffset[i + 1] + k] = table.bitSequence[d_inputFileData[i + 1]][k];
 			}
 		}
 		if(pos == 0){
-			memcpy(&d_temp_overflow[d_offset[(overflowPosition + 1)] - table.sizeDict[d_input[overflowPosition]]], &table.bitDict[d_input[overflowPosition]], table.sizeDict[d_input[overflowPosition]]);
+			memcpy(&d_temp_overflow[d_compressedDataOffset[(overflowPosition + 1)] - table.bitSequenceLength[d_inputFileData[overflowPosition]]], &table.bitSequence[d_inputFileData[overflowPosition]], table.bitSequenceLength[d_inputFileData[overflowPosition]]);
 		}
 	}
 	// use constant memory and shared memory
 	else{
-		for(i = pos; i < filelength; i += blockDim.x){
-			for(k = 0; k < table.sizeDict[d_input[i]]; k++){
+		for(i = pos; i < inputFileLength; i += blockDim.x){
+			for(k = 0; k < table.bitSequenceLength[d_inputFileData[i]]; k++){
 				if(k < 191)
-					d_temp[d_offset[i]+k] = table.bitDict[d_input[i]][k];
+					d_byteCompressedData[d_compressedDataOffset[i]+k] = table.bitSequence[d_inputFileData[i]][k];
 				else
-					d_temp[d_offset[i]+k] = d_bitDict[d_input[i]][k];
+					d_byteCompressedData[d_compressedDataOffset[i]+k] = d_bitSequenceConstMemory[d_inputFileData[i]][k];
 			}
 		}
 	}
 	__syncthreads();
 	
-	for(i = pos * 8; i < d_offset[overflowPosition]; i += blockDim.x * 8){
+	for(i = pos * 8; i < d_compressedDataOffset[overflowPosition]; i += blockDim.x * 8){
 		for(j = 0; j < 8; j++){
-			if(d_temp[i + j] == 0){
-				d_input[i / 8] = d_input[i / 8] << 1;
+			if(d_byteCompressedData[i + j] == 0){
+				d_inputFileData[i / 8] = d_inputFileData[i / 8] << 1;
 			}
 			else{
-				d_input[i / 8] = (d_input[i / 8] << 1) | 1;
+				d_inputFileData[i / 8] = (d_inputFileData[i / 8] << 1) | 1;
 			}
 		}
 	}
-	offset_overflow = d_offset[overflowPosition] / 8;
+	offset_overflow = d_compressedDataOffset[overflowPosition] / 8;
 	
-	for(i = pos * 8; i < d_offset[filelength]; i += blockDim.x * 8){
+	for(i = pos * 8; i < d_compressedDataOffset[inputFileLength]; i += blockDim.x * 8){
 		for(j = 0; j < 8; j++){
 			if(d_temp_overflow[i + j] == 0){
-				d_input[(i / 8) + offset_overflow] = d_input[(i / 8) + offset_overflow] << 1;
+				d_inputFileData[(i / 8) + offset_overflow] = d_inputFileData[(i / 8) + offset_overflow] << 1;
 			}
 			else{
-				d_input[(i / 8) + offset_overflow] = (d_input[(i / 8) + offset_overflow] << 1) | 1;
+				d_inputFileData[(i / 8) + offset_overflow] = (d_inputFileData[(i / 8) + offset_overflow] << 1) | 1;
 			}
 		}
 	}
 }
 
 int main(int argc, char **argv){
-	unsigned int i, node = 0, arr = 0, filelength, frequency[256];
-	FILE *sourceFile, *compressedFile;
-	unsigned char *d_input, *h_input, *d_temp,  size = 0, bit[255];
-	unsigned int *d_offset, *h_offset, cpu_time_used;
-	struct table_struct *d_table;
-	unsigned int flagOverflow, overflowPosition, flagPadding;
+	unsigned int i;
+	unsigned int distinctCharacterCount, combinedHuffmanNodes, inputFileLength, frequency[256];
+	unsigned char *d_inputFileData, *inputFileData, *d_byteCompressedData,  bitSequenceLength = 0, bitSequence[255];
+	unsigned int *d_compressedDataOffset, *compressedDataOffset, cpu_time_used;
+	struct huffmanDictionary *d_huffmanDictionary;
+	unsigned int integerOverflowFlag, integerOverflowIndex, bitPaddingFlag;
+	FILE *inputFile, *compressedFile;
 	cudaError_t error;
 	clock_t start, end;
 	
 	// start time measure
 	start = clock();
 	
-	// read input file, get filelength and data
-	sourceFile = fopen(argv[1], "rb");
-	fseek(sourceFile, 0, SEEK_END);
-	filelength = ftell(sourceFile);
-	fseek(sourceFile, 0, SEEK_SET);
-	h_input = (unsigned char *)malloc(filelength * sizeof(unsigned char));
-	fread(h_input, sizeof(unsigned char), filelength, sourceFile);
-	fclose(sourceFile);
+	// read input file, get inputFileLength and data
+	inputFile = fopen(argv[1], "rb");
+	fseek(inputFile, 0, SEEK_END);
+	inputFileLength = ftell(inputFile);
+	fseek(inputFile, 0, SEEK_SET);
+	inputFileData = (unsigned char *)malloc(inputFileLength * sizeof(unsigned char));
+	fread(inputFileData, sizeof(unsigned char), inputFileLength, inputFile);
+	fclose(inputFile);
 	
 	// find the frequency of each symbols
 	for (i = 0; i < 256; i++){
 		frequency[i] = 0;
 	}
-	for (i = 0; i < filelength; i++){
-		frequency[h_input[i]]++;
+	for (i = 0; i < inputFileLength; i++){
+		frequency[inputFileData[i]]++;
 	}
 
 	// initialize nodes of huffman tree
+	distinctCharacterCount = 0;
 	for (i = 0; i < 256; i++){
 		if (frequency[i] > 0){
-			huff[node].count = frequency[i];
-			huff[node].letter = i;
-			huff[node].left = NULL;
-			huff[node].right = NULL;
-			node++;
+			huffmanTreeNode[distinctCharacterCount].count = frequency[i];
+			huffmanTreeNode[distinctCharacterCount].letter = i;
+			huffmanTreeNode[distinctCharacterCount].left = NULL;
+			huffmanTreeNode[distinctCharacterCount].right = NULL;
+			distinctCharacterCount++;
 		}
 	}
 	
 	// build tree 
-	for (i = 0; i < node - 1; i++){
-		arr = 2 * i;
-		sort(i, node, arr);
-		buildtree(i, node, arr);
+	for (i = 0; i < distinctCharacterCount - 1; i++){
+		combinedHuffmanNodes = 2 * i;
+		sortHuffmanTree(i, distinctCharacterCount, combinedHuffmanNodes);
+		buildHuffmanTree(i, distinctCharacterCount, combinedHuffmanNodes);
 	}
 	
-	// build table having the bit sequence and its length
-	bitvalue(head, bit, size);
+	// build table having the bitSequence sequence and its length
+	buildHuffmanDictionary(head_huffmanTreeNode, bitSequence, bitSequenceLength);
 
-	// calculate h_offset
-	flagOverflow = 0;
-	flagPadding = 0;
-	h_offset = (unsigned int *)malloc((filelength + 1) * sizeof(unsigned int));
-	h_offset[0] = 0;
-	for(i = 0; i < filelength; i++){
-		h_offset[i + 1] = h_table.sizeDict[h_input[i]] + h_offset[i];
-		if(h_offset[i + 1] + 1048576 < h_offset[i]){
+	// calculate compressed data offset - (1048576 is a safe number that will ensure there is no integer overflow in GPU, it should be minimum 8 * number of threads)
+	integerOverflowFlag = 0;
+	bitPaddingFlag = 0;
+	compressedDataOffset = (unsigned int *)malloc((inputFileLength + 1) * sizeof(unsigned int));
+	compressedDataOffset[0] = 0;
+	for(i = 0; i < inputFileLength; i++){
+		compressedDataOffset[i + 1] = huffmanDictionary.bitSequenceLength[inputFileData[i]] + compressedDataOffset[i];
+		if(compressedDataOffset[i + 1] + 1048576 < compressedDataOffset[i]){
 			printf("Overflow error Occured\n");
-			flagOverflow = 1;
-			overflowPosition = i;
-			if(h_offset[i] % 8 != 0){
-				flagPadding = 1;
-				h_offset[i + 1] = (h_offset[i] % 8) + h_table.sizeDict[h_input[i]];
-				h_offset[i] = h_offset[i] + (8 - (h_offset[i] % 8));
+			integerOverflowFlag = 1;
+			integerOverflowIndex = i;
+			if(compressedDataOffset[i] % 8 != 0){
+				bitPaddingFlag = 1;
+				compressedDataOffset[i + 1] = (compressedDataOffset[i] % 8) + huffmanDictionary.bitSequenceLength[inputFileData[i]];
+				compressedDataOffset[i] = compressedDataOffset[i] + (8 - (compressedDataOffset[i] % 8));
 			}
 			else{
-				h_offset[i + 1] = 0;				
+				compressedDataOffset[i + 1] = 0;				
 			}
 		}
 	}
-	if(h_offset[filelength] % 8 != 0){
-		h_offset[filelength] = h_offset[filelength] + (8 - (h_offset[filelength] % 8));
+	if(compressedDataOffset[inputFileLength] % 8 != 0){
+		compressedDataOffset[inputFileLength] = compressedDataOffset[inputFileLength] + (8 - (compressedDataOffset[inputFileLength] % 8));
 	}
 
-	for(i = overflowPosition; i < overflowPosition + 20; i ++){
-		printf("%u\t%u\n", h_offset[i + 1], h_table.sizeDict[h_input[i + 1]]);
-	}
-
-	/////////////////END SERIAL///////////////////
-	
-	//////////////BEGIN PARALLEL//////////////////
-	
-
-	if(flagOverflow == 0){
+	if(integerOverflowFlag == 0){
 		long unsigned int mem_free, mem_total;
 		long unsigned int mem_req;
-		mem_req = 2 + (filelength * sizeof(unsigned char) + (filelength + 1) * sizeof(unsigned int) + sizeof(table_struct) + (long unsigned int)h_offset[filelength] * sizeof(unsigned char))/(1024 * 1024);
+		mem_req = 2 + (inputFileLength * sizeof(unsigned char) + (inputFileLength + 1) * sizeof(unsigned int) + sizeof(huffmanDictionary) + (long unsigned int)compressedDataOffset[inputFileLength] * sizeof(unsigned char))/(1024 * 1024);
 		printf("Total GPU space required: %lu\n", mem_req);
 
 		// query device memory
@@ -238,88 +227,74 @@ int main(int argc, char **argv){
 			
 		if(mem_req < mem_free){
 			// malloc
-			error = cudaMalloc((void **)&d_input, filelength * sizeof(unsigned char));
+			error = cudaMalloc((void **)&d_inputFileData, inputFileLength * sizeof(unsigned char));
 			if (error != cudaSuccess)
 					printf("erro_1: %s\n", cudaGetErrorString(error));
-			error = cudaMalloc((void **)&d_offset, (filelength + 1) * sizeof(unsigned int));
+			error = cudaMalloc((void **)&d_compressedDataOffset, (inputFileLength + 1) * sizeof(unsigned int));
 			if (error != cudaSuccess)
 					printf("erro_2: %s\n", cudaGetErrorString(error));
-			error = cudaMalloc((void **)&d_table, sizeof(table_struct));
+			error = cudaMalloc((void **)&d_huffmanDictionary, sizeof(huffmanDictionary));
 			if (error != cudaSuccess)
 					printf("erro_3: %s\n", cudaGetErrorString(error));
-			error = cudaMalloc((void **)&d_temp, (h_offset[filelength]) * sizeof(unsigned char));
+			error = cudaMalloc((void **)&d_byteCompressedData, (compressedDataOffset[inputFileLength]) * sizeof(unsigned char));
 			if (error!= cudaSuccess)
 					printf("erro_5: %s\n", cudaGetErrorString(error));
 	
 			// memcpy
-			error = cudaMemcpy(d_input, h_input, filelength * sizeof(unsigned char), cudaMemcpyHostToDevice);
+			error = cudaMemcpy(d_inputFileData, inputFileData, inputFileLength * sizeof(unsigned char), cudaMemcpyHostToDevice);
 			if (error!= cudaSuccess)
 					printf("erro_6: %s\n", cudaGetErrorString(error));
-			error = cudaMemcpy(d_offset, h_offset, (filelength + 1) * sizeof(unsigned int), cudaMemcpyHostToDevice);
+			error = cudaMemcpy(d_compressedDataOffset, compressedDataOffset, (inputFileLength + 1) * sizeof(unsigned int), cudaMemcpyHostToDevice);
 			if (error!= cudaSuccess)
 					printf("erro_7: %s\n", cudaGetErrorString(error));
-			error = cudaMemcpy(d_table, &h_table, sizeof(table_struct), cudaMemcpyHostToDevice);
+			error = cudaMemcpy(d_huffmanDictionary, &huffmanDictionary, sizeof(huffmanDictionary), cudaMemcpyHostToDevice);
 			if (error!= cudaSuccess)
 					printf("erro_8: %s\n", cudaGetErrorString(error));
-			// initialize d_temp 
-			error = cudaMemset(d_temp, 0, h_offset[filelength] * sizeof(unsigned char));
+				
+			// initialize d_byteCompressedData 
+			error = cudaMemset(d_byteCompressedData, 0, compressedDataOffset[inputFileLength] * sizeof(unsigned char));
 			if (error!= cudaSuccess)
-					printf("erro_9: %s\n", cudaGetErrorString(error));		
+					printf("erro_9: %s\n", cudaGetErrorString(error));
+				
 			// copy constant memory
-			//if(flag == 1){
-			error = cudaMemcpyToSymbol (d_bitDict, max_bitDict, 256 * 255 * sizeof(unsigned char));
-			if (error!= cudaSuccess)
+			if(constMemoryFlag == 1){
+				error = cudaMemcpyToSymbol (d_bitSequenceConstMemory, bitSequenceConstMemory, 256 * 255 * sizeof(unsigned char));
+				if (error!= cudaSuccess)
 					printf("erro_10: %s\n", cudaGetErrorString(error));
-			//}
+			}
 			
-	
 			// run kernel and copy output
 			error = cudaMemGetInfo(&mem_free, &mem_total);
 			printf("Total GPU memory: %lu\n", mem_total/(1024 * 1024));
 			printf("Total GPU space available: %lu\n", mem_free/(1024 * 1024));
 		
-			compress<<<1, 1024>>>(d_input, d_offset, d_table, d_temp, filelength, flag);
+			compress<<<1, 1024>>>(d_inputFileData, d_compressedDataOffset, d_huffmanDictionary, d_byteCompressedData, inputFileLength, constMemoryFlag);
 			cudaError_t error_kernel = cudaGetLastError();
 			if (error_kernel != cudaSuccess)
 				printf("erro_final: %s\n", cudaGetErrorString(error_kernel));
 
-			error = cudaMemcpy(h_input, d_input, ((h_offset[filelength] / 8)) * sizeof(unsigned char), cudaMemcpyDeviceToHost);
+			error = cudaMemcpy(inputFileData, d_inputFileData, ((compressedDataOffset[inputFileLength] / 8)) * sizeof(unsigned char), cudaMemcpyDeviceToHost);
 			if (error != cudaSuccess)
 				printf("erro_11: %s\n", cudaGetErrorString(error));
-			printf("%lu\n", ((h_offset[filelength] / 8)) * sizeof(unsigned char));
+			printf("%lu\n", ((compressedDataOffset[inputFileLength] / 8)) * sizeof(unsigned char));
 			
-			cudaFree(d_input);
-			cudaFree(d_offset);
-			cudaFree(d_table);
-			cudaFree(d_temp);
+			cudaFree(d_inputFileData);
+			cudaFree(d_compressedDataOffset);
+			cudaFree(d_huffmanDictionary);
+			cudaFree(d_byteCompressedData);
 			
-			// write src filelength, header and compressed data to output file
+			// write src inputFileLength, header and compressed data to output file
 			compressedFile = fopen(argv[2], "wb");
-			fwrite(&filelength, sizeof(unsigned int), 1, compressedFile);
+			fwrite(&inputFileLength, sizeof(unsigned int), 1, compressedFile);
 			fwrite(frequency, sizeof(unsigned int), 256, compressedFile);
-			fwrite(h_input, sizeof(unsigned char), (h_offset[filelength] / 8), compressedFile);
+			fwrite(inputFileData, sizeof(unsigned char), (compressedDataOffset[inputFileLength] / 8), compressedFile);
 			fclose(compressedFile);			
 		}
 	}
 	else{
-		//printf("Input File Size = %u Bytes\nh_offset[filelength] = %lu\nOutput File Size = %u\n", filelength, (long unsigned int)((long unsigned int)h_offset[filelength] + (long unsigned int)h_offset[overflowPosition]), ((h_offset[filelength]/8) + (h_offset[overflowPosition]/8)));
-		printf("overflowPosition - 1 = %u\n", h_offset[overflowPosition - 1]);
-		printf("overflowPosition     = %u\n", h_offset[overflowPosition]);
-		printf("overflowPosition + 1 = %u\n", h_offset[overflowPosition + 1]);
-		printf("overflowPosition + 2 = %u\n", h_offset[overflowPosition + 2]);
-		printf("h_offset[filelength] = %u\n", h_offset[filelength]);
-		printf("overflowPosition is %u\n", overflowPosition);
-		printf("filelength       is %u\n", filelength);		
-		printf("flag             is %u\n", flag);
-		//for(i = overflowPosition; i < overflowPosition + 10; i++){
-		//		printf("%u\t%u\n",h_offset[i + 1], h_table.sizeDict[h_input[i + 1]]);
-		//}
-		//for(i = 0; i < 10; i++){
-		//		printf("%u\t%u\n",h_offset[i + 1], h_table.sizeDict[h_input[i + 1]]);
-		//}
 		long unsigned int mem_free, mem_total;
 		long unsigned int mem_req;
-		mem_req = 2 + (long unsigned int)((long unsigned int)filelength * sizeof(unsigned char) + (long unsigned int)(filelength + 1) * sizeof(unsigned int) + sizeof(table_struct) + (long unsigned int)h_offset[overflowPosition] * sizeof(unsigned char) + (long unsigned int)h_offset[filelength] * sizeof(unsigned char))/(1024 * 1024);
+		mem_req = 2 + (long unsigned int)((long unsigned int)inputFileLength * sizeof(unsigned char) + (long unsigned int)(inputFileLength + 1) * sizeof(unsigned int) + sizeof(huffmanDictionary) + (long unsigned int)compressedDataOffset[integerOverflowIndex] * sizeof(unsigned char) + (long unsigned int)compressedDataOffset[inputFileLength] * sizeof(unsigned char))/(1024 * 1024);
 		printf("Total GPU space required: %lu\n", mem_req);
 
 		// query device memory
@@ -328,62 +303,62 @@ int main(int argc, char **argv){
 		printf("Total GPU space available: %lu\n", mem_free/(1024 * 1024));
 			
 		if(mem_req < mem_free){
-			unsigned char *d_temp_overflow;
+			unsigned char *d_byteCompressedDataOverflow;
 			// malloc
 			
 			// allocate input file data
-			error = cudaMalloc((void **)&d_input, filelength * sizeof(unsigned char));
+			error = cudaMalloc((void **)&d_inputFileData, inputFileLength * sizeof(unsigned char));
 			if (error != cudaSuccess)
 					printf("erro_1: %s\n", cudaGetErrorString(error));
 				
 			// allocate offset 
-			error = cudaMalloc((void **)&d_offset, (filelength + 1) * sizeof(unsigned int));
+			error = cudaMalloc((void **)&d_compressedDataOffset, (inputFileLength + 1) * sizeof(unsigned int));
 			if (error != cudaSuccess)
 					printf("erro_2: %s\n", cudaGetErrorString(error));
 				
 			// allocate structure
-			error = cudaMalloc((void **)&d_table, sizeof(table_struct));
+			error = cudaMalloc((void **)&d_huffmanDictionary, sizeof(huffmanDictionary));
 			if (error != cudaSuccess)
 					printf("erro_3: %s\n", cudaGetErrorString(error));
 				
-			// allocate bit to byte storage
-			error = cudaMalloc((void **)&d_temp, h_offset[overflowPosition] * sizeof(unsigned char));
+			// allocate bitSequence to byte storage
+			error = cudaMalloc((void **)&d_byteCompressedData, compressedDataOffset[integerOverflowIndex] * sizeof(unsigned char));
 			if (error!= cudaSuccess)
 					printf("erro_5: %s\n", cudaGetErrorString(error));
 				
-			error = cudaMalloc((void **)&d_temp_overflow, h_offset[filelength] * sizeof(unsigned char));
+			error = cudaMalloc((void **)&d_byteCompressedDataOverflow, compressedDataOffset[inputFileLength] * sizeof(unsigned char));
 			if (error!= cudaSuccess)
 					printf("erro_6: %s\n", cudaGetErrorString(error));
 							
 			// memcpy
 			// copy input data
-			error = cudaMemcpy(d_input, h_input, filelength * sizeof(unsigned char), cudaMemcpyHostToDevice);
+			error = cudaMemcpy(d_inputFileData, inputFileData, inputFileLength * sizeof(unsigned char), cudaMemcpyHostToDevice);
 			if (error!= cudaSuccess)
 					printf("erro_7: %s\n", cudaGetErrorString(error));
 				
 			// copy offset
-			error = cudaMemcpy(d_offset, h_offset, (filelength + 1) * sizeof(unsigned int), cudaMemcpyHostToDevice);
+			error = cudaMemcpy(d_compressedDataOffset, compressedDataOffset, (inputFileLength + 1) * sizeof(unsigned int), cudaMemcpyHostToDevice);
 			if (error!= cudaSuccess)
 					printf("erro_8: %s\n", cudaGetErrorString(error));
 				
 			// copy structure
-			error = cudaMemcpy(d_table, &h_table, sizeof(table_struct), cudaMemcpyHostToDevice);
+			error = cudaMemcpy(d_huffmanDictionary, &huffmanDictionary, sizeof(huffmanDictionary), cudaMemcpyHostToDevice);
 			if (error!= cudaSuccess)
 					printf("erro_9: %s\n", cudaGetErrorString(error));
 			
-			// initialize d_temp
-			// initialize bit to byte array to  0
-			error = cudaMemset(d_temp, 0, h_offset[overflowPosition] * sizeof(unsigned char));
+			// initialize d_byteCompressedData
+			// initialize bitSequence to byte array to  0
+			error = cudaMemset(d_byteCompressedData, 0, compressedDataOffset[integerOverflowIndex] * sizeof(unsigned char));
 			if (error!= cudaSuccess)
 					printf("erro_10: %s\n", cudaGetErrorString(error));	
 				
-			error = cudaMemset(d_temp_overflow, 0, h_offset[filelength] * sizeof(unsigned char));
+			error = cudaMemset(d_byteCompressedDataOverflow, 0, compressedDataOffset[inputFileLength] * sizeof(unsigned char));
 			if (error!= cudaSuccess)
 					printf("erro_11: %s\n", cudaGetErrorString(error));		
 				
 			// copy constant memory
-			if(flag == 1){
-				error = cudaMemcpyToSymbol (d_bitDict, max_bitDict, 256 * 255 * sizeof(unsigned char));
+			if(constMemoryFlag == 1){
+				error = cudaMemcpyToSymbol (d_bitSequenceConstMemory, bitSequenceConstMemory, 256 * 255 * sizeof(unsigned char));
 				if (error!= cudaSuccess)
 					printf("erro_12: %s\n", cudaGetErrorString(error));
 			}
@@ -395,7 +370,7 @@ int main(int argc, char **argv){
 			printf("Total GPU space available: %lu\n", mem_free/(1024 * 1024));
 			
 			// launch kernel
-			compressOverflow<<<1, 1024>>>(d_input, d_offset, d_table, d_temp, d_temp_overflow, filelength, flag, overflowPosition);
+			compress<<<1, 1024>>>(d_inputFileData, d_compressedDataOffset, d_huffmanDictionary, d_byteCompressedData, d_byteCompressedDataOverflow, inputFileLength, constMemoryFlag, integerOverflowIndex);
 			
 			// check status
 			cudaError_t error_kernel = cudaGetLastError();
@@ -403,38 +378,37 @@ int main(int argc, char **argv){
 				printf("erro_final: %s\n", cudaGetErrorString(error_kernel));
 			
 			// get output data
-			if(flagPadding == 0){
-				error = cudaMemcpy(h_input, d_input, (h_offset[overflowPosition] / 8) * sizeof(unsigned char), cudaMemcpyDeviceToHost);
+			if(bitPaddingFlag == 0){
+				error = cudaMemcpy(inputFileData, d_inputFileData, (compressedDataOffset[integerOverflowIndex] / 8) * sizeof(unsigned char), cudaMemcpyDeviceToHost);
 				if (error != cudaSuccess)
 					printf("erro_11: %s\n", cudaGetErrorString(error));
-				error = cudaMemcpy(&h_input[(h_offset[overflowPosition] / 8)], &d_input[(h_offset[overflowPosition] / 8)], ((h_offset[filelength] / 8)) * sizeof(unsigned char), cudaMemcpyDeviceToHost);
+				error = cudaMemcpy(&inputFileData[(compressedDataOffset[integerOverflowIndex] / 8)], &d_inputFileData[(compressedDataOffset[integerOverflowIndex] / 8)], ((compressedDataOffset[inputFileLength] / 8)) * sizeof(unsigned char), cudaMemcpyDeviceToHost);
 				if (error != cudaSuccess)
 					printf("erro_12: %s\n", cudaGetErrorString(error));
 			}
 			else{
-				printf("In scary zone\n");
-				error = cudaMemcpy(h_input, d_input, (h_offset[overflowPosition] / 8) * sizeof(unsigned char), cudaMemcpyDeviceToHost);
+				error = cudaMemcpy(inputFileData, d_inputFileData, (compressedDataOffset[integerOverflowIndex] / 8) * sizeof(unsigned char), cudaMemcpyDeviceToHost);
 				if (error != cudaSuccess)
 					printf("erro_11: %s\n", cudaGetErrorString(error));
-				unsigned char temp = h_input[(h_offset[overflowPosition] / 8) - 1];
+				unsigned char temp_huffmanTreeNode = inputFileData[(compressedDataOffset[integerOverflowIndex] / 8) - 1];
 				
-				error = cudaMemcpy(&h_input[(h_offset[overflowPosition] / 8) - 1], &d_input[(h_offset[overflowPosition] / 8)], ((h_offset[filelength] / 8)) * sizeof(unsigned char), cudaMemcpyDeviceToHost);
+				error = cudaMemcpy(&inputFileData[(compressedDataOffset[integerOverflowIndex] / 8) - 1], &d_inputFileData[(compressedDataOffset[integerOverflowIndex] / 8)], ((compressedDataOffset[inputFileLength] / 8)) * sizeof(unsigned char), cudaMemcpyDeviceToHost);
 				if (error != cudaSuccess)
 					printf("erro_12: %s\n", cudaGetErrorString(error));				
-				h_input[(h_offset[overflowPosition] / 8) - 1] = temp | h_input[(h_offset[overflowPosition] / 8) - 1];
+				inputFileData[(compressedDataOffset[integerOverflowIndex] / 8) - 1] = temp_huffmanTreeNode | inputFileData[(compressedDataOffset[integerOverflowIndex] / 8) - 1];
 			}
 
-			cudaFree(d_input);
-			cudaFree(d_offset);
-			cudaFree(d_table);
-			cudaFree(d_temp);
-			cudaFree(d_temp_overflow);
+			cudaFree(d_inputFileData);
+			cudaFree(d_compressedDataOffset);
+			cudaFree(d_huffmanDictionary);
+			cudaFree(d_byteCompressedData);
+			cudaFree(d_byteCompressedDataOverflow);
 			
-			// write src filelength, header and compressed data to output file
+			// write src inputFileLength, header and compressed data to output file
 			compressedFile = fopen(argv[2], "wb");
-			fwrite(&filelength, sizeof(unsigned int), 1, compressedFile);
+			fwrite(&inputFileLength, sizeof(unsigned int), 1, compressedFile);
 			fwrite(frequency, sizeof(unsigned int), 256, compressedFile);
-			fwrite(h_input, sizeof(unsigned char), (h_offset[filelength] / 8 + h_offset[overflowPosition] / 8) - 1, compressedFile);
+			fwrite(inputFileData, sizeof(unsigned char), (compressedDataOffset[inputFileLength] / 8 + compressedDataOffset[integerOverflowIndex] / 8) - 1, compressedFile);
 			fclose(compressedFile);			
 		}
 	}
@@ -446,50 +420,51 @@ int main(int argc, char **argv){
 	return 0;
 }
 
-// sort nodes based on frequency
-void sort(int i, int node, int arr){
+// sortHuffmanTree nodes based on frequency
+void sortHuffmanTree(int i, int distinctCharacterCount, int combinedHuffmanNodes){
 	int a, b;
-	for (a = arr; a < node - 1 + i; a++){
-		for (b = arr; b < node - 1 + i; b++){
-			if (huff[b].count > huff[b + 1].count){
-				temp = huff[b];
-				huff[b] = huff[b + 1];
-				huff[b + 1] = temp;
+	for (a = combinedHuffmanNodes; a < distinctCharacterCount - 1 + i; a++){
+		for (b = combinedHuffmanNodes; b < distinctCharacterCount - 1 + i; b++){
+			if (huffmanTreeNode[b].count > huffmanTreeNode[b + 1].count){
+				temp_huffmanTreeNode = huffmanTreeNode[b];
+				huffmanTreeNode[b] = huffmanTreeNode[b + 1];
+				huffmanTreeNode[b + 1] = temp_huffmanTreeNode;
 			}
 		}
 	}
 }
 
-// build tree based on sort result
-void buildtree(int i, int node, int arr){
-	free(head);
-	head = (struct analysis *)malloc(sizeof(struct analysis));
-	head->count = huff[arr].count + huff[arr + 1].count;
-	head->left = &huff[arr];
-	head->right = &huff[arr + 1];
-	huff[node + i] = *head;
+// build tree based on sortHuffmanTree result
+void buildHuffmanTree(int i, int distinctCharacterCount, int combinedHuffmanNodes){
+	free(head_huffmanTreeNode);
+	head_huffmanTreeNode = (struct huffmanTree *)malloc(sizeof(struct huffmanTree));
+	head_huffmanTreeNode->count = huffmanTreeNode[combinedHuffmanNodes].count + huffmanTreeNode[combinedHuffmanNodes + 1].count;
+	head_huffmanTreeNode->left = &huffmanTreeNode[combinedHuffmanNodes];
+	head_huffmanTreeNode->right = &huffmanTreeNode[combinedHuffmanNodes + 1];
+	huffmanTreeNode[distinctCharacterCount + i] = *head_huffmanTreeNode;
 }
 
-// get bit sequence for each char value
-void bitvalue(struct analysis *root, unsigned char *bit, unsigned char size){
+// get bitSequence sequence for each char value
+void buildHuffmanDictionary(struct huffmanTree *root, unsigned char *bitSequence, unsigned char bitSequenceLength){
 	if (root->left){
-		bit[size] = 0;
-		bitvalue(root->left, bit, size + 1);
+		bitSequence[bitSequenceLength] = 0;
+		buildHuffmanDictionary(root->left, bitSequence, bitSequenceLength + 1);
 	}
 
 	if (root->right){
-		bit[size] = 1;
-		bitvalue(root->right, bit, size + 1);
+		bitSequence[bitSequenceLength] = 1;
+		buildHuffmanDictionary(root->right, bitSequence, bitSequenceLength + 1);
 	}
 
 	if (root->left == NULL && root->right == NULL){
-		h_table.sizeDict[root->letter] = size;
-		if(size < 192){
-			memcpy(h_table.bitDict[root->letter], bit, size * sizeof(unsigned char));
+		huffmanDictionary.bitSequenceLength[root->letter] = bitSequenceLength;
+		if(bitSequenceLength < 192){
+			memcpy(huffmanDictionary.bitSequence[root->letter], bitSequence, bitSequenceLength * sizeof(unsigned char));
 		}
 		else{
-			memcpy(max_bitDict[root->letter], bit, size * sizeof(unsigned char));
-			flag = 1;
+			memcpy(bitSequenceConstMemory[root->letter], bitSequence, bitSequenceLength * sizeof(unsigned char));
+			memcpy(huffmanDictionary.bitSequence[root->letter], bitSequence, 191);
+			constMemoryFlag = 1;
 		}
 	}
 }
