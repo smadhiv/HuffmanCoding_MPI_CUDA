@@ -1,7 +1,8 @@
 __constant__ unsigned char d_bitSequenceConstMemory[256][255];
 
 // cuda function
-__global__ void compress(unsigned char *d_inputFileData, unsigned int *d_compressedDataOffset, struct huffmanDictionary *d_huffmanDictionary, unsigned char *d_byteCompressedData, unsigned int d_inputFileLength, unsigned int constMemoryFlag){
+__global__ void compress(unsigned char *d_inputFileData, unsigned int *d_compressedDataOffset, struct huffmanDictionary *d_huffmanDictionary, 
+						 unsigned char *d_byteCompressedData, unsigned int d_inputFileLength, unsigned int constMemoryFlag){
 	__shared__ struct  huffmanDictionary table;
 	memcpy(&table, d_huffmanDictionary, sizeof(struct huffmanDictionary));
 	unsigned int inputFileLength = d_inputFileLength;

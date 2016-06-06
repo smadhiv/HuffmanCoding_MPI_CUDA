@@ -6,22 +6,11 @@
 #include<stdlib.h>
 #include<string.h>
 #include<time.h>
-#include "../MPI/header.h"
+#include "../Huffman/header.h"
 #include "compress.cu"
+#include "../Huffman/huffman.c"
 
 #define block_size 1024
-
-struct huffmanTree *head_huffmanTreeNode;
-struct huffmanTree huffmanTreeNode[512], temp_huffmanTreeNode;
-
-// handles when constant memory is needed to access bit sequence of length > 191
-unsigned char bitSequenceConstMemory[256][255];
-unsigned int constMemoryFlag = 0;
-
-// Function prototypes
-void sortHuffmanTree(int, int, int);
-void buildHuffmanTree(int, int, int);
-void buildHuffmanDictionary(struct huffmanTree *, unsigned char *, unsigned char);
 
 int main(int argc, char **argv){
 	unsigned int i;
@@ -84,7 +73,7 @@ int main(int argc, char **argv){
 	for(i = 0; i < inputFileLength; i++){
 		compressedDataOffset[i + 1] = huffmanDictionary.bitSequenceLength[inputFileData[i]] + compressedDataOffset[i];
 		if(compressedDataOffset[i + 1] + 1048576 < compressedDataOffset[i]){
-			printf("Overflow error Occured\n");
+			printf("Overflow error occured\n");
 			integerOverflowFlag = 1;
 			integerOverflowIndex = i;
 			if(compressedDataOffset[i] % 8 != 0){
@@ -104,14 +93,18 @@ int main(int argc, char **argv){
 	if(integerOverflowFlag == 0){
 		long unsigned int mem_free, mem_total;
 		long unsigned int mem_req;
-		mem_req = 2 + (inputFileLength * sizeof(unsigned char) + (inputFileLength + 1) * sizeof(unsigned int) + sizeof(huffmanDictionary) + (long unsigned int)compressedDataOffset[inputFileLength] * sizeof(unsigned char))/(1024 * 1024);
-		printf("Total GPU space required: %lu\n", mem_req);
-
+		mem_req = 2 + (inputFileLength * sizeof(unsigned char) 
+			+ (inputFileLength + 1) * sizeof(unsigned int) 
+			+ sizeof(huffmanDictionary) 
+			+ (long unsigned int)compressedDataOffset[inputFileLength] * sizeof(unsigned char))
+			/(1024 * 1024);
+		
 		// query device memory
 		error = cudaMemGetInfo(&mem_free, &mem_total);
 		printf("Total GPU memory: %lu\n", mem_total/(1024 * 1024));
 		printf("Total GPU space available: %lu\n", mem_free/(1024 * 1024));
-			
+		printf("Total GPU space required: %lu\n", mem_req);
+
 		if(mem_req < mem_free){
 			// malloc
 			error = cudaMalloc((void **)&d_inputFileData, inputFileLength * sizeof(unsigned char));
@@ -152,8 +145,7 @@ int main(int argc, char **argv){
 			
 			// run kernel and copy output
 			error = cudaMemGetInfo(&mem_free, &mem_total);
-			printf("Total GPU memory: %lu\n", mem_total/(1024 * 1024));
-			printf("Total GPU space available: %lu\n", mem_free/(1024 * 1024));
+			printf("Total GPU space left: %lu\n", mem_free/(1024 * 1024));
 		
 			compress<<<1, block_size>>>(d_inputFileData, d_compressedDataOffset, d_huffmanDictionary, d_byteCompressedData, inputFileLength, constMemoryFlag);
 			cudaError_t error_kernel = cudaGetLastError();
@@ -181,14 +173,20 @@ int main(int argc, char **argv){
 	else{
 		long unsigned int mem_free, mem_total;
 		long unsigned int mem_req;
-		mem_req = 2 + (long unsigned int)((long unsigned int)inputFileLength * sizeof(unsigned char) + (long unsigned int)(inputFileLength + 1) * sizeof(unsigned int) + sizeof(huffmanDictionary) + (long unsigned int)compressedDataOffset[integerOverflowIndex] * sizeof(unsigned char) + (long unsigned int)compressedDataOffset[inputFileLength] * sizeof(unsigned char))/(1024 * 1024);
-		printf("Total GPU space required: %lu\n", mem_req);
+		mem_req = 2 + (long unsigned int)((long unsigned int)inputFileLength * sizeof(unsigned char) 
+					+ (long unsigned int)(inputFileLength + 1) * sizeof(unsigned int) 
+					+ sizeof(huffmanDictionary) 
+					+ (long unsigned int)compressedDataOffset[integerOverflowIndex] * sizeof(unsigned char) 
+					+ (long unsigned int)compressedDataOffset[inputFileLength] * sizeof(unsigned char))
+					/(1024 * 1024);
+		mem_req = mem_req * (1024 * 1024);
 
 		// query device memory
 		error = cudaMemGetInfo(&mem_free, &mem_total);
 		printf("Total GPU memory: %lu\n", mem_total/(1024 * 1024));
 		printf("Total GPU space available: %lu\n", mem_free/(1024 * 1024));
-			
+		printf("Total GPU space required: %lu\n", mem_req/(1024 * 1024));
+
 		if(mem_req < mem_free){
 			unsigned char *d_byteCompressedDataOverflow;
 			// malloc
@@ -249,12 +247,10 @@ int main(int argc, char **argv){
 				if (error!= cudaSuccess)
 					printf("erro_12: %s\n", cudaGetErrorString(error));
 			}
-			
-	
-			// get GPU storage data after transfers
+		
+			// run kernel and copy output
 			error = cudaMemGetInfo(&mem_free, &mem_total);
-			printf("Total GPU memory: %lu\n", mem_total/(1024 * 1024));
-			printf("Total GPU space available: %lu\n", mem_free/(1024 * 1024));
+			printf("Total GPU space left: %lu\n", mem_free/(1024 * 1024));
 			
 			// launch kernel
 			compress<<<1, block_size>>>(d_inputFileData, d_compressedDataOffset, d_huffmanDictionary, d_byteCompressedData, d_byteCompressedDataOverflow, inputFileLength, constMemoryFlag, integerOverflowIndex);
@@ -302,56 +298,7 @@ int main(int argc, char **argv){
 	// calculate run duration
 	end = clock();
 	cpu_time_used = ((end - start)) * 1000 / CLOCKS_PER_SEC;
-	printf("\ntime taken %d seconds and %d milliseconds\n\n", cpu_time_used / 1000, cpu_time_used % 1000);
+	printf("\nTime taken: %d seconds and %d milliseconds\n\n", cpu_time_used / 1000, cpu_time_used % 1000);
 
 	return 0;
-}
-
-// sortHuffmanTree nodes based on frequency
-void sortHuffmanTree(int i, int distinctCharacterCount, int combinedHuffmanNodes){
-	int a, b;
-	for (a = combinedHuffmanNodes; a < distinctCharacterCount - 1 + i; a++){
-		for (b = combinedHuffmanNodes; b < distinctCharacterCount - 1 + i; b++){
-			if (huffmanTreeNode[b].count > huffmanTreeNode[b + 1].count){
-				temp_huffmanTreeNode = huffmanTreeNode[b];
-				huffmanTreeNode[b] = huffmanTreeNode[b + 1];
-				huffmanTreeNode[b + 1] = temp_huffmanTreeNode;
-			}
-		}
-	}
-}
-
-// build tree based on sortHuffmanTree result
-void buildHuffmanTree(int i, int distinctCharacterCount, int combinedHuffmanNodes){
-	free(head_huffmanTreeNode);
-	head_huffmanTreeNode = (struct huffmanTree *)malloc(sizeof(struct huffmanTree));
-	head_huffmanTreeNode->count = huffmanTreeNode[combinedHuffmanNodes].count + huffmanTreeNode[combinedHuffmanNodes + 1].count;
-	head_huffmanTreeNode->left = &huffmanTreeNode[combinedHuffmanNodes];
-	head_huffmanTreeNode->right = &huffmanTreeNode[combinedHuffmanNodes + 1];
-	huffmanTreeNode[distinctCharacterCount + i] = *head_huffmanTreeNode;
-}
-
-// get bitSequence sequence for each char value
-void buildHuffmanDictionary(struct huffmanTree *root, unsigned char *bitSequence, unsigned char bitSequenceLength){
-	if (root->left){
-		bitSequence[bitSequenceLength] = 0;
-		buildHuffmanDictionary(root->left, bitSequence, bitSequenceLength + 1);
-	}
-
-	if (root->right){
-		bitSequence[bitSequenceLength] = 1;
-		buildHuffmanDictionary(root->right, bitSequence, bitSequenceLength + 1);
-	}
-
-	if (root->left == NULL && root->right == NULL){
-		huffmanDictionary.bitSequenceLength[root->letter] = bitSequenceLength;
-		if(bitSequenceLength < 192){
-			memcpy(huffmanDictionary.bitSequence[root->letter], bitSequence, bitSequenceLength * sizeof(unsigned char));
-		}
-		else{
-			memcpy(bitSequenceConstMemory[root->letter], bitSequence, bitSequenceLength * sizeof(unsigned char));
-			memcpy(huffmanDictionary.bitSequence[root->letter], bitSequence, 191);
-			constMemoryFlag = 1;
-		}
-	}
 }

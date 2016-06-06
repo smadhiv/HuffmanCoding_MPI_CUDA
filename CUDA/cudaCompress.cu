@@ -1,4 +1,4 @@
-#include "../MPI/header.h"
+#include "../Huffman/header.h"
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
