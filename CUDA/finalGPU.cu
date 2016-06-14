@@ -2,22 +2,28 @@
 //Struct of Arrays
 //Constant memory if dictinary goes beyond 191 bits
 //Max possible shared memory
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<time.h>
-#include "../Huffman/header.h"
-#include "compress.cu"
-#include "../Huffman/huffman.c"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include "../Huffman/huffman.h"
+
+__global__ void compress(unsigned char *d_inputFileData, unsigned int *d_compressedDataOffset, struct huffmanDict *d_huffmanDictionary, 
+						 unsigned char *d_byteCompressedData, unsigned int d_inputFileLength, unsigned int constMemoryFlag);
+
+__global__ void compress(unsigned char *d_inputFileData, unsigned int *d_compressedDataOffset, struct huffmanDict *d_huffmanDictionary, 
+						 unsigned char *d_byteCompressedData, unsigned char *d_temp_overflow, unsigned int d_inputFileLength, unsigned int constMemoryFlag, 
+						 unsigned int overflowPosition);
 
 #define block_size 1024
+__constant__ unsigned char d_bitSequenceConstMemory[256][255];
 
 int main(int argc, char **argv){
 	unsigned int i;
 	unsigned int distinctCharacterCount, combinedHuffmanNodes, inputFileLength, frequency[256];
 	unsigned char *d_inputFileData, *inputFileData, *d_byteCompressedData,  bitSequenceLength = 0, bitSequence[255];
 	unsigned int *d_compressedDataOffset, *compressedDataOffset, cpu_time_used;
-	struct huffmanDictionary *d_huffmanDictionary;
+	struct huffmanDict *d_huffmanDictionary;
 	unsigned int integerOverflowFlag, integerOverflowIndex, bitPaddingFlag;
 	FILE *inputFile, *compressedFile;
 	cudaError_t error;
@@ -95,7 +101,7 @@ int main(int argc, char **argv){
 		long unsigned int mem_req;
 		mem_req = 2 + (inputFileLength * sizeof(unsigned char) 
 			+ (inputFileLength + 1) * sizeof(unsigned int) 
-			+ sizeof(huffmanDictionary) 
+			+ sizeof(huffmanDict) 
 			+ (long unsigned int)compressedDataOffset[inputFileLength] * sizeof(unsigned char))
 			/(1024 * 1024);
 		
@@ -113,7 +119,7 @@ int main(int argc, char **argv){
 			error = cudaMalloc((void **)&d_compressedDataOffset, (inputFileLength + 1) * sizeof(unsigned int));
 			if (error != cudaSuccess)
 					printf("erro_2: %s\n", cudaGetErrorString(error));
-			error = cudaMalloc((void **)&d_huffmanDictionary, sizeof(huffmanDictionary));
+			error = cudaMalloc((void **)&d_huffmanDictionary, sizeof(huffmanDict));
 			if (error != cudaSuccess)
 					printf("erro_3: %s\n", cudaGetErrorString(error));
 			error = cudaMalloc((void **)&d_byteCompressedData, (compressedDataOffset[inputFileLength]) * sizeof(unsigned char));
@@ -127,7 +133,7 @@ int main(int argc, char **argv){
 			error = cudaMemcpy(d_compressedDataOffset, compressedDataOffset, (inputFileLength + 1) * sizeof(unsigned int), cudaMemcpyHostToDevice);
 			if (error!= cudaSuccess)
 					printf("erro_7: %s\n", cudaGetErrorString(error));
-			error = cudaMemcpy(d_huffmanDictionary, &huffmanDictionary, sizeof(huffmanDictionary), cudaMemcpyHostToDevice);
+			error = cudaMemcpy(d_huffmanDictionary, &huffmanDictionary, sizeof(huffmanDict), cudaMemcpyHostToDevice);
 			if (error!= cudaSuccess)
 					printf("erro_8: %s\n", cudaGetErrorString(error));
 				
@@ -175,7 +181,7 @@ int main(int argc, char **argv){
 		long unsigned int mem_req;
 		mem_req = 2 + (long unsigned int)((long unsigned int)inputFileLength * sizeof(unsigned char) 
 					+ (long unsigned int)(inputFileLength + 1) * sizeof(unsigned int) 
-					+ sizeof(huffmanDictionary) 
+					+ sizeof(huffmanDict) 
 					+ (long unsigned int)compressedDataOffset[integerOverflowIndex] * sizeof(unsigned char) 
 					+ (long unsigned int)compressedDataOffset[inputFileLength] * sizeof(unsigned char))
 					/(1024 * 1024);
@@ -202,7 +208,7 @@ int main(int argc, char **argv){
 					printf("erro_2: %s\n", cudaGetErrorString(error));
 				
 			// allocate structure
-			error = cudaMalloc((void **)&d_huffmanDictionary, sizeof(huffmanDictionary));
+			error = cudaMalloc((void **)&d_huffmanDictionary, sizeof(huffmanDict));
 			if (error != cudaSuccess)
 					printf("erro_3: %s\n", cudaGetErrorString(error));
 				
@@ -227,7 +233,7 @@ int main(int argc, char **argv){
 					printf("erro_8: %s\n", cudaGetErrorString(error));
 				
 			// copy structure
-			error = cudaMemcpy(d_huffmanDictionary, &huffmanDictionary, sizeof(huffmanDictionary), cudaMemcpyHostToDevice);
+			error = cudaMemcpy(d_huffmanDictionary, &huffmanDictionary, sizeof(huffmanDict), cudaMemcpyHostToDevice);
 			if (error!= cudaSuccess)
 					printf("erro_9: %s\n", cudaGetErrorString(error));
 			

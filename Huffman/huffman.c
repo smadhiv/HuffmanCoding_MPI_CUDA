@@ -1,10 +1,16 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include "huffman.h"
+
 struct huffmanTree *head_huffmanTreeNode, *current_huffmanTreeNode;
 struct huffmanTree huffmanTreeNode[512], temp_huffmanTreeNode;
 unsigned char bitSequenceConstMemory[256][255];
 unsigned int constMemoryFlag = 0;
+struct huffmanDict huffmanDictionary;
 
 // sortHuffmanTree nodes based on frequency
-void sortHuffmanTree(int i, int distinctCharacterCount, int combinedHuffmanNodes){
+extern "C" void sortHuffmanTree(int i, int distinctCharacterCount, int combinedHuffmanNodes){
 	int a, b;
 	for (a = combinedHuffmanNodes; a < distinctCharacterCount - 1 + i; a++){
 		for (b = combinedHuffmanNodes; b < distinctCharacterCount - 1 + i; b++){
@@ -18,7 +24,7 @@ void sortHuffmanTree(int i, int distinctCharacterCount, int combinedHuffmanNodes
 }
 
 // build tree based on sortHuffmanTree result
-void buildHuffmanTree(int i, int distinctCharacterCount, int combinedHuffmanNodes){
+extern "C" void buildHuffmanTree(int i, int distinctCharacterCount, int combinedHuffmanNodes){
 	free(head_huffmanTreeNode);
 	head_huffmanTreeNode = (struct huffmanTree *)malloc(sizeof(struct huffmanTree));
 	head_huffmanTreeNode->count = huffmanTreeNode[combinedHuffmanNodes].count + huffmanTreeNode[combinedHuffmanNodes + 1].count;
@@ -28,7 +34,7 @@ void buildHuffmanTree(int i, int distinctCharacterCount, int combinedHuffmanNode
 }
 
 // get bitSequence sequence for each char value
-void buildHuffmanDictionary(struct huffmanTree *root, unsigned char *bitSequence, unsigned char bitSequenceLength){
+extern "C" void buildHuffmanDictionary(struct huffmanTree *root, unsigned char *bitSequence, unsigned char bitSequenceLength){
 	if (root->left){
 		bitSequence[bitSequenceLength] = 0;
 		buildHuffmanDictionary(root->left, bitSequence, bitSequenceLength + 1);

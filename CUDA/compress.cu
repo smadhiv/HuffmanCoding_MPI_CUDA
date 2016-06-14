@@ -1,10 +1,11 @@
+#include "../Huffman/huffman.h"
 __constant__ unsigned char d_bitSequenceConstMemory[256][255];
 
 // cuda function
-__global__ void compress(unsigned char *d_inputFileData, unsigned int *d_compressedDataOffset, struct huffmanDictionary *d_huffmanDictionary, 
+__global__ void compress(unsigned char *d_inputFileData, unsigned int *d_compressedDataOffset, struct huffmanDict *d_huffmanDictionary, 
 						 unsigned char *d_byteCompressedData, unsigned int d_inputFileLength, unsigned int constMemoryFlag){
-	__shared__ struct  huffmanDictionary table;
-	memcpy(&table, d_huffmanDictionary, sizeof(struct huffmanDictionary));
+	__shared__ struct huffmanDict table;
+	memcpy(&table, d_huffmanDictionary, sizeof(struct huffmanDict));
 	unsigned int inputFileLength = d_inputFileLength;
 	unsigned int i, j, k;
 	unsigned int pos = blockIdx.x * blockDim.x + threadIdx.x;
@@ -44,11 +45,11 @@ __global__ void compress(unsigned char *d_inputFileData, unsigned int *d_compres
 }
 
 // cuda function
-__global__ void compress(unsigned char *d_inputFileData, unsigned int *d_compressedDataOffset, struct huffmanDictionary *d_huffmanDictionary, 
+__global__ void compress(unsigned char *d_inputFileData, unsigned int *d_compressedDataOffset, struct huffmanDict *d_huffmanDictionary, 
 						 unsigned char *d_byteCompressedData, unsigned char *d_temp_overflow, unsigned int d_inputFileLength, unsigned int constMemoryFlag, 
 						 unsigned int overflowPosition){
-	__shared__ struct  huffmanDictionary table;
-	memcpy(&table, d_huffmanDictionary, sizeof(struct huffmanDictionary));
+	__shared__ struct huffmanDict table;
+	memcpy(&table, d_huffmanDictionary, sizeof(struct huffmanDict));
 	unsigned int inputFileLength = d_inputFileLength;
 	unsigned int i, j, k;
 	unsigned int pos = blockIdx.x * blockDim.x + threadIdx.x;
