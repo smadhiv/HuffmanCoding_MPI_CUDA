@@ -1,7 +1,7 @@
 all: main
 
 main: finalGPU.o compress.o huffman.o
-	nvcc -o main finalGPU.o -L /opt/cuda-toolkit/7.0.28/lib64 -lcudart compress.o huffman.o 
+	nvcc -o finalGPU finalGPU.o -L /opt/cuda-toolkit/7.0.28/lib64 -lcudart compress.o huffman.o 
 
 finalGPU.o: ../Huffman/huffman.h
 	nvcc -c finalGPU.cu
