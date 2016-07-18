@@ -1,1 +1,136 @@
+#!/bin/bash
+#PBS -N job_k40
+#PBS -l select=32:ncpus=1:mpiprocs=1:ngpus=1:mem=4gb:gpu_model=k40
+#PBS -l walltime=2:00:00
 
+module purge
+module add gcc/4.4 mpich2/1.4-eth cuda-toolkit/5.5.22
+
+cd Codes
+
+make clean
+make
+
+
+mpirun -np 4 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik9 Output/gcomp4 >> Output/mpi4_gig.txt
+rm Output/gcomp4
+mpirun -np 4 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik9 Output/gcomp4 >> Output/mpi4_gig.txt
+rm Output/gcomp4
+mpirun -np 4 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik9 Output/gcomp4 >> Output/mpi4_gig.txt
+rm Output/gcomp4
+mpirun -np 4 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik9 Output/gcomp4 >> Output/mpi4_gig.txt
+rm Output/gcomp4
+mpirun -np 4 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik9 Output/gcomp4_gig >> Output/mpi4_gig.txt
+
+mpirun -np 4 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/mb500 Output/gcomp4 >> Output/mpi4_five.txt
+rm Output/gcomp4
+mpirun -np 4 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/mb500 Output/gcomp4 >> Output/mpi4_five.txt
+rm Output/gcomp4
+mpirun -np 4 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/mb500 Output/gcomp4 >> Output/mpi4_five.txt
+rm Output/gcomp4
+mpirun -np 4 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/mb500 Output/gcomp4 >> Output/mpi4_five.txt
+rm Output/gcomp4
+mpirun -np 4 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/mb500 Output/gcomp4_five >> Output/mpi4_five.txt
+
+mpirun -np 4 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik8 Output/gcomp4 >> Output/mpi4_one.txt
+rm Output/gcomp4
+mpirun -np 4 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik8 Output/gcomp4 >> Output/mpi4_one.txt
+rm Output/gcomp4
+mpirun -np 4 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik8 Output/gcomp4 >> Output/mpi4_one.txt
+rm Output/gcomp4
+mpirun -np 4 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik8 Output/gcomp4 >> Output/mpi4_one.txt
+rm Output/gcomp4
+mpirun -np 4 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik8 Output/gcomp4_one >> Output/mpi4_one.txt
+
+
+mpirun -np 8 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik9 Output/gcomp8 >> Output/mpi8_gig.txt
+rm Output/gcomp8
+mpirun -np 8 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik9 Output/gcomp8 >> Output/mpi8_gig.txt
+rm Output/gcomp8
+mpirun -np 8 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik9 Output/gcomp8 >> Output/mpi8_gig.txt
+rm Output/gcomp8
+mpirun -np 8 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik9 Output/gcomp8 >> Output/mpi8_gig.txt
+rm Output/gcomp4
+mpirun -np 8 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik9 Output/gcomp8_gig >> Output/mpi8_gig.txt
+
+mpirun -np 8 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/mb500 Output/gcomp8 >> Output/mpi8_five.txt
+rm Output/gcomp8
+mpirun -np 8 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/mb500 Output/gcomp8 >> Output/mpi8_five.txt
+rm Output/gcomp8
+mpirun -np 8 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/mb500 Output/gcomp8 >> Output/mpi8_five.txt
+rm Output/gcomp8
+mpirun -np 8 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/mb500 Output/gcomp8 >> Output/mpi8_five.txt
+rm Output/gcomp8
+mpirun -np 8 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/mb500 Output/gcomp8_five >> Output/mpi8_five.txt
+
+mpirun -np 8 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik8 Output/gcomp8 >> Output/mpi8_one.txt
+rm Output/gcomp8
+mpirun -np 8 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik8 Output/gcomp8 >> Output/mpi8_one.txt
+rm Output/gcomp8
+mpirun -np 8 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik8 Output/gcomp8 >> Output/mpi8_one.txt
+rm Output/gcomp8
+mpirun -np 8 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik8 Output/gcomp8 >> Output/mpi8_one.txt
+rm Output/gcomp8
+mpirun -np 8 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik8 Output/gcomp8_one >> Output/mpi8_one.txt
+
+
+mpirun -np 16 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik9 Output/gcomp16 >> Output/mpi16_gig.txt
+rm Output/gcomp16
+mpirun -np 16 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik9 Output/gcomp16 >> Output/mpi16_gig.txt
+rm Output/gcomp16
+mpirun -np 16 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik9 Output/gcomp16 >> Output/mpi16_gig.txt
+rm Output/gcomp16
+mpirun -np 16 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik9 Output/gcomp16 >> Output/mpi16_gig.txt
+rm Output/gcomp16
+mpirun -np 16 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik9 Output/gcomp16_gig >> Output/mpi16_gig.txt
+
+mpirun -np 16 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/mb500 Output/gcomp16 >> Output/mpi16_five.txt
+rm Output/gcomp16
+mpirun -np 16 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/mb500 Output/gcomp16 >> Output/mpi16_five.txt
+rm Output/gcomp16
+mpirun -np 16 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/mb500 Output/gcomp16 >> Output/mpi16_five.txt
+rm Output/gcomp16
+mpirun -np 16 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/mb500 Output/gcomp16 >> Output/mpi16_five.txt
+rm Output/gcomp16
+mpirun -np 16 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/mb500 Output/gcomp16_five >> Output/mpi16_five.txt
+
+mpirun -np 16 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik8 Output/gcomp16 >> Output/mpi16_one.txt
+rm Output/gcomp16
+mpirun -np 16 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik8 Output/gcomp16 >> Output/mpi16_one.txt
+rm Output/gcomp16
+mpirun -np 16 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik8 Output/gcomp16 >> Output/mpi16_one.txt
+rm Output/gcomp16
+mpirun -np 16 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik8 Output/gcomp16 >> Output/mpi16_one.txt
+rm Output/gcomp16
+mpirun -np 16 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik8 Output/gcomp16_one >> Output/mpi16_one.txt
+
+
+mpirun -np 32 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik9 Output/gcomp32 >> Output/mpi32_gig.txt
+rm Output/gcomp32
+mpirun -np 32 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik9 Output/gcomp32 >> Output/mpi32_gig.txt
+rm Output/gcomp32
+mpirun -np 32 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik9 Output/gcomp32 >> Output/mpi32_gig.txt
+rm Output/gcomp32
+mpirun -np 32 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik9 Output/gcomp32 >> Output/mpi32_gig.txt
+rm Output/gcomp32
+mpirun -np 32 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik9 Output/gcomp32_gig >> Output/mpi32_gig.txt
+
+mpirun -np 32 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/mb500 Output/gcomp32 >> Output/mpi32_five.txt
+rm Output/gcomp32
+mpirun -np 32 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/mb500 Output/gcomp32 >> Output/mpi32_five.txt
+rm Output/gcomp32
+mpirun -np 32 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/mb500 Output/gcomp32 >> Output/mpi32_five.txt
+rm Output/gcomp32
+mpirun -np 32 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/mb500 Output/gcomp32 >> Output/mpi32_five.txt
+rm Output/gcomp32
+mpirun -np 32 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/mb500 Output/gcomp32_five >> Output/mpi32_five.txt
+
+mpirun -np 32 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik8 Output/gcomp32 >> Output/mpi32_one.txt
+rm Output/gcomp32
+mpirun -np 32 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik8 Output/gcomp32 >> Output/mpi32_one.txt
+rm Output/gcomp32
+mpirun -np 32 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik8 Output/gcomp32 >> Output/mpi32_one.txt
+rm Output/gcomp32
+mpirun -np 32 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik8 Output/gcomp32 >> Output/mpi32_one.txt
+rm Output/gcomp32
+mpirun -np 32 -ppn 1 ./CudaMpi/MPICudaCompress TestFiles/enwik8 Output/gcomp32_one >> Output/mpi32_one.txt
