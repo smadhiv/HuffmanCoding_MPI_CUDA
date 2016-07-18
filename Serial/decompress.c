@@ -2,8 +2,12 @@
 #include<stdlib.h>
 #include<string.h>
 #include<time.h>
-#include "../Huffman/header.h"
-#include "../Huffman/huffman.c"
+#include "../include/serialHeader.h"
+
+struct huffmanDictionary huffmanDictionary[256];
+struct huffmanTree *head_huffmanTreeNode, *current_huffmanTreeNode;
+struct huffmanTree huffmanTreeNode[512], temp_huffmanTreeNode;
+unsigned int frequency[256];
 
 main(int argc, char **argv){
 	clock_t start, end;
@@ -91,5 +95,5 @@ main(int argc, char **argv){
 	//display runtime
 	end = clock();
 	cpu_time_used = ((end - start)) * 1000 / CLOCKS_PER_SEC;
-	printf("\ntime taken %d seconds and %d milliseconds\n\n", cpu_time_used / 1000, cpu_time_used % 1000);
+	printf("Time taken: %d:%d s\n", cpu_time_used / 1000, cpu_time_used % 1000);
 }
