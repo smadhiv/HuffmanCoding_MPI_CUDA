@@ -1,0 +1,21 @@
+#!/bin/bash
+#PBS -N job_CUDAMPI
+#PBS -l select=8:ncpus=1:mpiprocs=1:ngpus=2:mem=8gb:gpu_model=k40
+#PBS -l walltime=2:00:00
+
+module purge
+module add gcc/4.4 openmpi/1.10.3 cuda-toolkit/7.0.28
+
+cd HuffmanCoding_MPI_CUDA
+cd CUDAMPI
+make
+cd ..
+
+mpirun -np 1 ~/HuffmanCoding_MPI_CUDA/CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp > logs/cudampi_1_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 2 ~/HuffmanCoding_MPI_CUDA/CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp > logs/cudampi_2_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 4 ~/HuffmanCoding_MPI_CUDA/CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp > logs/cudampi_4_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 8 ~/HuffmanCoding_MPI_CUDA/CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp > logs/cudampi_8_enwik8.txt
+rm TestFiles/enwik8_comp
