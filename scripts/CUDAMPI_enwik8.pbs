@@ -1,0 +1,81 @@
+#!/bin/bash
+#PBS -N job_CUDAMPI
+#PBS -l select=16:ncpus=1:mpiprocs=1:ngpus=2:mem=8gb:gpu_model=k40
+#PBS -l walltime=2:00:00
+
+module purge
+module add gcc/4.4 openmpi/1.10.3 cuda-toolkit/7.0.28
+
+cd HuffmanCoding_MPI_CUDA
+cd CUDAMPI
+make
+cd ..
+
+echo Resources: > logs/CUDAMPI_enwik8.txt
+echo "select=16:ncpus=1:mpiprocs=1:ngpus=2:mem=8gb:gpu_model=k40" >> logs/CUDAMPI_enwik8.txt
+module list >> logs/CUDAMPI_enwik8.txt
+
+echo ' ' >> logs/CUDAMPI_enwik8.txt
+echo '-np 1' >> logs/CUDAMPI_enwik8.txt
+mpirun -np 1 ./CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDAMPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 1 ./CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDAMPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 1 ./CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDAMPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 1 ./CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDAMPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 1 ./CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDAMPI_enwik8.txt
+rm TestFiles/enwik8_comp
+
+echo ' ' >> logs/CUDAMPI_enwik8.txt
+echo '-np 2' >> logs/CUDAMPI_enwik8.txt
+mpirun -np 2 ./CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDAMPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 2 ./CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDAMPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 2 ./CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDAMPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 2 ./CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDAMPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 2 ./CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDAMPI_enwik8.txt
+rm TestFiles/enwik8_comp
+
+echo ' ' >> logs/CUDAMPI_enwik8.txt
+echo '-np 4' >> logs/CUDAMPI_enwik8.txt
+mpirun -np 4 ./CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDAMPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 4 ./CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDAMPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 4 ./CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDAMPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 4 ./CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDAMPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 4 ./CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDAMPI_enwik8.txt
+rm TestFiles/enwik8_comp
+
+echo ' ' >> logs/CUDAMPI_enwik8.txt
+echo '-np 8' >> logs/CUDAMPI_enwik8.txt
+mpirun -np 8 ./CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDAMPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 8 ./CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDAMPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 8 ./CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDAMPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 8 ./CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDAMPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 8 ./CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDAMPI_enwik8.txt
+rm TestFiles/enwik8_comp
+
+echo ' ' >> logs/CUDAMPI_enwik8.txt
+echo '-np 16' >> logs/CUDAMPI_enwik8.txt
+mpirun -np 16 ./CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDAMPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 16 ./CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDAMPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 16 ./CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDAMPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 16 ./CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDAMPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 16 ./CUDAMPI/CUDAMPI TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDAMPI_enwik8.txt
+rm TestFiles/enwik8_comp
