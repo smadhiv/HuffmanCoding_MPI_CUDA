@@ -1,0 +1,16 @@
+Resources:
+select=1:ncpus=1:mem=8gb
+ 
+enwik8
+Time taken: 10:830 s
+Time taken: 10:780 s
+Time taken: 10:790 s
+Time taken: 10:760 s
+Time taken: 10:760 s
+ 
+enwik9
+Time taken: 109:430 s
+Time taken: 109:220 s
+Time taken: 109:290 s
+Time taken: 109:160 s
+Time taken: 108:910 s

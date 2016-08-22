@@ -1,0 +1,37 @@
+Resources:
+select=16:ncpus=1:mpiprocs=1:ngpus=2:mem=8gb:gpu_model=k40
+ 
+-np 1
+Time taken: 136:310 s
+Time taken: 51:930 s
+Time taken: 29:250 s
+Time taken: 24:530 s
+Time taken: 28:860 s
+ 
+-np 2
+Time taken: 30:500 s
+Time taken: 18:940 s
+Time taken: 15:900 s
+Time taken: 18:380 s
+Time taken: 51:800 s
+ 
+-np 4
+Time taken: 10:160 s
+Time taken: 5:120 s
+Time taken: 5:20 s
+Time taken: 5:20 s
+Time taken: 4:990 s
+ 
+-np 8
+Time taken: 12:710 s
+Time taken: 4:400 s
+Time taken: 4:370 s
+Time taken: 4:190 s
+Time taken: 4:220 s
+ 
+-np 16
+Time taken: 2:570 s
+Time taken: 2:500 s
+Time taken: 2:710 s
+Time taken: 2:530 s
+Time taken: 2:590 s

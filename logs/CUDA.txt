@@ -1,0 +1,16 @@
+Resources:
+select=1:ncpus=1:ngpus=2:mem=8gb:gpu_model=k40
+ 
+enwik8
+Time taken: 2:90 s
+Time taken: 1:990 s
+Time taken: 2:0 s
+Time taken: 2:10 s
+Time taken: 1:990 s
+ 
+enwik9
+Time taken: 21:450 s
+Time taken: 21:430 s
+Time taken: 21:440 s
+Time taken: 21:410 s
+Time taken: 21:430 s
