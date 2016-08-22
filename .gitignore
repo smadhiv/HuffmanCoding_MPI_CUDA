@@ -1,6 +1,3 @@
 TestFiles/
 logs/*
-CUDA/GPUCompress
-CUDAMPI/CUDAMPI
-MPI/MPICompress
-MPI/MPIDecompress
+bin/*

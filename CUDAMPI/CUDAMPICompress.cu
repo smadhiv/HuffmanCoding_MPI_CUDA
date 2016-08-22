@@ -116,7 +116,7 @@ main(int argc, char* argv[]){
 	mem_data = blockLength + (blockLength + 1) * sizeof(unsigned int) + sizeof(huffmanDictionary);
 	
 	if(mem_free < mem_data + (mem_offset / 5)){
-		printf("\nExiting : Not enough memory on GPU\nMem_Free = %lu\nMem_data = %lu\n", mem_free, mem_data);
+		printf("\nExiting : Not enough memory on GPU\nmem_free = %lu\nmem_data = %lu\n", mem_free, mem_data);
 		return -1;
 	}
 	mem_req = mem_free - mem_data - 10 * 1024 * 1024;

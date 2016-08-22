@@ -1,0 +1,80 @@
+#!/bin/bash
+#PBS -N job_MPI_enwik8
+#PBS -l select=16:ncpus=1:mpiprocs=1:mem=8gb
+#PBS -l walltime=2:00:00
+
+module purge
+module add gcc/4.4 openmpi/1.10.3 cuda-toolkit/7.0.28
+
+cd HuffmanCoding_MPI_CUDA
+cd MPI
+make
+cd ..
+
+echo Resources: > logs/MPI_enwik8.txt
+echo "select=16:ncpus=1:mpiprocs=1:mem=8gb" >> logs/MPI_enwik8.txt
+
+echo ' ' >> logs/MPI_enwik8.txt
+echo '-np 1' >> logs/MPI_enwik8.txt
+mpirun -np 1 ./bin/MPI_compress TestFiles/enwik8 TestFiles/enwik8_comp >> logs/MPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 1 ./bin/MPI_compress TestFiles/enwik8 TestFiles/enwik8_comp >> logs/MPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 1 ./bin/MPI_compress TestFiles/enwik8 TestFiles/enwik8_comp >> logs/MPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 1 ./bin/MPI_compress TestFiles/enwik8 TestFiles/enwik8_comp >> logs/MPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 1 ./bin/MPI_compress TestFiles/enwik8 TestFiles/enwik8_comp >> logs/MPI_enwik8.txt
+rm TestFiles/enwik8_comp
+
+echo ' ' >> logs/MPI_enwik8.txt
+echo '-np 2' >> logs/MPI_enwik8.txt
+mpirun -np 2 ./bin/MPI_compress TestFiles/enwik8 TestFiles/enwik8_comp >> logs/MPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 2 ./bin/MPI_compress TestFiles/enwik8 TestFiles/enwik8_comp >> logs/MPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 2 ./bin/MPI_compress TestFiles/enwik8 TestFiles/enwik8_comp >> logs/MPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 2 ./bin/MPI_compress TestFiles/enwik8 TestFiles/enwik8_comp >> logs/MPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 2 ./bin/MPI_compress TestFiles/enwik8 TestFiles/enwik8_comp >> logs/MPI_enwik8.txt
+rm TestFiles/enwik8_comp
+
+echo ' ' >> logs/MPI_enwik8.txt
+echo '-np 4' >> logs/MPI_enwik8.txt
+mpirun -np 4 ./bin/MPI_compress TestFiles/enwik8 TestFiles/enwik8_comp >> logs/MPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 4 ./bin/MPI_compress TestFiles/enwik8 TestFiles/enwik8_comp >> logs/MPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 4 ./bin/MPI_compress TestFiles/enwik8 TestFiles/enwik8_comp >> logs/MPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 4 ./bin/MPI_compress TestFiles/enwik8 TestFiles/enwik8_comp >> logs/MPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 4 ./bin/MPI_compress TestFiles/enwik8 TestFiles/enwik8_comp >> logs/MPI_enwik8.txt
+rm TestFiles/enwik8_comp
+
+echo ' ' >> logs/MPI_enwik8.txt
+echo '-np 8' >> logs/MPI_enwik8.txt
+mpirun -np 8 ./bin/MPI_compress TestFiles/enwik8 TestFiles/enwik8_comp >> logs/MPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 8 ./bin/MPI_compress TestFiles/enwik8 TestFiles/enwik8_comp >> logs/MPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 8 ./bin/MPI_compress TestFiles/enwik8 TestFiles/enwik8_comp >> logs/MPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 8 ./bin/MPI_compress TestFiles/enwik8 TestFiles/enwik8_comp >> logs/MPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 8 ./bin/MPI_compress TestFiles/enwik8 TestFiles/enwik8_comp >> logs/MPI_enwik8.txt
+rm TestFiles/enwik8_comp
+
+echo ' ' >> logs/MPI_enwik8.txt
+echo '-np 16' >> logs/MPI_enwik8.txt
+mpirun -np 16 ./bin/MPI_compress TestFiles/enwik8 TestFiles/enwik8_comp >> logs/MPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 16 ./bin/MPI_compress TestFiles/enwik8 TestFiles/enwik8_comp >> logs/MPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 16 ./bin/MPI_compress TestFiles/enwik8 TestFiles/enwik8_comp >> logs/MPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 16 ./bin/MPI_compress TestFiles/enwik8 TestFiles/enwik8_comp >> logs/MPI_enwik8.txt
+rm TestFiles/enwik8_comp
+mpirun -np 16 ./bin/MPI_compress TestFiles/enwik8 TestFiles/enwik8_comp >> logs/MPI_enwik8.txt
+rm TestFiles/enwik8_comp

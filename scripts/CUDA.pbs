@@ -1,0 +1,41 @@
+#!/bin/bash
+#PBS -N job_CUDA
+#PBS -l select=1:ncpus=1:ngpus=2:mem=8gb:gpu_model=k40
+#PBS -l walltime=2:00:00
+
+module purge
+module add gcc/4.4 openmpi/1.10.3 cuda-toolkit/7.0.28
+
+cd HuffmanCoding_MPI_CUDA
+cd CUDA
+make
+cd ..
+
+echo Resources: > logs/CUDA.txt
+echo "select=1:ncpus=1:ngpus=2:mem=8gb:gpu_model=k40" >> logs/CUDA.txt
+
+echo ' ' >> logs/CUDA.txt
+echo 'enwik8' >> logs/CUDA.txt
+./bin/CUDA TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDA.txt
+rm TestFiles/enwik8_comp
+./bin/CUDA TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDA.txt
+rm TestFiles/enwik8_comp
+./bin/CUDA TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDA.txt
+rm TestFiles/enwik8_comp
+./bin/CUDA TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDA.txt
+rm TestFiles/enwik8_comp
+./bin/CUDA TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDA.txt
+rm TestFiles/enwik8_comp
+
+echo ' ' >> logs/CUDA.txt
+echo 'enwik9' >> logs/CUDA.txt
+./bin/CUDA TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDA.txt
+rm TestFiles/enwik9_comp
+./bin/CUDA TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDA.txt
+rm TestFiles/enwik9_comp
+./bin/CUDA TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDA.txt
+rm TestFiles/enwik9_comp
+./bin/CUDA TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDA.txt
+rm TestFiles/enwik9_comp
+./bin/CUDA TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDA.txt
+rm TestFiles/enwik9_comp

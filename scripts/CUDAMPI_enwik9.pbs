@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -N job_CUDAMPI
+#PBS -N job_CUDAMPI_enwik9
 #PBS -l select=16:ncpus=1:mpiprocs=1:ngpus=2:mem=8gb:gpu_model=k40
 #PBS -l walltime=2:00:00
 
@@ -16,65 +16,65 @@ echo "select=16:ncpus=1:mpiprocs=1:ngpus=2:mem=8gb:gpu_model=k40" >> logs/CUDAMP
 
 echo ' ' >> logs/CUDAMPI_enwik9.txt
 echo '-np 1' >> logs/CUDAMPI_enwik9.txt
-mpirun -np 1 ./CUDAMPI/CUDAMPI TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
+mpirun -np 1 ./bin/CUDAMPI_compress TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
 rm TestFiles/enwik9_comp
-mpirun -np 1 ./CUDAMPI/CUDAMPI TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
+mpirun -np 1 ./bin/CUDAMPI_compress TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
 rm TestFiles/enwik9_comp
-mpirun -np 1 ./CUDAMPI/CUDAMPI TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
+mpirun -np 1 ./bin/CUDAMPI_compress TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
 rm TestFiles/enwik9_comp
-mpirun -np 1 ./CUDAMPI/CUDAMPI TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
+mpirun -np 1 ./bin/CUDAMPI_compress TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
 rm TestFiles/enwik9_comp
-mpirun -np 1 ./CUDAMPI/CUDAMPI TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
+mpirun -np 1 ./bin/CUDAMPI_compress TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
 rm TestFiles/enwik9_comp
 
 echo ' ' >> logs/CUDAMPI_enwik9.txt
 echo '-np 2' >> logs/CUDAMPI_enwik9.txt
-mpirun -np 2 ./CUDAMPI/CUDAMPI TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
+mpirun -np 2 ./bin/CUDAMPI_compress TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
 rm TestFiles/enwik9_comp
-mpirun -np 2 ./CUDAMPI/CUDAMPI TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
+mpirun -np 2 ./bin/CUDAMPI_compress TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
 rm TestFiles/enwik9_comp
-mpirun -np 2 ./CUDAMPI/CUDAMPI TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
+mpirun -np 2 ./bin/CUDAMPI_compress TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
 rm TestFiles/enwik9_comp
-mpirun -np 2 ./CUDAMPI/CUDAMPI TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
+mpirun -np 2 ./bin/CUDAMPI_compress TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
 rm TestFiles/enwik9_comp
-mpirun -np 2 ./CUDAMPI/CUDAMPI TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
+mpirun -np 2 ./bin/CUDAMPI_compress TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
 rm TestFiles/enwik9_comp
 
 echo ' ' >> logs/CUDAMPI_enwik9.txt
 echo '-np 4' >> logs/CUDAMPI_enwik9.txt
-mpirun -np 4 ./CUDAMPI/CUDAMPI TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
+mpirun -np 4 ./bin/CUDAMPI_compress TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
 rm TestFiles/enwik9_comp
-mpirun -np 4 ./CUDAMPI/CUDAMPI TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
+mpirun -np 4 ./bin/CUDAMPI_compress TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
 rm TestFiles/enwik9_comp
-mpirun -np 4 ./CUDAMPI/CUDAMPI TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
+mpirun -np 4 ./bin/CUDAMPI_compress TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
 rm TestFiles/enwik9_comp
-mpirun -np 4 ./CUDAMPI/CUDAMPI TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
+mpirun -np 4 ./bin/CUDAMPI_compress TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
 rm TestFiles/enwik9_comp
-mpirun -np 4 ./CUDAMPI/CUDAMPI TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
+mpirun -np 4 ./bin/CUDAMPI_compress TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
 rm TestFiles/enwik9_comp
 
 echo ' ' >> logs/CUDAMPI_enwik9.txt
 echo '-np 8' >> logs/CUDAMPI_enwik9.txt
-mpirun -np 8 ./CUDAMPI/CUDAMPI TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
+mpirun -np 8 ./bin/CUDAMPI_compress TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
 rm TestFiles/enwik9_comp
-mpirun -np 8 ./CUDAMPI/CUDAMPI TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
+mpirun -np 8 ./bin/CUDAMPI_compress TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
 rm TestFiles/enwik9_comp
-mpirun -np 8 ./CUDAMPI/CUDAMPI TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
+mpirun -np 8 ./bin/CUDAMPI_compress TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
 rm TestFiles/enwik9_comp
-mpirun -np 8 ./CUDAMPI/CUDAMPI TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
+mpirun -np 8 ./bin/CUDAMPI_compress TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
 rm TestFiles/enwik9_comp
-mpirun -np 8 ./CUDAMPI/CUDAMPI TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
+mpirun -np 8 ./bin/CUDAMPI_compress TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
 rm TestFiles/enwik9_comp
 
 echo ' ' >> logs/CUDAMPI_enwik9.txt
 echo '-np 16' >> logs/CUDAMPI_enwik9.txt
-mpirun -np 16 ./CUDAMPI/CUDAMPI TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
+mpirun -np 16 ./bin/CUDAMPI_compress TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
 rm TestFiles/enwik9_comp
-mpirun -np 16 ./CUDAMPI/CUDAMPI TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
+mpirun -np 16 ./bin/CUDAMPI_compress TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
 rm TestFiles/enwik9_comp
-mpirun -np 16 ./CUDAMPI/CUDAMPI TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
+mpirun -np 16 ./bin/CUDAMPI_compress TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
 rm TestFiles/enwik9_comp
-mpirun -np 16 ./CUDAMPI/CUDAMPI TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
+mpirun -np 16 ./bin/CUDAMPI_compress TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
 rm TestFiles/enwik9_comp
-mpirun -np 16 ./CUDAMPI/CUDAMPI TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
+mpirun -np 16 ./bin/CUDAMPI_compress TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDAMPI_enwik9.txt
 rm TestFiles/enwik9_comp
