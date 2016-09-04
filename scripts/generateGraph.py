@@ -128,7 +128,7 @@ def getSpeedup():
 
     
 import os
-os.chdir('../logs/')
+os.chdir('./test/')
 fileList = os.listdir('.')
 for file in fileList:
   text, archType = getHeaderInformation(file)
@@ -137,6 +137,9 @@ getAvgTimeForEach()
 getSpeedup()
 fileSizeList = sorted(fileSizeSet)
 numProcessList = sorted(numProcsSet)
+
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 plt.figure(1)
