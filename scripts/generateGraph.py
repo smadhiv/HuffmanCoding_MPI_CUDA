@@ -128,7 +128,7 @@ def getSpeedup():
 
     
 import os
-os.chdir('./test/')
+os.chdir('../logs/')
 fileList = os.listdir('.')
 for file in fileList:
   text, archType = getHeaderInformation(file)
@@ -138,28 +138,23 @@ getSpeedup()
 fileSizeList = sorted(fileSizeSet)
 numProcessList = sorted(numProcsSet)
 import matplotlib.pyplot as plt
+
 plt.figure(1)
-plt.title('Speedup vs Processes')
+plt.title('CUDA and MPI')
 plt.grid(True)
 plt.xlabel('Processes')
 plt.ylabel('Speedup')
 for num in list(range(0, len(fileSizeSet))):
   plt.plot(numProcessList, CUDAMPI_speedup[num], marker='o', label=str(fileSizeList[num]) + 'MB')
 plt.legend(loc=4)
+plt.savefig('CUDAMPI.png', bbox_inches='tight')
 
 plt.figure(2)
-plt.title('Speedup vs Processes')
+plt.title('MPI')
 plt.grid(True)
 plt.xlabel('Processes')
 plt.ylabel('Speedup')
 for num in list(range(0, len(fileSizeSet))):
   plt.plot(numProcessList, MPI_speedup[num], marker='o', label=str(fileSizeList[num]) + 'MB')
 plt.legend(loc=4)
-print (CUDAMPI_speedup)
-print (MPI_speedup)
-print (CUDA_speedup)
-
-    
-  
-
-
+plt.savefig('MPI.png', bbox_inches='tight')
