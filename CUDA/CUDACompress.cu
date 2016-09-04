@@ -10,6 +10,7 @@
 #include <limits.h>
 #include "../include/parallelHeader.h"
 #define block_size 1024
+#define MAX_GPU_RUNS 10
 
 struct huffmanTree *head_huffmanTreeNode, *current_huffmanTreeNode;
 struct huffmanTree huffmanTreeNode[512], temp_huffmanTreeNode;
@@ -84,13 +85,13 @@ int main(int argc, char **argv){
 	// other memory requirements
 	mem_data = inputFileLength + (inputFileLength + 1) * sizeof(unsigned int) + sizeof(huffmanDictionary);
 	
-	if(mem_free < mem_data + (mem_offset/5)){
-		printf("\nExiting : Not enough memory on GPU\nMem_Free = %lu\nMem_data = %lu", mem_free, mem_data);
+	if(mem_free < mem_data + (mem_offset / MAX_GPU_RUNS)){
+		printf("\nExiting : Not enough memory on GPU\nmem_free = %lu\nmin_mem_req = %lu\n", mem_free, (mem_data + (mem_offset / MAX_GPU_RUNS)));
 		return -1;
 	}
 	mem_req = mem_free - mem_data - 10 * 1024 * 1024;
 	numKernelRuns = ceil((double)mem_offset / mem_req);
-	integerOverflowFlag = mem_req + 10 <= UINT_MAX || mem_offset + 10 <= UINT_MAX ? 0 : 1;
+	integerOverflowFlag = mem_req + 255 <= UINT_MAX || mem_offset + 255 <= UINT_MAX ? 0 : 1;
 	
 	// generate data offset array
 	compressedDataOffset = (unsigned int *)malloc((inputFileLength + 1) * sizeof(unsigned int));
