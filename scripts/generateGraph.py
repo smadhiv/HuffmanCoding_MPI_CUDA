@@ -126,38 +126,48 @@ def getSpeedup():
       for index in list(range(0, len(numProcessList))):
         temp.append(round(Serial[num]/MPI[num][index], 3))
 
-    
+def deleteOldGraphs(filename):
+  try:
+    os.remove(filename)
+  except OSError:
+    pass
+  
+def getGraphs():
+  import matplotlib
+  matplotlib.use('Agg')
+  import matplotlib.pyplot as plt
+  numProcessList = sorted(numProcsSet)
+  fileSizeList = sorted(fileSizeSet)  
+  plt.figure(1)
+  plt.title('CUDA and MPI')
+  plt.grid(True)
+  plt.xlabel('Processes')
+  plt.ylabel('Speedup')
+  for num in list(range(0, len(fileSizeSet))):
+    plt.plot(numProcessList, CUDAMPI_speedup[num], marker='o', label=str(fileSizeList[num]) + 'MB')
+  plt.legend(loc=4)
+  plt.savefig('CUDAMPI.png', bbox_inches='tight')
+  
+  plt.figure(2)
+  plt.title('MPI')
+  plt.grid(True)
+  plt.xlabel('Processes')
+  plt.ylabel('Speedup')
+  for num in list(range(0, len(fileSizeSet))):
+    plt.plot(numProcessList, MPI_speedup[num], marker='o', label=str(fileSizeList[num]) + 'MB')
+  plt.legend(loc=4)
+  plt.savefig('MPI.png', bbox_inches='tight')
+  
 import os
 os.chdir('../logs/')
+deleteOldGraphs('CUDAMPI.png')
+deleteOldGraphs('MPI.png')
 fileList = os.listdir('.')
 for file in fileList:
   text, archType = getHeaderInformation(file)
   calculateRunTimeAvg(text, archType)
 getAvgTimeForEach()
 getSpeedup()
-fileSizeList = sorted(fileSizeSet)
-numProcessList = sorted(numProcsSet)
+getGraphs()
 
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
 
-plt.figure(1)
-plt.title('CUDA and MPI')
-plt.grid(True)
-plt.xlabel('Processes')
-plt.ylabel('Speedup')
-for num in list(range(0, len(fileSizeSet))):
-  plt.plot(numProcessList, CUDAMPI_speedup[num], marker='o', label=str(fileSizeList[num]) + 'MB')
-plt.legend(loc=4)
-plt.savefig('CUDAMPI.png', bbox_inches='tight')
-
-plt.figure(2)
-plt.title('MPI')
-plt.grid(True)
-plt.xlabel('Processes')
-plt.ylabel('Speedup')
-for num in list(range(0, len(fileSizeSet))):
-  plt.plot(numProcessList, MPI_speedup[num], marker='o', label=str(fileSizeList[num]) + 'MB')
-plt.legend(loc=4)
-plt.savefig('MPI.png', bbox_inches='tight')
