@@ -1,3 +1,4 @@
+Run: CUDAMPI
 Resource: select=16:ncpus=2:mpiprocs=1:ngpus=2:mem=124gb:gpu_model=k40:phase=11a
  
 FileSize: 100MB
