@@ -1,0 +1,244 @@
+#!/bin/bash
+#PBS -N job_MPI
+#PBS -l select=16:ncpus=2:mpiprocs=1:mem=124gb:phase=10
+#PBS -l walltime=2:00:00
+
+module purge
+module add gcc/4.8.1 openmpi/1.10.3 
+cd HuffmanCoding_MPI_CUDA
+
+echo "Run: MPI" >> logs/MPI.txt
+echo "Resource: select=16:ncpus=2:mpiprocs=1:mem=124gb:phase=10" >> logs/MPI.txt
+
+echo ' ' >> logs/MPI.txt
+echo 'FileSize: 100MB' >> logs/MPI.txt
+echo 'MPIPROCS: 1' >> logs/MPI.txt
+mpirun -np 1 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 1 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 1 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 1 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 1 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 1 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 1 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 1 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 1 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 1 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+
+echo ' ' >> logs/MPI.txt
+echo 'MPIPROCS: 2' >> logs/MPI.txt
+mpirun -np 2 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 2 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 2 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 2 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 2 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 2 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 2 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 2 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 2 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 2 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+
+echo ' ' >> logs/MPI.txt
+echo 'MPIPROCS: 4' >> logs/MPI.txt
+mpirun -np 4 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 4 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 4 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 4 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 4 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 4 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 4 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 4 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 4 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 4 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+
+echo ' ' >> logs/MPI.txt
+echo 'MPIPROCS: 8' >> logs/MPI.txt
+mpirun -np 8 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 8 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 8 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 8 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 8 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 8 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 8 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 8 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 8 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 8 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+
+echo ' ' >> logs/MPI.txt
+echo 'MPIPROCS: 16' >> logs/MPI.txt
+mpirun -np 16 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 16 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 16 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 16 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 16 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 16 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 16 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 16 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 16 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+mpirun -np 16 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb100 TestFiles/mb100_comp >> logs/MPI.txt
+rm TestFiles/mb100_comp
+
+
+echo ' ' >> logs/MPI.txt
+echo 'FileSize: 1000MB' >> logs/MPI.txt
+echo 'MPIPROCS: 1' >> logs/MPI.txt
+mpirun -np 1 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 1 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 1 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 1 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 1 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 1 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 1 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 1 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 1 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 1 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+
+echo ' ' >> logs/MPI.txt
+echo 'MPIPROCS: 2' >> logs/MPI.txt
+mpirun -np 2 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 2 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 2 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 2 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 2 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 2 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 2 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 2 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 2 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 2 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+
+echo ' ' >> logs/MPI.txt
+echo 'MPIPROCS: 4' >> logs/MPI.txt
+mpirun -np 4 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 4 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 4 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 4 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 4 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 4 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 4 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 4 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 4 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 4 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+
+echo ' ' >> logs/MPI.txt
+echo 'MPIPROCS: 8' >> logs/MPI.txt
+mpirun -np 8 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 8 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 8 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 8 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 8 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 8 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 8 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 8 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 8 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 8 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+
+echo ' ' >> logs/MPI.txt
+echo 'MPIPROCS: 16' >> logs/MPI.txt
+mpirun -np 16 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 16 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 16 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 16 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 16 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 16 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 16 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 16 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 16 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp
+mpirun -np 16 --mca mpi_cuda_support 0 ./bin/MPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/MPI.txt
+rm TestFiles/mb1000_comp

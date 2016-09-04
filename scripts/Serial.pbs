@@ -1,0 +1,57 @@
+#!/bin/bash
+#PBS -N job_Serial
+#PBS -l select=1:ncpus=20:mem=124gb:phase=10
+#PBS -l walltime=2:00:00
+
+module purge
+module add gcc/4.8.1 
+cd HuffmanCoding_MPI_CUDA
+
+echo "Run: Serial" >> logs/Serial_compress.txt
+echo "Resource: select=1:ncpus=20:mem=124gb:phase=10" >> logs/Serial_compress.txt
+
+echo ' ' >> logs/Serial_compress.txt
+echo 'FileSize: 100MB' >> logs/Serial_compress.txt
+./bin/compress TestFiles/mb100 TestFiles/mb100_comp >> logs/Serial_compress.txt
+rm TestFiles/mb100_comp
+./bin/compress TestFiles/mb100 TestFiles/mb100_comp >> logs/Serial_compress.txt
+rm TestFiles/mb100_comp
+./bin/compress TestFiles/mb100 TestFiles/mb100_comp >> logs/Serial_compress.txt
+rm TestFiles/mb100_comp
+./bin/compress TestFiles/mb100 TestFiles/mb100_comp >> logs/Serial_compress.txt
+rm TestFiles/mb100_comp
+./bin/compress TestFiles/mb100 TestFiles/mb100_comp >> logs/Serial_compress.txt
+rm TestFiles/mb100_comp
+./bin/compress TestFiles/mb100 TestFiles/mb100_comp >> logs/Serial_compress.txt
+rm TestFiles/mb100_comp
+./bin/compress TestFiles/mb100 TestFiles/mb100_comp >> logs/Serial_compress.txt
+rm TestFiles/mb100_comp
+./bin/compress TestFiles/mb100 TestFiles/mb100_comp >> logs/Serial_compress.txt
+rm TestFiles/mb100_comp
+./bin/compress TestFiles/mb100 TestFiles/mb100_comp >> logs/Serial_compress.txt
+rm TestFiles/mb100_comp
+./bin/compress TestFiles/mb100 TestFiles/mb100_comp >> logs/Serial_compress.txt
+rm TestFiles/mb100_comp
+
+echo ' ' >> logs/Serial_compress.txt
+echo 'FileSize: 1000MB' >> logs/Serial_compress.txt
+./bin/compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1000_comp
+./bin/compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1000_comp
+./bin/compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1000_comp
+./bin/compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1000_comp
+./bin/compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1000_comp
+./bin/compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1000_comp
+./bin/compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1000_comp
+./bin/compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1000_comp
+./bin/compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1000_comp
+./bin/compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1000_comp
