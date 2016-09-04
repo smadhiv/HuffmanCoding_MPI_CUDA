@@ -1,0 +1,123 @@
+Resource: select=16:ncpus=2:mpiprocs=1:ngpus=2:mem=124gb:gpu_model=k40:phase=11a
+ 
+FileSize: 100MB
+MPIPROCS: 1
+Time taken: 2:170 s
+Time taken: 2:160 s
+Time taken: 2:160 s
+Time taken: 2:160 s
+Time taken: 2:160 s
+Time taken: 2:170 s
+Time taken: 2:160 s
+Time taken: 2:120 s
+Time taken: 2:150 s
+Time taken: 2:150 s
+ 
+MPIPROCS: 2
+Time taken: 1:350 s
+Time taken: 1:240 s
+Time taken: 1:230 s
+Time taken: 1:220 s
+Time taken: 1:230 s
+Time taken: 1:220 s
+Time taken: 1:230 s
+Time taken: 1:220 s
+Time taken: 1:240 s
+Time taken: 1:230 s
+ 
+MPIPROCS: 4
+Time taken: 1:50 s
+Time taken: 0:770 s
+Time taken: 0:760 s
+Time taken: 0:780 s
+Time taken: 0:800 s
+Time taken: 0:790 s
+Time taken: 0:800 s
+Time taken: 0:780 s
+Time taken: 0:780 s
+Time taken: 0:790 s
+ 
+MPIPROCS: 8
+Time taken: 0:670 s
+Time taken: 0:590 s
+Time taken: 0:570 s
+Time taken: 0:600 s
+Time taken: 0:580 s
+Time taken: 0:590 s
+Time taken: 0:610 s
+Time taken: 0:590 s
+Time taken: 0:560 s
+Time taken: 0:560 s
+ 
+MPIPROCS: 16
+Time taken: 0:540 s
+Time taken: 0:540 s
+Time taken: 0:470 s
+Time taken: 0:480 s
+Time taken: 0:520 s
+Time taken: 0:510 s
+Time taken: 0:480 s
+Time taken: 0:470 s
+Time taken: 0:500 s
+Time taken: 0:520 s
+ 
+FileSize: 1000MB
+MPIPROCS: 1
+Time taken: 22:20 s
+Time taken: 21:960 s
+Time taken: 21:980 s
+Time taken: 21:960 s
+Time taken: 21:980 s
+Time taken: 21:940 s
+Time taken: 21:990 s
+Time taken: 21:990 s
+Time taken: 21:980 s
+Time taken: 21:990 s
+ 
+MPIPROCS: 2
+Time taken: 10:500 s
+Time taken: 10:120 s
+Time taken: 10:100 s
+Time taken: 10:100 s
+Time taken: 10:110 s
+Time taken: 10:110 s
+Time taken: 10:140 s
+Time taken: 10:130 s
+Time taken: 10:110 s
+Time taken: 10:110 s
+ 
+MPIPROCS: 4
+Time taken: 5:380 s
+Time taken: 5:230 s
+Time taken: 5:220 s
+Time taken: 5:220 s
+Time taken: 5:230 s
+Time taken: 5:210 s
+Time taken: 5:220 s
+Time taken: 5:210 s
+Time taken: 5:250 s
+Time taken: 5:250 s
+ 
+MPIPROCS: 8
+Time taken: 3:30 s
+Time taken: 2:930 s
+Time taken: 2:800 s
+Time taken: 2:920 s
+Time taken: 2:990 s
+Time taken: 2:960 s
+Time taken: 2:940 s
+Time taken: 2:950 s
+Time taken: 2:900 s
+Time taken: 2:890 s
+ 
+MPIPROCS: 16
+Time taken: 2:320 s
+Time taken: 2:250 s
+Time taken: 2:50 s
+Time taken: 2:20 s
+Time taken: 1:910 s
+Time taken: 1:610 s
+Time taken: 1:640 s
+Time taken: 2:80 s
+Time taken: 1:590 s
+Time taken: 1:670 s

@@ -1,16 +1,26 @@
-Resources:
-select=1:ncpus=1:mem=8gb
+Run: Serial
+Resource: select=1:ncpus=20:mem=124gb:phase=10
  
-enwik8
-Time taken: 10:830 s
-Time taken: 10:780 s
-Time taken: 10:790 s
-Time taken: 10:760 s
-Time taken: 10:760 s
+FileSize: 100MB
+Time taken: 5:550 s
+Time taken: 5:540 s
+Time taken: 5:550 s
+Time taken: 5:550 s
+Time taken: 5:560 s
+Time taken: 5:550 s
+Time taken: 5:540 s
+Time taken: 5:550 s
+Time taken: 5:550 s
+Time taken: 5:560 s
  
-enwik9
-Time taken: 109:430 s
-Time taken: 109:220 s
-Time taken: 109:290 s
-Time taken: 109:160 s
-Time taken: 108:910 s
+FileSize: 1000MB
+Time taken: 55:740 s
+Time taken: 55:690 s
+Time taken: 55:480 s
+Time taken: 55:760 s
+Time taken: 55:510 s
+Time taken: 55:610 s
+Time taken: 55:580 s
+Time taken: 55:610 s
+Time taken: 55:660 s
+Time taken: 55:620 s

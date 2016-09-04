@@ -1,16 +1,26 @@
-Resources:
-select=1:ncpus=1:ngpus=2:mem=8gb:gpu_model=k40
+Run: CUDA
+Resource: select=1:ncpus=20:ngpus=2:mem=124gb:gpu_model=k40:phase=11a
  
-enwik8
-Time taken: 2:90 s
-Time taken: 1:990 s
-Time taken: 2:0 s
-Time taken: 2:10 s
-Time taken: 1:990 s
+FileSize: 100MB
+Time taken: 2:270 s
+Time taken: 2:110 s
+Time taken: 2:110 s
+Time taken: 2:110 s
+Time taken: 2:100 s
+Time taken: 2:100 s
+Time taken: 2:110 s
+Time taken: 2:120 s
+Time taken: 2:120 s
+Time taken: 2:120 s
  
-enwik9
-Time taken: 21:450 s
-Time taken: 21:430 s
-Time taken: 21:440 s
-Time taken: 21:410 s
-Time taken: 21:430 s
+FileSize: 1000MB
+Time taken: 23:710 s
+Time taken: 23:720 s
+Time taken: 22:210 s
+Time taken: 23:730 s
+Time taken: 23:680 s
+Time taken: 23:670 s
+Time taken: 23:710 s
+Time taken: 23:700 s
+Time taken: 23:720 s
+Time taken: 23:720 s

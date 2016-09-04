@@ -1,0 +1,124 @@
+Run: MPI
+Resource: select=16:ncpus=2:mpiprocs=1:mem=124gb:phase=10
+ 
+FileSize: 100MB
+MPIPROCS: 1
+Time taken: 5:690 s
+Time taken: 5:680 s
+Time taken: 5:670 s
+Time taken: 5:680 s
+Time taken: 5:700 s
+Time taken: 5:700 s
+Time taken: 5:680 s
+Time taken: 5:680 s
+Time taken: 5:680 s
+Time taken: 5:690 s
+ 
+MPIPROCS: 2
+Time taken: 3:10 s
+Time taken: 2:960 s
+Time taken: 2:950 s
+Time taken: 2:940 s
+Time taken: 2:960 s
+Time taken: 2:950 s
+Time taken: 2:950 s
+Time taken: 2:960 s
+Time taken: 2:950 s
+Time taken: 2:950 s
+ 
+MPIPROCS: 4
+Time taken: 1:580 s
+Time taken: 1:580 s
+Time taken: 1:560 s
+Time taken: 1:550 s
+Time taken: 1:560 s
+Time taken: 1:570 s
+Time taken: 1:560 s
+Time taken: 1:570 s
+Time taken: 1:560 s
+Time taken: 1:560 s
+ 
+MPIPROCS: 8
+Time taken: 0:980 s
+Time taken: 0:890 s
+Time taken: 0:900 s
+Time taken: 0:850 s
+Time taken: 0:880 s
+Time taken: 0:890 s
+Time taken: 0:880 s
+Time taken: 0:850 s
+Time taken: 0:860 s
+Time taken: 0:880 s
+ 
+MPIPROCS: 16
+Time taken: 0:720 s
+Time taken: 0:550 s
+Time taken: 0:540 s
+Time taken: 0:530 s
+Time taken: 0:540 s
+Time taken: 0:530 s
+Time taken: 0:540 s
+Time taken: 0:530 s
+Time taken: 0:540 s
+Time taken: 0:530 s
+ 
+FileSize: 1000MB
+MPIPROCS: 1
+Time taken: 56:730 s
+Time taken: 56:650 s
+Time taken: 56:620 s
+Time taken: 56:530 s
+Time taken: 56:420 s
+Time taken: 56:410 s
+Time taken: 56:430 s
+Time taken: 56:380 s
+Time taken: 56:400 s
+Time taken: 56:480 s
+ 
+MPIPROCS: 2
+Time taken: 28:520 s
+Time taken: 28:310 s
+Time taken: 28:270 s
+Time taken: 28:280 s
+Time taken: 28:290 s
+Time taken: 28:300 s
+Time taken: 28:290 s
+Time taken: 28:300 s
+Time taken: 28:300 s
+Time taken: 28:270 s
+ 
+MPIPROCS: 4
+Time taken: 14:920 s
+Time taken: 14:430 s
+Time taken: 14:470 s
+Time taken: 14:490 s
+Time taken: 14:440 s
+Time taken: 14:480 s
+Time taken: 14:440 s
+Time taken: 14:460 s
+Time taken: 14:500 s
+Time taken: 14:570 s
+ 
+MPIPROCS: 8
+Time taken: 7:680 s
+Time taken: 7:490 s
+Time taken: 7:580 s
+Time taken: 7:440 s
+Time taken: 7:440 s
+Time taken: 7:680 s
+Time taken: 7:510 s
+Time taken: 7:530 s
+Time taken: 7:430 s
+Time taken: 7:430 s
+ 
+MPIPROCS: 16
+Time taken: 4:640 s
+Time taken: 4:190 s
+Time taken: 3:830 s
+Time taken: 3:810 s
+Time taken: 3:800 s
+Time taken: 3:800 s
+Time taken: 3:990 s
+Time taken: 4:250 s
+Time taken: 4:90 s
+Time taken: 3:800 s
