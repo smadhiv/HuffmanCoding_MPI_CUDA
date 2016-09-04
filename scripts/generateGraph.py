@@ -128,7 +128,7 @@ def getSpeedup():
 
     
 import os
-os.chdir('./test/')
+os.chdir('../logs/')
 fileList = os.listdir('.')
 for file in fileList:
   text, archType = getHeaderInformation(file)
