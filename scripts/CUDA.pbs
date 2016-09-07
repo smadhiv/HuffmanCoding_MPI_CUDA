@@ -1,41 +1,103 @@
 #!/bin/bash
-#PBS -N job_CUDA
-#PBS -l select=1:ncpus=1:ngpus=2:mem=8gb:gpu_model=k40
+#PBS -N job_Serial
+#PBS -l select=1:ncpus=1:ngpus=2:mem=8gb:gpu_model=k40:phase=11a
 #PBS -l walltime=2:00:00
 
 module purge
-module add gcc/4.4 openmpi/1.10.3 cuda-toolkit/7.0.28
-
+add gcc/4.8.1 openmpi/1.10.3 cuda-toolkit/7.5.18
 cd HuffmanCoding_MPI_CUDA
-cd CUDA
-make
-cd ..
 
-echo Resources: > logs/CUDA.txt
-echo "select=1:ncpus=1:ngpus=2:mem=8gb:gpu_model=k40" >> logs/CUDA.txt
+echo "Run: CUDA" >> logs/CUDA.txt
+echo "Resource: select=1:ncpus=1:ngpus=2:mem=8gb:gpu_model=k40" >> logs/CUDA.txt
 
 echo ' ' >> logs/CUDA.txt
-echo 'enwik8' >> logs/CUDA.txt
-./bin/CUDA TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDA.txt
-rm TestFiles/enwik8_comp
-./bin/CUDA TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDA.txt
-rm TestFiles/enwik8_comp
-./bin/CUDA TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDA.txt
-rm TestFiles/enwik8_comp
-./bin/CUDA TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDA.txt
-rm TestFiles/enwik8_comp
-./bin/CUDA TestFiles/enwik8 TestFiles/enwik8_comp >> logs/CUDA.txt
-rm TestFiles/enwik8_comp
+echo 'FileSize: 500MB' >> logs/CUDA.txt
+./bin/CUDA TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
+rm TestFiles/mb500_comp
+./bin/CUDA TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
+rm TestFiles/mb500_comp
+./bin/CUDA TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
+rm TestFiles/mb500_comp
+./bin/CUDA TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
+rm TestFiles/mb500_comp
+./bin/CUDA TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
+rm TestFiles/mb500_comp
+./bin/CUDA TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
+rm TestFiles/mb500_comp
+./bin/CUDA TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
+rm TestFiles/mb500_comp
+./bin/CUDA TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
+rm TestFiles/mb500_comp
+./bin/CUDA TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
+rm TestFiles/mb500_comp
+./bin/CUDA TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
+rm TestFiles/mb500_comp
 
 echo ' ' >> logs/CUDA.txt
-echo 'enwik9' >> logs/CUDA.txt
-./bin/CUDA TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDA.txt
-rm TestFiles/enwik9_comp
-./bin/CUDA TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDA.txt
-rm TestFiles/enwik9_comp
-./bin/CUDA TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDA.txt
-rm TestFiles/enwik9_comp
-./bin/CUDA TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDA.txt
-rm TestFiles/enwik9_comp
-./bin/CUDA TestFiles/enwik9 TestFiles/enwik9_comp >> logs/CUDA.txt
-rm TestFiles/enwik9_comp
+echo 'FileSize: 1000MB' >> logs/CUDA.txt
+./bin/CUDA TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
+rm TestFiles/mb1000_comp
+./bin/CUDA TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
+rm TestFiles/mb1000_comp
+./bin/CUDA TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
+rm TestFiles/mb1000_comp
+./bin/CUDA TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
+rm TestFiles/mb1000_comp
+./bin/CUDA TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
+rm TestFiles/mb1000_comp
+./bin/CUDA TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
+rm TestFiles/mb1000_comp
+./bin/CUDA TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
+rm TestFiles/mb1000_comp
+./bin/CUDA TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
+rm TestFiles/mb1000_comp
+./bin/CUDA TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
+rm TestFiles/mb1000_comp
+./bin/CUDA TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
+rm TestFiles/mb1000_comp
+
+echo ' ' >> logs/CUDA.txt
+echo 'FileSize: 2000MB' >> logs/CUDA.txt
+./bin/CUDA TestFiles/mb2000 TestFiles/mb2000_comp >> logs/CUDA.txt
+rm TestFiles/mb2000_comp
+./bin/CUDA TestFiles/mb2000 TestFiles/mb2000_comp >> logs/CUDA.txt
+rm TestFiles/mb2000_comp
+./bin/CUDA TestFiles/mb2000 TestFiles/mb2000_comp >> logs/CUDA.txt
+rm TestFiles/mb2000_comp
+./bin/CUDA TestFiles/mb2000 TestFiles/mb2000_comp >> logs/CUDA.txt
+rm TestFiles/mb2000_comp
+./bin/CUDA TestFiles/mb2000 TestFiles/mb2000_comp >> logs/CUDA.txt
+rm TestFiles/mb2000_comp
+./bin/CUDA TestFiles/mb2000 TestFiles/mb2000_comp >> logs/CUDA.txt
+rm TestFiles/mb2000_comp
+./bin/CUDA TestFiles/mb2000 TestFiles/mb2000_comp >> logs/CUDA.txt
+rm TestFiles/mb2000_comp
+./bin/CUDA TestFiles/mb2000 TestFiles/mb2000_comp >> logs/CUDA.txt
+rm TestFiles/mb2000_comp
+./bin/CUDA TestFiles/mb2000 TestFiles/mb2000_comp >> logs/CUDA.txt
+rm TestFiles/mb2000_comp
+./bin/CUDA TestFiles/mb2000 TestFiles/mb2000_comp >> logs/CUDA.txt
+rm TestFiles/mb2000_comp
+
+echo ' ' >> logs/CUDA.txt
+echo 'FileSize: 4000MB' >> logs/CUDA.txt
+./bin/CUDA TestFiles/mb4000 TestFiles/mb4000_comp >> logs/CUDA.txt
+rm TestFiles/mb4000_comp
+./bin/CUDA TestFiles/mb4000 TestFiles/mb4000_comp >> logs/CUDA.txt
+rm TestFiles/mb4000_comp
+./bin/CUDA TestFiles/mb4000 TestFiles/mb4000_comp >> logs/CUDA.txt
+rm TestFiles/mb4000_comp
+./bin/CUDA TestFiles/mb4000 TestFiles/mb4000_comp >> logs/CUDA.txt
+rm TestFiles/mb4000_comp
+./bin/CUDA TestFiles/mb4000 TestFiles/mb4000_comp >> logs/CUDA.txt
+rm TestFiles/mb4000_comp
+./bin/CUDA TestFiles/mb4000 TestFiles/mb4000_comp >> logs/CUDA.txt
+rm TestFiles/mb4000_comp
+./bin/CUDA TestFiles/mb4000 TestFiles/mb4000_comp >> logs/CUDA.txt
+rm TestFiles/mb4000_comp
+./bin/CUDA TestFiles/mb4000 TestFiles/mb4000_comp >> logs/CUDA.txt
+rm TestFiles/mb4000_comp
+./bin/CUDA TestFiles/mb4000 TestFiles/mb4000_comp >> logs/CUDA.txt
+rm TestFiles/mb4000_comp
+./bin/CUDA TestFiles/mb4000 TestFiles/mb4000_comp >> logs/CUDA.txt
+rm TestFiles/mb4000_comp
