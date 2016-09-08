@@ -54,8 +54,7 @@ mpirun -np 2 ./bin/CUDAMPI_compress TestFiles/mb500 TestFiles/mb500_comp >> logs
 rm TestFiles/mb500_comp
 mpirun -np 2 ./bin/CUDAMPI_compress TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDAMPI.txt
 rm TestFiles/mb500_comp
-mpirun -np 2 ./bin/CUDAMPI_compress TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDAMPI.txt
-rm TestFiles/mb500_comp
+mpirun -np 2 ./bin/CUDAMPI_compress TestFiles/mb500 TestFiles/mb500_comp_2 >> logs/CUDAMPI.txt
 
 echo ' ' >> logs/CUDAMPI.txt
 echo 'MPIPROCS: 4' >> logs/CUDAMPI.txt
@@ -77,8 +76,7 @@ mpirun -np 4 ./bin/CUDAMPI_compress TestFiles/mb500 TestFiles/mb500_comp >> logs
 rm TestFiles/mb500_comp
 mpirun -np 4 ./bin/CUDAMPI_compress TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDAMPI.txt
 rm TestFiles/mb500_comp
-mpirun -np 4 ./bin/CUDAMPI_compress TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDAMPI.txt
-rm TestFiles/mb500_comp
+mpirun -np 4 ./bin/CUDAMPI_compress TestFiles/mb500 TestFiles/mb500_comp_4 >> logs/CUDAMPI.txt
 
 echo ' ' >> logs/CUDAMPI.txt
 echo 'MPIPROCS: 8' >> logs/CUDAMPI.txt
@@ -100,8 +98,7 @@ mpirun -np 8 ./bin/CUDAMPI_compress TestFiles/mb500 TestFiles/mb500_comp >> logs
 rm TestFiles/mb500_comp
 mpirun -np 8 ./bin/CUDAMPI_compress TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDAMPI.txt
 rm TestFiles/mb500_comp
-mpirun -np 8 ./bin/CUDAMPI_compress TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDAMPI.txt
-rm TestFiles/mb500_comp
+mpirun -np 8 ./bin/CUDAMPI_compress TestFiles/mb500 TestFiles/mb500_comp_8 >> logs/CUDAMPI.txt
 
 echo ' ' >> logs/CUDAMPI.txt
 echo 'MPIPROCS: 16' >> logs/CUDAMPI.txt
@@ -123,8 +120,7 @@ mpirun -np 16 ./bin/CUDAMPI_compress TestFiles/mb500 TestFiles/mb500_comp >> log
 rm TestFiles/mb500_comp
 mpirun -np 16 ./bin/CUDAMPI_compress TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDAMPI.txt
 rm TestFiles/mb500_comp
-mpirun -np 16 ./bin/CUDAMPI_compress TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDAMPI.txt
-rm TestFiles/mb500_comp
+mpirun -np 16 ./bin/CUDAMPI_compress TestFiles/mb500 TestFiles/mb500_comp_16 >> logs/CUDAMPI.txt
 
 echo ' ' >> logs/CUDAMPI.txt
 echo 'MPIPROCS: 32' >> logs/CUDAMPI.txt
@@ -146,8 +142,7 @@ mpirun -np 32 ./bin/CUDAMPI_compress TestFiles/mb500 TestFiles/mb500_comp >> log
 rm TestFiles/mb500_comp
 mpirun -np 32 ./bin/CUDAMPI_compress TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDAMPI.txt
 rm TestFiles/mb500_comp
-mpirun -np 32 ./bin/CUDAMPI_compress TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDAMPI.txt
-rm TestFiles/mb500_comp
+mpirun -np 32 ./bin/CUDAMPI_compress TestFiles/mb500 TestFiles/mb500_comp_32 >> logs/CUDAMPI.txt
 
 echo ' ' >> logs/CUDAMPI.txt
 echo 'FileSize: 1000MB' >> logs/CUDAMPI.txt
@@ -193,8 +188,7 @@ mpirun -np 2 ./bin/CUDAMPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> lo
 rm TestFiles/mb1000_comp
 mpirun -np 2 ./bin/CUDAMPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDAMPI.txt
 rm TestFiles/mb1000_comp
-mpirun -np 2 ./bin/CUDAMPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDAMPI.txt
-rm TestFiles/mb1000_comp
+mpirun -np 2 ./bin/CUDAMPI_compress TestFiles/mb1000 TestFiles/mb1000_comp_2 >> logs/CUDAMPI.txt
 
 echo ' ' >> logs/CUDAMPI.txt
 echo 'MPIPROCS: 4' >> logs/CUDAMPI.txt
@@ -216,8 +210,7 @@ mpirun -np 4 ./bin/CUDAMPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> lo
 rm TestFiles/mb1000_comp
 mpirun -np 4 ./bin/CUDAMPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDAMPI.txt
 rm TestFiles/mb1000_comp
-mpirun -np 4 ./bin/CUDAMPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDAMPI.txt
-rm TestFiles/mb1000_comp
+mpirun -np 4 ./bin/CUDAMPI_compress TestFiles/mb1000 TestFiles/mb1000_comp_4 >> logs/CUDAMPI.txt
 
 echo ' ' >> logs/CUDAMPI.txt
 echo 'MPIPROCS: 8' >> logs/CUDAMPI.txt
@@ -239,8 +232,7 @@ mpirun -np 8 ./bin/CUDAMPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> lo
 rm TestFiles/mb1000_comp
 mpirun -np 8 ./bin/CUDAMPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDAMPI.txt
 rm TestFiles/mb1000_comp
-mpirun -np 8 ./bin/CUDAMPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDAMPI.txt
-rm TestFiles/mb1000_comp
+mpirun -np 8 ./bin/CUDAMPI_compress TestFiles/mb1000 TestFiles/mb1000_comp_8 >> logs/CUDAMPI.txt
 
 echo ' ' >> logs/CUDAMPI.txt
 echo 'MPIPROCS: 16' >> logs/CUDAMPI.txt
@@ -262,8 +254,7 @@ mpirun -np 16 ./bin/CUDAMPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> l
 rm TestFiles/mb1000_comp
 mpirun -np 16 ./bin/CUDAMPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDAMPI.txt
 rm TestFiles/mb1000_comp
-mpirun -np 16 ./bin/CUDAMPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDAMPI.txt
-rm TestFiles/mb1000_comp
+mpirun -np 16 ./bin/CUDAMPI_compress TestFiles/mb1000 TestFiles/mb1000_comp_16 >> logs/CUDAMPI.txt
 
 echo ' ' >> logs/CUDAMPI.txt
 echo 'MPIPROCS: 32' >> logs/CUDAMPI.txt
@@ -285,8 +276,7 @@ mpirun -np 32 ./bin/CUDAMPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> l
 rm TestFiles/mb1000_comp
 mpirun -np 32 ./bin/CUDAMPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDAMPI.txt
 rm TestFiles/mb1000_comp
-mpirun -np 32 ./bin/CUDAMPI_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDAMPI.txt
-rm TestFiles/mb1000_comp
+mpirun -np 32 ./bin/CUDAMPI_compress TestFiles/mb1000 TestFiles/mb1000_comp_32 >> logs/CUDAMPI.txt
 
 echo ' ' >> logs/CUDAMPI.txt
 echo 'FileSize: 2000MB' >> logs/CUDAMPI.txt
@@ -309,8 +299,7 @@ mpirun -np 2 ./bin/CUDAMPI_compress TestFiles/mb2000 TestFiles/mb2000_comp >> lo
 rm TestFiles/mb2000_comp
 mpirun -np 2 ./bin/CUDAMPI_compress TestFiles/mb2000 TestFiles/mb2000_comp >> logs/CUDAMPI.txt
 rm TestFiles/mb2000_comp
-mpirun -np 2 ./bin/CUDAMPI_compress TestFiles/mb2000 TestFiles/mb2000_comp >> logs/CUDAMPI.txt
-rm TestFiles/mb2000_comp
+mpirun -np 2 ./bin/CUDAMPI_compress TestFiles/mb2000 TestFiles/mb2000_comp_2 >> logs/CUDAMPI.txt
 
 echo ' ' >> logs/CUDAMPI.txt
 echo 'MPIPROCS: 4' >> logs/CUDAMPI.txt
@@ -332,8 +321,7 @@ mpirun -np 4 ./bin/CUDAMPI_compress TestFiles/mb2000 TestFiles/mb2000_comp >> lo
 rm TestFiles/mb2000_comp
 mpirun -np 4 ./bin/CUDAMPI_compress TestFiles/mb2000 TestFiles/mb2000_comp >> logs/CUDAMPI.txt
 rm TestFiles/mb2000_comp
-mpirun -np 4 ./bin/CUDAMPI_compress TestFiles/mb2000 TestFiles/mb2000_comp >> logs/CUDAMPI.txt
-rm TestFiles/mb2000_comp
+mpirun -np 4 ./bin/CUDAMPI_compress TestFiles/mb2000 TestFiles/mb2000_comp_4 >> logs/CUDAMPI.txt
 
 echo ' ' >> logs/CUDAMPI.txt
 echo 'MPIPROCS: 8' >> logs/CUDAMPI.txt
@@ -355,8 +343,7 @@ mpirun -np 8 ./bin/CUDAMPI_compress TestFiles/mb2000 TestFiles/mb2000_comp >> lo
 rm TestFiles/mb2000_comp
 mpirun -np 8 ./bin/CUDAMPI_compress TestFiles/mb2000 TestFiles/mb2000_comp >> logs/CUDAMPI.txt
 rm TestFiles/mb2000_comp
-mpirun -np 8 ./bin/CUDAMPI_compress TestFiles/mb2000 TestFiles/mb2000_comp >> logs/CUDAMPI.txt
-rm TestFiles/mb2000_comp
+mpirun -np 8 ./bin/CUDAMPI_compress TestFiles/mb2000 TestFiles/mb2000_comp_8 >> logs/CUDAMPI.txt
 
 echo ' ' >> logs/CUDAMPI.txt
 echo 'MPIPROCS: 16' >> logs/CUDAMPI.txt
@@ -378,8 +365,7 @@ mpirun -np 16 ./bin/CUDAMPI_compress TestFiles/mb2000 TestFiles/mb2000_comp >> l
 rm TestFiles/mb2000_comp
 mpirun -np 16 ./bin/CUDAMPI_compress TestFiles/mb2000 TestFiles/mb2000_comp >> logs/CUDAMPI.txt
 rm TestFiles/mb2000_comp
-mpirun -np 16 ./bin/CUDAMPI_compress TestFiles/mb2000 TestFiles/mb2000_comp >> logs/CUDAMPI.txt
-rm TestFiles/mb2000_comp
+mpirun -np 16 ./bin/CUDAMPI_compress TestFiles/mb2000 TestFiles/mb2000_comp_16 >> logs/CUDAMPI.txt
 
 echo ' ' >> logs/CUDAMPI.txt
 echo 'MPIPROCS: 32' >> logs/CUDAMPI.txt
@@ -401,8 +387,7 @@ mpirun -np 32 ./bin/CUDAMPI_compress TestFiles/mb2000 TestFiles/mb2000_comp >> l
 rm TestFiles/mb2000_comp
 mpirun -np 32 ./bin/CUDAMPI_compress TestFiles/mb2000 TestFiles/mb2000_comp >> logs/CUDAMPI.txt
 rm TestFiles/mb2000_comp
-mpirun -np 32 ./bin/CUDAMPI_compress TestFiles/mb2000 TestFiles/mb2000_comp >> logs/CUDAMPI.txt
-rm TestFiles/mb2000_comp
+mpirun -np 32 ./bin/CUDAMPI_compress TestFiles/mb2000 TestFiles/mb2000_comp_32 >> logs/CUDAMPI.txt
 
 echo ' ' >> logs/CUDAMPI.txt
 echo 'FileSize: 4000MB' >> logs/CUDAMPI.txt
@@ -425,8 +410,7 @@ mpirun -np 4 ./bin/CUDAMPI_compress TestFiles/mb4000 TestFiles/mb4000_comp >> lo
 rm TestFiles/mb4000_comp
 mpirun -np 4 ./bin/CUDAMPI_compress TestFiles/mb4000 TestFiles/mb4000_comp >> logs/CUDAMPI.txt
 rm TestFiles/mb4000_comp
-mpirun -np 4 ./bin/CUDAMPI_compress TestFiles/mb4000 TestFiles/mb4000_comp >> logs/CUDAMPI.txt
-rm TestFiles/mb4000_comp
+mpirun -np 4 ./bin/CUDAMPI_compress TestFiles/mb4000 TestFiles/mb4000_comp_4 >> logs/CUDAMPI.txt
 
 echo ' ' >> logs/CUDAMPI.txt
 echo 'MPIPROCS: 8' >> logs/CUDAMPI.txt
@@ -448,8 +432,7 @@ mpirun -np 8 ./bin/CUDAMPI_compress TestFiles/mb4000 TestFiles/mb4000_comp >> lo
 rm TestFiles/mb4000_comp
 mpirun -np 8 ./bin/CUDAMPI_compress TestFiles/mb4000 TestFiles/mb4000_comp >> logs/CUDAMPI.txt
 rm TestFiles/mb4000_comp
-mpirun -np 8 ./bin/CUDAMPI_compress TestFiles/mb4000 TestFiles/mb4000_comp >> logs/CUDAMPI.txt
-rm TestFiles/mb4000_comp
+mpirun -np 8 ./bin/CUDAMPI_compress TestFiles/mb4000 TestFiles/mb4000_comp_8 >> logs/CUDAMPI.txt
 
 echo ' ' >> logs/CUDAMPI.txt
 echo 'MPIPROCS: 16' >> logs/CUDAMPI.txt
@@ -471,8 +454,7 @@ mpirun -np 16 ./bin/CUDAMPI_compress TestFiles/mb4000 TestFiles/mb4000_comp >> l
 rm TestFiles/mb4000_comp
 mpirun -np 16 ./bin/CUDAMPI_compress TestFiles/mb4000 TestFiles/mb4000_comp >> logs/CUDAMPI.txt
 rm TestFiles/mb4000_comp
-mpirun -np 16 ./bin/CUDAMPI_compress TestFiles/mb4000 TestFiles/mb4000_comp >> logs/CUDAMPI.txt
-rm TestFiles/mb4000_comp
+mpirun -np 16 ./bin/CUDAMPI_compress TestFiles/mb4000 TestFiles/mb4000_comp_16 >> logs/CUDAMPI.txt
 
 echo ' ' >> logs/CUDAMPI.txt
 echo 'MPIPROCS: 32' >> logs/CUDAMPI.txt
@@ -494,5 +476,4 @@ mpirun -np 32 ./bin/CUDAMPI_compress TestFiles/mb4000 TestFiles/mb4000_comp >> l
 rm TestFiles/mb4000_comp
 mpirun -np 32 ./bin/CUDAMPI_compress TestFiles/mb4000 TestFiles/mb4000_comp >> logs/CUDAMPI.txt
 rm TestFiles/mb4000_comp
-mpirun -np 32 ./bin/CUDAMPI_compress TestFiles/mb4000 TestFiles/mb4000_comp >> logs/CUDAMPI.txt
-rm TestFiles/mb4000_comp
+mpirun -np 32 ./bin/CUDAMPI_compress TestFiles/mb4000 TestFiles/mb4000_comp_32 >> logs/CUDAMPI.txt
