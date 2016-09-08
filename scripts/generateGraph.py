@@ -105,26 +105,34 @@ def getAvgTimeForEach():
         temp.append(avgTime['MPI' + ':' + str(size) + 'MB' + ':' + str(num) + ':'])
 
 def getSpeedup():
-  """generate lists of sppedup from run time""" 
-  numProcessList = sorted(numProcsSet)
-  
+  """generate lists of sppedup from run time"""   
   if 'CUDA' in architectureList:
-    for num in list(range(0, len(Serial))):
+    for num in list(range(0, len(CUDA))):
       CUDA_speedup.append(round(Serial[num] / CUDA[num], 3))
 
   if 'CUDAMPI' in architectureList:
     for num in list(range(0, len(Serial))):
       temp = []
       CUDAMPI_speedup.append(temp)
-      for index in list(range(0, len(numProcessList))):
+      for index in list(range(0, len(CUDAMPI[num]))):
         temp.append(round(Serial[num]/CUDAMPI[num][index], 3))
         
   if 'MPI' in architectureList:
     for num in list(range(0, len(Serial))):
       temp = []
       MPI_speedup.append(temp)
-      for index in list(range(0, len(numProcessList))):
+      for index in list(range(0, len(MPI[num]))):
         temp.append(round(Serial[num]/MPI[num][index], 3))
+  
+  
+  for num in list(range(0, len(Serial))):
+      while len(CUDAMPI[num]) != len(numProcsSet):
+          CUDAMPI_speedup[num].insert(0, None)
+      while len(MPI[num]) != len(numProcsSet):
+          MPI_speedup[num].insert(0, None)
+  
+  while len(Serial) != len(CUDA_speedup):
+      CUDA_speedup.append(None)
 
 def deleteOldGraphs(filename):
   try:
