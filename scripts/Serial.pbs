@@ -5,7 +5,7 @@
 
 module purge
 module add gcc/4.8.1 
-cd HuffmanCoding_MPI_CUDA
+cd /scratch1/smadhiv/HuffmanCoding_MPI_CUDA
 
 echo "Run: Serial" >> logs/Serial_compress.txt
 echo "Resource: select=1:ncpus=20:mem=124gb:phase=10" >> logs/Serial_compress.txt
