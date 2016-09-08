@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -N job_Serial
+#PBS -N job_CUDA
 #PBS -l select=1:ncpus=1:ngpus=2:mem=8gb:gpu_model=k40:phase=11a
 #PBS -l walltime=2:00:00
 
@@ -12,46 +12,46 @@ echo "Resource: select=1:ncpus=1:ngpus=2:mem=8gb:gpu_model=k40" >> logs/CUDA.txt
 
 echo ' ' >> logs/CUDA.txt
 echo 'FileSize: 500MB' >> logs/CUDA.txt
-./bin/CUDA TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
+./bin/CUDA_compress TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
 rm TestFiles/mb500_comp
-./bin/CUDA TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
+./bin/CUDA_compress TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
 rm TestFiles/mb500_comp
-./bin/CUDA TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
+./bin/CUDA_compress TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
 rm TestFiles/mb500_comp
-./bin/CUDA TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
+./bin/CUDA_compress TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
 rm TestFiles/mb500_comp
-./bin/CUDA TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
+./bin/CUDA_compress TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
 rm TestFiles/mb500_comp
-./bin/CUDA TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
+./bin/CUDA_compress TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
 rm TestFiles/mb500_comp
-./bin/CUDA TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
+./bin/CUDA_compress TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
 rm TestFiles/mb500_comp
-./bin/CUDA TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
+./bin/CUDA_compress TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
 rm TestFiles/mb500_comp
-./bin/CUDA TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
+./bin/CUDA_compress TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
 rm TestFiles/mb500_comp
-./bin/CUDA TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
+./bin/CUDA_compress TestFiles/mb500 TestFiles/mb500_comp >> logs/CUDA.txt
 rm TestFiles/mb500_comp
 
 echo ' ' >> logs/CUDA.txt
 echo 'FileSize: 1000MB' >> logs/CUDA.txt
-./bin/CUDA TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
+./bin/CUDA_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
 rm TestFiles/mb1000_comp
-./bin/CUDA TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
+./bin/CUDA_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
 rm TestFiles/mb1000_comp
-./bin/CUDA TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
+./bin/CUDA_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
 rm TestFiles/mb1000_comp
-./bin/CUDA TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
+./bin/CUDA_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
 rm TestFiles/mb1000_comp
-./bin/CUDA TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
+./bin/CUDA_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
 rm TestFiles/mb1000_comp
-./bin/CUDA TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
+./bin/CUDA_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
 rm TestFiles/mb1000_comp
-./bin/CUDA TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
+./bin/CUDA_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
 rm TestFiles/mb1000_comp
-./bin/CUDA TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
+./bin/CUDA_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
 rm TestFiles/mb1000_comp
-./bin/CUDA TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
+./bin/CUDA_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
 rm TestFiles/mb1000_comp
-./bin/CUDA TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
+./bin/CUDA_compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/CUDA.txt
 rm TestFiles/mb1000_comp
