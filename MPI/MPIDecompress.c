@@ -23,7 +23,7 @@ main(int argc, char *argv[]){
 	unsigned int *compBlockLengthArray;
 	unsigned int decompBlockLengthCounter, distinctCharacterCount, outputFileLength, combinedHuffmanNodes, frequency[256], compressedFileLength;
 	unsigned char currentInputBit, currentInputByte, *compressedData, *outputData, bitSequence[255], bitSequenceLength = 0;
-	FILE *compressedFile, *outputFile;
+	FILE *compressedFile;
 	
 	MPI_Init( &argc, &argv);
 	MPI_File mpi_compressedFile, mpi_outputFile;
@@ -38,7 +38,6 @@ main(int argc, char *argv[]){
 
 	
 	if(rank == 0){
-		start = clock();
 		compressedFile = fopen(argv[1], "rb");
 		fseek(compressedFile, 0, SEEK_END);
 		compressedFileLength = ftell(compressedFile);
@@ -61,6 +60,11 @@ main(int argc, char *argv[]){
 	// read the header and fill frequency array
 	MPI_File_read(mpi_compressedFile, frequency, 256, MPI_UNSIGNED, &status);
 
+	// start clock
+	if(rank == 0){
+		start = clock();
+	}
+	
 	// initialize nodes of huffman tree
 	distinctCharacterCount = 0;
 	for (i = 0; i < 256; i++){
@@ -136,6 +140,14 @@ main(int argc, char *argv[]){
 			}
 		}
 	}
+
+	// get time
+	if(rank == 0){
+		end = clock();
+		cpu_time_used = ((end - start)) * 1000 / CLOCKS_PER_SEC;
+		printf("Time taken: %d:%d s\n", cpu_time_used / 1000, cpu_time_used % 1000);
+	}
+	
 	MPI_File_open(MPI_COMM_WORLD, argv[2], MPI_MODE_CREATE | MPI_MODE_WRONLY, MPI_INFO_NULL, &mpi_outputFile);
 	MPI_File_seek(mpi_outputFile, rank * (outputFileLength / numProcesses), MPI_SEEK_SET);
 	MPI_File_write(mpi_outputFile, outputData, decompBlockLengthCounter, MPI_UNSIGNED_CHAR, MPI_STATUS_IGNORE);
@@ -144,12 +156,8 @@ main(int argc, char *argv[]){
 	MPI_File_close(&mpi_compressedFile); 	
 	MPI_File_close(&mpi_outputFile);
 	
-	// get time
-	if(rank == 0){
-		end = clock();
-		cpu_time_used = ((end - start)) * 1000 / CLOCKS_PER_SEC;
-		printf("Time taken: %d:%d s\n", cpu_time_used / 1000, cpu_time_used % 1000);
-	}
-	
+	free(compBlockLengthArray);
+	free(outputData);
+	free(compressedData);	
 	MPI_Finalize();
 }

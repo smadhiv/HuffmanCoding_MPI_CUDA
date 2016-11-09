@@ -1,103 +1,143 @@
 #!/bin/bash
 #PBS -N job_Serial
-#PBS -l select=1:ncpus=20:mem=124gb:phase=10
-#PBS -l walltime=2:00:00
+#PBS -l select=1:ncpus=20:mem=124gb:phase=15
+#PBS -l walltime=04:00:00
 
 module purge
 module add gcc/4.8.1 
-cd /scratch1/smadhiv/HuffmanCoding_MPI_CUDA
+cd /scratch1/smadhiv/Project/HuffmanCoding_MPI_CUDA
 
 echo "Run: Serial" >> logs/Serial_compress.txt
-echo "Resource: select=1:ncpus=20:mem=124gb:phase=10" >> logs/Serial_compress.txt
+echo "Resource: select=1:ncpus=20:mem=124gb:phase=15" >> logs/Serial_compress.txt
 
 echo ' ' >> logs/Serial_compress.txt
-echo 'FileSize: 500MB' >> logs/Serial_compress.txt
-./bin/compress TestFiles/mb500 TestFiles/mb500_comp >> logs/Serial_compress.txt
-rm TestFiles/mb500_comp
-./bin/compress TestFiles/mb500 TestFiles/mb500_comp >> logs/Serial_compress.txt
-rm TestFiles/mb500_comp
-./bin/compress TestFiles/mb500 TestFiles/mb500_comp >> logs/Serial_compress.txt
-rm TestFiles/mb500_comp
-./bin/compress TestFiles/mb500 TestFiles/mb500_comp >> logs/Serial_compress.txt
-rm TestFiles/mb500_comp
-./bin/compress TestFiles/mb500 TestFiles/mb500_comp >> logs/Serial_compress.txt
-rm TestFiles/mb500_comp
-./bin/compress TestFiles/mb500 TestFiles/mb500_comp >> logs/Serial_compress.txt
-rm TestFiles/mb500_comp
-./bin/compress TestFiles/mb500 TestFiles/mb500_comp >> logs/Serial_compress.txt
-rm TestFiles/mb500_comp
-./bin/compress TestFiles/mb500 TestFiles/mb500_comp >> logs/Serial_compress.txt
-rm TestFiles/mb500_comp
-./bin/compress TestFiles/mb500 TestFiles/mb500_comp >> logs/Serial_compress.txt
-rm TestFiles/mb500_comp
-./bin/compress TestFiles/mb500 TestFiles/mb500_comp >> logs/Serial_compress.txt
-rm TestFiles/mb500_comp
+echo 'FileSize: 64MB' >> logs/Serial_compress.txt
+./bin/compress TestFiles/mb64 TestFiles/mb64_comp >> logs/Serial_compress.txt
+rm TestFiles/mb64_comp
+./bin/compress TestFiles/mb64 TestFiles/mb64_comp >> logs/Serial_compress.txt
+rm TestFiles/mb64_comp
+./bin/compress TestFiles/mb64 TestFiles/mb64_comp >> logs/Serial_compress.txt
+rm TestFiles/mb64_comp
+./bin/compress TestFiles/mb64 TestFiles/mb64_comp >> logs/Serial_compress.txt
+rm TestFiles/mb64_comp
+./bin/compress TestFiles/mb64 TestFiles/mb64_comp >> logs/Serial_compress.txt
+rm TestFiles/mb64_comp
 
 echo ' ' >> logs/Serial_compress.txt
-echo 'FileSize: 1000MB' >> logs/Serial_compress.txt
-./bin/compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb1000_comp
-./bin/compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb1000_comp
-./bin/compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb1000_comp
-./bin/compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb1000_comp
-./bin/compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb1000_comp
-./bin/compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb1000_comp
-./bin/compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb1000_comp
-./bin/compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb1000_comp
-./bin/compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb1000_comp
-./bin/compress TestFiles/mb1000 TestFiles/mb1000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb1000_comp
+echo 'FileSize: 128MB' >> logs/Serial_compress.txt
+./bin/compress TestFiles/mb128 TestFiles/mb128_comp >> logs/Serial_compress.txt
+rm TestFiles/mb128_comp
+./bin/compress TestFiles/mb128 TestFiles/mb128_comp >> logs/Serial_compress.txt
+rm TestFiles/mb128_comp
+./bin/compress TestFiles/mb128 TestFiles/mb128_comp >> logs/Serial_compress.txt
+rm TestFiles/mb128_comp
+./bin/compress TestFiles/mb128 TestFiles/mb128_comp >> logs/Serial_compress.txt
+rm TestFiles/mb128_comp
+./bin/compress TestFiles/mb128 TestFiles/mb128_comp >> logs/Serial_compress.txt
+rm TestFiles/mb128_comp
 
 echo ' ' >> logs/Serial_compress.txt
-echo 'FileSize: 2000MB' >> logs/Serial_compress.txt
-./bin/compress TestFiles/mb2000 TestFiles/mb2000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb2000_comp
-./bin/compress TestFiles/mb2000 TestFiles/mb2000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb2000_comp
-./bin/compress TestFiles/mb2000 TestFiles/mb2000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb2000_comp
-./bin/compress TestFiles/mb2000 TestFiles/mb2000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb2000_comp
-./bin/compress TestFiles/mb2000 TestFiles/mb2000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb2000_comp
-./bin/compress TestFiles/mb2000 TestFiles/mb2000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb2000_comp
-./bin/compress TestFiles/mb2000 TestFiles/mb2000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb2000_comp
-./bin/compress TestFiles/mb2000 TestFiles/mb2000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb2000_comp
-./bin/compress TestFiles/mb2000 TestFiles/mb2000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb2000_comp
-./bin/compress TestFiles/mb2000 TestFiles/mb2000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb2000_comp
+echo 'FileSize: 256MB' >> logs/Serial_compress.txt
+./bin/compress TestFiles/mb256 TestFiles/mb256_comp >> logs/Serial_compress.txt
+rm TestFiles/mb256_comp
+./bin/compress TestFiles/mb256 TestFiles/mb256_comp >> logs/Serial_compress.txt
+rm TestFiles/mb256_comp
+./bin/compress TestFiles/mb256 TestFiles/mb256_comp >> logs/Serial_compress.txt
+rm TestFiles/mb256_comp
+./bin/compress TestFiles/mb256 TestFiles/mb256_comp >> logs/Serial_compress.txt
+rm TestFiles/mb256_comp
+./bin/compress TestFiles/mb256 TestFiles/mb256_comp >> logs/Serial_compress.txt
+rm TestFiles/mb256_comp
 
 echo ' ' >> logs/Serial_compress.txt
-echo 'FileSize: 4000MB' >> logs/Serial_compress.txt
-./bin/compress TestFiles/mb4000 TestFiles/mb4000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb4000_comp
-./bin/compress TestFiles/mb4000 TestFiles/mb4000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb4000_comp
-./bin/compress TestFiles/mb4000 TestFiles/mb4000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb4000_comp
-./bin/compress TestFiles/mb4000 TestFiles/mb4000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb4000_comp
-./bin/compress TestFiles/mb4000 TestFiles/mb4000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb4000_comp
-./bin/compress TestFiles/mb4000 TestFiles/mb4000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb4000_comp
-./bin/compress TestFiles/mb4000 TestFiles/mb4000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb4000_comp
-./bin/compress TestFiles/mb4000 TestFiles/mb4000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb4000_comp
-./bin/compress TestFiles/mb4000 TestFiles/mb4000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb4000_comp
-./bin/compress TestFiles/mb4000 TestFiles/mb4000_comp >> logs/Serial_compress.txt
-rm TestFiles/mb4000_comp
+echo 'FileSize: 512MB' >> logs/Serial_compress.txt
+./bin/compress TestFiles/mb512 TestFiles/mb512_comp >> logs/Serial_compress.txt
+rm TestFiles/mb512_comp
+./bin/compress TestFiles/mb512 TestFiles/mb512_comp >> logs/Serial_compress.txt
+rm TestFiles/mb512_comp
+./bin/compress TestFiles/mb512 TestFiles/mb512_comp >> logs/Serial_compress.txt
+rm TestFiles/mb512_comp
+./bin/compress TestFiles/mb512 TestFiles/mb512_comp >> logs/Serial_compress.txt
+rm TestFiles/mb512_comp
+./bin/compress TestFiles/mb512 TestFiles/mb512_comp >> logs/Serial_compress.txt
+rm TestFiles/mb512_comp
+
+echo ' ' >> logs/Serial_compress.txt
+echo 'FileSize: 768MB' >> logs/Serial_compress.txt
+./bin/compress TestFiles/mb768 TestFiles/mb768_comp >> logs/Serial_compress.txt
+rm TestFiles/mb768_comp
+./bin/compress TestFiles/mb768 TestFiles/mb768_comp >> logs/Serial_compress.txt
+rm TestFiles/mb768_comp
+./bin/compress TestFiles/mb768 TestFiles/mb768_comp >> logs/Serial_compress.txt
+rm TestFiles/mb768_comp
+./bin/compress TestFiles/mb768 TestFiles/mb768_comp >> logs/Serial_compress.txt
+rm TestFiles/mb768_comp
+./bin/compress TestFiles/mb768 TestFiles/mb768_comp >> logs/Serial_compress.txt
+rm TestFiles/mb768_comp
+
+echo ' ' >> logs/Serial_compress.txt
+echo 'FileSize: 1024MB' >> logs/Serial_compress.txt
+./bin/compress TestFiles/mb1024 TestFiles/mb1024_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1024_comp
+./bin/compress TestFiles/mb1024 TestFiles/mb1024_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1024_comp
+./bin/compress TestFiles/mb1024 TestFiles/mb1024_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1024_comp
+./bin/compress TestFiles/mb1024 TestFiles/mb1024_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1024_comp
+./bin/compress TestFiles/mb1024 TestFiles/mb1024_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1024_comp
+
+echo ' ' >> logs/Serial_compress.txt
+echo 'FileSize: 1280MB' >> logs/Serial_compress.txt
+./bin/compress TestFiles/mb1280 TestFiles/mb1280_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1280_comp
+./bin/compress TestFiles/mb1280 TestFiles/mb1280_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1280_comp
+./bin/compress TestFiles/mb1280 TestFiles/mb1280_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1280_comp
+./bin/compress TestFiles/mb1280 TestFiles/mb1280_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1280_comp
+./bin/compress TestFiles/mb1280 TestFiles/mb1280_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1280_comp
+
+echo ' ' >> logs/Serial_compress.txt
+echo 'FileSize: 1536MB' >> logs/Serial_compress.txt
+./bin/compress TestFiles/mb1536 TestFiles/mb1536_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1536_comp
+./bin/compress TestFiles/mb1536 TestFiles/mb1536_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1536_comp
+./bin/compress TestFiles/mb1536 TestFiles/mb1536_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1536_comp
+./bin/compress TestFiles/mb1536 TestFiles/mb1536_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1536_comp
+./bin/compress TestFiles/mb1536 TestFiles/mb1536_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1536_comp
+
+echo ' ' >> logs/Serial_compress.txt
+echo 'FileSize: 1792MB' >> logs/Serial_compress.txt
+./bin/compress TestFiles/mb1792 TestFiles/mb1792_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1792_comp
+./bin/compress TestFiles/mb1792 TestFiles/mb1792_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1792_comp
+./bin/compress TestFiles/mb1792 TestFiles/mb1792_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1792_comp
+./bin/compress TestFiles/mb1792 TestFiles/mb1792_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1792_comp
+./bin/compress TestFiles/mb1792 TestFiles/mb1792_comp >> logs/Serial_compress.txt
+rm TestFiles/mb1792_comp
+
+echo ' ' >> logs/Serial_compress.txt
+echo 'FileSize: 2048MB' >> logs/Serial_compress.txt
+./bin/compress TestFiles/mb2048 TestFiles/mb2048_comp >> logs/Serial_compress.txt
+rm TestFiles/mb2048_comp
+./bin/compress TestFiles/mb2048 TestFiles/mb2048_comp >> logs/Serial_compress.txt
+rm TestFiles/mb2048_comp
+./bin/compress TestFiles/mb2048 TestFiles/mb2048_comp >> logs/Serial_compress.txt
+rm TestFiles/mb2048_comp
+./bin/compress TestFiles/mb2048 TestFiles/mb2048_comp >> logs/Serial_compress.txt
+rm TestFiles/mb2048_comp
+./bin/compress TestFiles/mb2048 TestFiles/mb2048_comp >> logs/Serial_compress.txt
+rm TestFiles/mb2048_comp
+
+

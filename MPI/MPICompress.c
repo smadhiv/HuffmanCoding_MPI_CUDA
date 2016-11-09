@@ -23,7 +23,7 @@ main(int argc, char* argv[]){
 	unsigned int *compBlockLengthArray;
 	unsigned int distinctCharacterCount, combinedHuffmanNodes, frequency[256], inputFileLength, compBlockLength;
 	unsigned char *inputFileData, *compressedData, writeBit = 0, bitsFilled = 0, bitSequence[255], bitSequenceLength = 0;
-	FILE *inputFile, *compressedFile;
+	FILE *inputFile;
 
 	MPI_Init( &argc, &argv);
 	MPI_File mpi_inputFile, mpi_compressedFile;
@@ -35,7 +35,6 @@ main(int argc, char* argv[]){
 
 	// get file size
 	if(rank == 0){
-		start = clock();
 		inputFile = fopen(argv[1], "rb");
 		fseek(inputFile, 0, SEEK_END);
 		inputFileLength = ftell(inputFile);
@@ -61,6 +60,11 @@ main(int argc, char* argv[]){
 	inputFileData = (unsigned char *)malloc(blockLength * sizeof(unsigned char));	
 	MPI_File_read(mpi_inputFile, inputFileData, blockLength, MPI_UNSIGNED_CHAR, &status);
 
+	// start clock
+	if(rank == 0){
+		start = clock();
+	}
+	
 	// find the frequency of each symbols
 	for (i = 0; i < 256; i++){
 		frequency[i] = 0;
@@ -145,6 +149,13 @@ main(int argc, char* argv[]){
 	// broadcast size of each compressed data block to all the processes 
 	MPI_Bcast(compBlockLengthArray, numProcesses, MPI_UNSIGNED, 0, MPI_COMM_WORLD);
 
+	// get time
+	if(rank == 0){
+		end = clock();
+		cpu_time_used = ((end - start)) * 1000 / CLOCKS_PER_SEC;
+		printf("Time taken: %d:%d s\n", cpu_time_used / 1000, cpu_time_used % 1000);
+	}
+	
 	// write data to file
 	MPI_File_open(MPI_COMM_WORLD, argv[2], MPI_MODE_CREATE | MPI_MODE_WRONLY, MPI_INFO_NULL, &mpi_compressedFile);
 
@@ -157,19 +168,16 @@ main(int argc, char* argv[]){
 	MPI_File_write(mpi_compressedFile, frequency, 256, MPI_UNSIGNED, MPI_STATUS_IGNORE);
 	MPI_File_write(mpi_compressedFile, compressedData, (compBlockLength - 1024), MPI_UNSIGNED_CHAR, MPI_STATUS_IGNORE);
 
-
-
 	// close open files
 	MPI_File_close(&mpi_compressedFile); 	
 	MPI_File_close(&mpi_inputFile);
 	MPI_Barrier(MPI_COMM_WORLD);
-
-	// get time
-	if(rank == 0){
-		end = clock();
-		cpu_time_used = ((end - start)) * 1000 / CLOCKS_PER_SEC;
-		printf("Time taken: %d:%d s\n", cpu_time_used / 1000, cpu_time_used % 1000);
-	}
+	
+	free(head_huffmanTreeNode);
+	free(current_huffmanTreeNode);
+	free(compBlockLengthArray);
+	free(inputFileData);
+	free(compressedData);
 	MPI_Finalize();
 }
 

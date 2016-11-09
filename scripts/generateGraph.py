@@ -105,77 +105,59 @@ def getAvgTimeForEach():
         temp.append(avgTime['MPI' + ':' + str(size) + 'MB' + ':' + str(num) + ':'])
 
 def getSpeedup():
-  """generate lists of sppedup from run time"""   
+  """generate lists of sppedup from run time""" 
+  numProcessList = sorted(numProcsSet)
+  
   if 'CUDA' in architectureList:
-    for num in list(range(0, len(CUDA))):
+    for num in list(range(0, len(Serial))):
       CUDA_speedup.append(round(Serial[num] / CUDA[num], 3))
 
   if 'CUDAMPI' in architectureList:
     for num in list(range(0, len(Serial))):
       temp = []
       CUDAMPI_speedup.append(temp)
-      for index in list(range(0, len(CUDAMPI[num]))):
+      for index in list(range(0, len(numProcessList))):
         temp.append(round(Serial[num]/CUDAMPI[num][index], 3))
         
   if 'MPI' in architectureList:
     for num in list(range(0, len(Serial))):
       temp = []
       MPI_speedup.append(temp)
-      for index in list(range(0, len(MPI[num]))):
+      for index in list(range(0, len(numProcessList))):
         temp.append(round(Serial[num]/MPI[num][index], 3))
-  
-  
-  for num in list(range(0, len(Serial))):
-      while len(CUDAMPI[num]) != len(numProcsSet):
-          CUDAMPI_speedup[num].insert(0, None)
-      while len(MPI[num]) != len(numProcsSet):
-          MPI_speedup[num].insert(0, None)
-  
-  while len(Serial) != len(CUDA_speedup):
-      CUDA_speedup.append(None)
 
-def deleteOldGraphs(filename):
-  try:
-    os.remove(filename)
-  except OSError:
-    pass
-  
-def getGraphs():
-  import matplotlib
-  matplotlib.use('Agg')
-  import matplotlib.pyplot as plt
-  numProcessList = sorted(numProcsSet)
-  fileSizeList = sorted(fileSizeSet)  
-  plt.figure(1)
-  plt.title('CUDA and MPI')
-  plt.grid(True)
-  plt.xlabel('Processes')
-  plt.ylabel('Speedup')
-  for num in list(range(0, len(fileSizeSet))):
-    plt.plot(numProcessList, CUDAMPI_speedup[num], marker='o', label=str(fileSizeList[num]) + 'MB')
-  plt.legend(loc=4)
-  plt.savefig('CUDAMPI.png', bbox_inches='tight')
-  
-  plt.figure(2)
-  plt.title('MPI')
-  plt.grid(True)
-  plt.xlabel('Processes')
-  plt.ylabel('Speedup')
-  for num in list(range(0, len(fileSizeSet))):
-    plt.plot(numProcessList, MPI_speedup[num], marker='o', label=str(fileSizeList[num]) + 'MB')
-  plt.legend(loc=4)
-  plt.savefig('MPI.png', bbox_inches='tight')
-  
+    
 import os
 os.chdir('../logs/')
-deleteOldGraphs('CUDAMPI.png')
-deleteOldGraphs('MPI.png')
 fileList = os.listdir('.')
 for file in fileList:
   text, archType = getHeaderInformation(file)
   calculateRunTimeAvg(text, archType)
 getAvgTimeForEach()
 getSpeedup()
-getGraphs()
+fileSizeList = sorted(fileSizeSet)
+numProcessList = sorted(numProcsSet)
 
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 
+plt.figure(1)
+plt.title('CUDA and MPI')
+plt.grid(True)
+plt.xlabel('Processes')
+plt.ylabel('Speedup')
+for num in list(range(0, len(fileSizeSet))):
+  plt.plot(numProcessList, CUDAMPI_speedup[num], marker='o', label=str(fileSizeList[num]) + 'MB')
+plt.legend(loc=4)
+plt.savefig('CUDAMPI.png', bbox_inches='tight')
+
+plt.figure(2)
+plt.title('MPI')
+plt.grid(True)
+plt.xlabel('Processes')
+plt.ylabel('Speedup')
+for num in list(range(0, len(fileSizeSet))):
+  plt.plot(numProcessList, MPI_speedup[num], marker='o', label=str(fileSizeList[num]) + 'MB')
+plt.legend(loc=4)
+plt.savefig('MPI.png', bbox_inches='tight')

@@ -9,16 +9,13 @@ struct huffmanTree *head_huffmanTreeNode, *current_huffmanTreeNode;
 struct huffmanTree huffmanTreeNode[512], temp_huffmanTreeNode;
 unsigned int frequency[256];
 
-main(int argc, char **argv){
+int main(int argc, char **argv){
 	clock_t start, end;
 	unsigned int cpu_time_used;
 	unsigned int i, j;
 	unsigned int distinctCharacterCount, outputFileLengthCounter, outputFileLength, combinedHuffmanNodes, frequency[256], compressedFileLength;
 	unsigned char currentInputBit, currentInputByte, *compressedData, *outputData, bitSequence[255], bitSequenceLength = 0;
 	FILE *compressedFile, *outputFile;
-
-	// start time measure
-	start = clock();
 	
 	// open source compressed file
 	compressedFile = fopen(argv[1], "rb");
@@ -36,6 +33,9 @@ main(int argc, char **argv){
 	compressedData = malloc((compressedFileLength) * sizeof(unsigned char));
 	fread(compressedData, sizeof(unsigned char), (compressedFileLength), compressedFile);
 	fclose(compressedFile);
+	
+	// start time measure
+	start = clock();
 	
 	// initialize nodes of huffman tree
 	distinctCharacterCount = 0;
@@ -87,13 +87,17 @@ main(int argc, char **argv){
 		}
 	}
 
+	//display runtime
+	end = clock();
+	
 	// write decompressed file
 	outputFile = fopen(argv[2], "wb");
 	fwrite(outputData, sizeof(unsigned char), outputFileLength, outputFile);
 	fclose(outputFile);
-
-	//display runtime
-	end = clock();
+	
 	cpu_time_used = ((end - start)) * 1000 / CLOCKS_PER_SEC;
 	printf("Time taken: %d:%d s\n", cpu_time_used / 1000, cpu_time_used % 1000);
+	free(outputData);
+	free(compressedData);
+	return 0;
 }

@@ -10,7 +10,7 @@
 #include <limits.h>
 #include "../include/parallelHeader.h"
 #define block_size 1024
-#define MAX_GPU_RUNS 10
+#define MIN_SCRATCH_SIZE 50 * 1024 * 1024
 
 struct huffmanTree *head_huffmanTreeNode, *current_huffmanTreeNode;
 struct huffmanTree huffmanTreeNode[512], temp_huffmanTreeNode;
@@ -29,8 +29,6 @@ int main(int argc, char **argv){
 	long unsigned int mem_req, mem_offset, mem_data;
 	int numKernelRuns;
 	clock_t start, end;
-	// start time measure
-	start = clock();
 	
 	// read input file, get inputFileLength and data
 	inputFile = fopen(argv[1], "rb");
@@ -40,6 +38,9 @@ int main(int argc, char **argv){
 	inputFileData = (unsigned char *)malloc(inputFileLength * sizeof(unsigned char));
 	fread(inputFileData, sizeof(unsigned char), inputFileLength, inputFile);
 	fclose(inputFile);
+	
+	// calculate run duration
+	start = clock();
 	
 	// find the frequency of each symbols
 	for (i = 0; i < 256; i++){
@@ -85,20 +86,27 @@ int main(int argc, char **argv){
 	// other memory requirements
 	mem_data = inputFileLength + (inputFileLength + 1) * sizeof(unsigned int) + sizeof(huffmanDictionary);
 	
-	if(mem_free < mem_data + (mem_offset / MAX_GPU_RUNS)){
-		printf("\nExiting : Not enough memory on GPU\nmem_free = %lu\nmin_mem_req = %lu\n", mem_free, (mem_data + (mem_offset / MAX_GPU_RUNS)));
+	if(mem_free - mem_data < MIN_SCRATCH_SIZE){
+		printf("\nExiting : Not enough memory on GPU\nmem_free = %lu\nmin_mem_req = %lu\n", mem_free, mem_data + MIN_SCRATCH_SIZE);
 		return -1;
 	}
 	mem_req = mem_free - mem_data - 10 * 1024 * 1024;
 	numKernelRuns = ceil((double)mem_offset / mem_req);
 	integerOverflowFlag = mem_req + 255 <= UINT_MAX || mem_offset + 255 <= UINT_MAX ? 0 : 1;
-	
+
+	//printf("	InputFileSize      =%u\n\
+	OutputSize         =%u\n\
+	NumberOfKernel     =%d\n\
+	integerOverflowFlag=%d\n", inputFileLength, mem_offset/8, numKernelRuns, integerOverflowFlag);
 	// generate data offset array
 	compressedDataOffset = (unsigned int *)malloc((inputFileLength + 1) * sizeof(unsigned int));
 
 	// launch kernel
-    lauchCUDAHuffmanCompress(inputFileData, compressedDataOffset, inputFileLength, numKernelRuns, integerOverflowFlag, mem_req);
+	lauchCUDAHuffmanCompress(inputFileData, compressedDataOffset, inputFileLength, numKernelRuns, integerOverflowFlag, mem_req);
 
+	// calculate run duration
+	end = clock();
+	
 	// write src inputFileLength, header and compressed data to output file
 	compressedFile = fopen(argv[2], "wb");
 	fwrite(&inputFileLength, sizeof(unsigned int), 1, compressedFile);
@@ -106,9 +114,9 @@ int main(int argc, char **argv){
 	fwrite(inputFileData, sizeof(unsigned char), mem_offset / 8, compressedFile);
 	fclose(compressedFile);	
 	
-	// calculate run duration
-	end = clock();
 	cpu_time_used = ((end - start)) * 1000 / CLOCKS_PER_SEC;
 	printf("Time taken: %d:%d s\n", cpu_time_used / 1000, cpu_time_used % 1000);
+	free(inputFileData);
+	free(compressedDataOffset);
 	return 0;
 }

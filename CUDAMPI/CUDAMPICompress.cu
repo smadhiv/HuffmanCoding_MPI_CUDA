@@ -12,7 +12,7 @@
 #include<math.h>
 #include "../include/parallelHeader.h"
 #define block_size 1024
-#define MAX_GPU_RUNS 10
+#define MIN_SCRATCH_SIZE 50 * 1024 * 1024
 
 struct huffmanTree *head_huffmanTreeNode, *current_huffmanTreeNode;
 struct huffmanTree huffmanTreeNode[512], temp_huffmanTreeNode;
@@ -44,7 +44,6 @@ main(int argc, char* argv[]){
 
 	// get file size
 	if(rank == 0){
-		start = clock();
 		inputFile = fopen(argv[1], "rb");
 		fseek(inputFile, 0, SEEK_END);
 		inputFileLength = ftell(inputFile);
@@ -70,6 +69,11 @@ main(int argc, char* argv[]){
 	inputFileData = (unsigned char *)malloc(blockLength * sizeof(unsigned char));	
 	MPI_File_read(mpi_inputFile, inputFileData, blockLength, MPI_UNSIGNED_CHAR, &status);
 
+	// start clock
+	if(rank == 0){
+		start = clock();
+	}
+	
 	// find the frequency of each symbols
 	for (i = 0; i < 256; i++){
 		frequency[i] = 0;
@@ -116,8 +120,8 @@ main(int argc, char* argv[]){
 	// other memory requirements
 	mem_data = blockLength + (blockLength + 1) * sizeof(unsigned int) + sizeof(huffmanDictionary);
 	
-	if(mem_free < mem_data + (mem_offset / MAX_GPU_RUNS)){
-		printf("\nExiting : Not enough memory on GPU\nmem_free = %lu\nmin_mem_req = %lu\n", mem_free, (mem_data + (mem_offset / MAX_GPU_RUNS)));
+	if(mem_free - mem_data < MIN_SCRATCH_SIZE){
+		printf("\nExiting : Not enough memory on GPU\nmem_free = %lu\nmin_mem_req = %lu\n", mem_free, mem_data + MIN_SCRATCH_SIZE);
 		return -1;
 	}
 	mem_req = mem_free - mem_data - 10 * 1024 * 1024;
@@ -151,6 +155,13 @@ main(int argc, char* argv[]){
 	// broadcast size of each compressed chunk back to all the processes
 	MPI_Bcast(compBlockLengthArray, numProcesses, MPI_UNSIGNED, 0, MPI_COMM_WORLD);
 
+	// get time
+	if(rank == 0){
+		end = clock();
+		cpu_time_used = ((end - start)) * 1000 / CLOCKS_PER_SEC;
+		printf("Time taken: %d:%d s\n", cpu_time_used / 1000, cpu_time_used % 1000);
+	}
+	
 	// MPI file I/O: write
 	MPI_File_open(MPI_COMM_WORLD, argv[2], MPI_MODE_CREATE | MPI_MODE_WRONLY, MPI_INFO_NULL, &mpi_compressedFile);
 	if(rank == 0){
@@ -165,13 +176,9 @@ main(int argc, char* argv[]){
 	//close open files
 	MPI_File_close(&mpi_compressedFile); 	
 	MPI_File_close(&mpi_inputFile);
-	MPI_Barrier(MPI_COMM_WORLD);
 	
-	// get time
-	if(rank == 0){
-		end = clock();
-		cpu_time_used = ((end - start)) * 1000 / CLOCKS_PER_SEC;
-		printf("Time taken: %d:%d s\n", cpu_time_used / 1000, cpu_time_used % 1000);
-	}
+	free(inputFileData);
+	free(compressedDataOffset);
+	free(compBlockLengthArray);
 	MPI_Finalize();
 }
