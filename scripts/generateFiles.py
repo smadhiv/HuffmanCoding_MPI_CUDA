@@ -46,43 +46,8 @@ print "1792"
 with open('2048MB', 'wb') as fout:
     fout.write(os.urandom(2048 * MB))
 print "2048"
-	
-# # objects
-# axis = [0] * 256
-# freq = [0] * 256
 
-# # fill axis
-# for i in xrange(0, 256):
-	# axis[i] = i
+with open('2304MB', 'wb') as fout:
+    fout.write(os.urandom(2304 * MB))
+print "2304"
 
-# randomly generate and save files
-#for i in range(0, 128 * MB):
-	# num = random.randint(0, 255)
-	# freq[num] = freq[num] + 1
-
-	# conditional writes
-	# if i < 64 * MB:
-		# fout_64MB.write(chr(random.randint(0, 255)))
-	# if i < 128 * MB:
-		# fout_128MB.write(chr(random.randint(0, 255)))
-	# if i < 256 * MB:
-		# fout_256MB.write(chr(random.randint(0, 255)))
-	# if i < 512 * MB:
-		# fout_512MB.write(chr(random.randint(0, 255)))
-	# if i < 768 * MB:
-		# fout_768MB.write(chr(random.randint(0, 255)))
-	# if i < 1024 * MB:
-		# fout_1024MB.write(chr(random.randint(0, 255)))
-	# if i < 1280 * MB:
-		# fout_1280MB.write(chr(random.randint(0, 255)))
-	# if i < 1536 * MB:
-		# fout_1536MB.write(chr(random.randint(0, 255)))
-	# if i < 1792 * MB:
-		# fout_1792MB.write(chr(random.randint(0, 255)))
-	# if i < 2048 * MB:
-		# fout_2048MB.write(chr(random.randint(0, 255)))
-
-# plot
-# plt.bar(axis, freq)
-# plt.axis([0, 255, 0, 5000])
-# plt.show()

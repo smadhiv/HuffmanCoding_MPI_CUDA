@@ -15,7 +15,7 @@ struct huffmanTree *head_huffmanTreeNode, *current_huffmanTreeNode;
 struct huffmanTree huffmanTreeNode[512], temp_huffmanTreeNode;
 unsigned int frequency[256];
 
-main(int argc, char *argv[]){
+int main(int argc, char *argv[]){
 	clock_t start, end;
 	unsigned int cpu_time_used;
 	unsigned int rank, numProcesses, numCompressedBlocks, compBlockLength;
@@ -160,4 +160,5 @@ main(int argc, char *argv[]){
 	free(outputData);
 	free(compressedData);	
 	MPI_Finalize();
+	return 0;
 }
