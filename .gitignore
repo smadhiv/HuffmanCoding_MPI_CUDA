@@ -1,1 +1,4 @@
 TestFiles/
+bin/out*
+bin/test*
+bin/mb*
