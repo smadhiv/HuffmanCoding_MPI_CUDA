@@ -3,5 +3,5 @@ all:
 	mpicc MPIDecompress.c ../include/serialFunctions.c -o ../bin/MPI_decompress
 
 clean:
-	rm -f MPI_compress
-	rm -f MPI_decompress
+	if [ -a ../bin/MPI_compress ]; then rm -f ../bin/MPI_compress; fi;
+	if [ -a ../bin/MPI_decompress ]; then rm -f ../bin/MPI_decompress; fi;

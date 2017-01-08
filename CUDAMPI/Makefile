@@ -4,4 +4,4 @@ all:
 	rm -f *.o
 
 clean:
-	rm -f CUDAMPI_compress
+	if [ -a ../bin/CUDAMPI_compress ]; then rm -f ../bin/CUDAMPI_compress; fi;

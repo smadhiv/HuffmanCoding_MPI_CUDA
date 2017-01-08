@@ -4,4 +4,4 @@ all:
 	rm -rf *.o
 
 clean:
-	rm -f ../bin/CUDA_compress
+	if [ -a ../bin/CUDA_compress ]; then rm -f ../bin/CUDA_compress; fi;

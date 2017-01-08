@@ -12,5 +12,8 @@ MPI:
 Serial:
 	make -C 'Serial'
 clean:
-	rm -r bin/
+	make clean -C 'CUDAMPI'
+	make clean -C 'CUDA'
+	make clean -C 'MPI'
+	make clean -C 'Serial'
 

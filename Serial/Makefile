@@ -3,6 +3,6 @@ all:
 	gcc -o ../bin/decompress decompress.c ../include/serialFunctions.c
 
 clean:
-	rm -f ../bin/compress
-	rm -f ../bin/decompress
+	if [ -a ../bin/compress ]; then rm -f ../bin/compress; fi;
+	if [ -a ../bin/decompress ]; then rm -f ../bin/decompress; fi;
 
