@@ -6,6 +6,8 @@
 module purge
 module add gcc/4.8.1 
 cd /home/smadhiv/Project/Compression/HuffmanCoding_MPI_CUDA
+make clean -C "Serial"
+make -C "Serial"
 
 echo "Run: Serial" >> logs/Serial_compress.txt
 echo "Resource: select=1:ncpus=20:mem=124gb:phase=15" >> logs/Serial_compress.txt
