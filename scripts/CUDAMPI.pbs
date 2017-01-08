@@ -5,7 +5,7 @@
 
 module purge
 module add gcc/4.8.1 openmpi/1.10.3 cuda-toolkit/7.5.18
-cd /scratch1/smadhiv/Project/HuffmanCoding_MPI_CUDA
+cd /home/smadhiv/Project/Compression/HuffmanCoding_MPI_CUDA
 
 echo "Run: CUDAMPI"
 echo "Resource: select=16:ncpus=4:mpiprocs=1:ngpus=1:mem=124gb:phase=15" >> logs/CUDAMPI.txt

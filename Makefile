@@ -11,4 +11,6 @@ MPI:
 	make -C 'MPI'
 Serial:
 	make -C 'Serial'
+clean:
+	rm -r bin/
 
