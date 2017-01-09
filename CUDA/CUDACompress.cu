@@ -30,6 +30,11 @@ int main(int argc, char **argv){
 	int numKernelRuns;
 	clock_t start, end;
 	
+	// check number of args
+	if(argc != 3){
+		printf("try with arguments InputFile and OutputFile");
+		return -1;
+	}
 	// read input file, get inputFileLength and data
 	inputFile = fopen(argv[1], "rb");
 	fseek(inputFile, 0, SEEK_END);
@@ -76,6 +81,11 @@ int main(int argc, char **argv){
 	// GPU memory
 	cudaMemGetInfo(&mem_free, &mem_total);
 	
+	// debug
+	if(1){
+		printf("Free Mem: %lu\n", mem_free);		
+	}
+
 	// offset array requirements
 	mem_offset = 0;
 	for(i = 0; i < 256; i++){
@@ -94,10 +104,15 @@ int main(int argc, char **argv){
 	numKernelRuns = ceil((double)mem_offset / mem_req);
 	integerOverflowFlag = mem_req + 255 <= UINT_MAX || mem_offset + 255 <= UINT_MAX ? 0 : 1;
 
-	//printf("	InputFileSize      =%u\n\
+	// debug
+	if(1){
+	printf("	InputFileSize      =%u\n\
 	OutputSize         =%u\n\
 	NumberOfKernel     =%d\n\
-	integerOverflowFlag=%d\n", inputFileLength, mem_offset/8, numKernelRuns, integerOverflowFlag);
+	integerOverflowFlag=%d\n", inputFileLength, mem_offset/8, numKernelRuns, integerOverflowFlag);		
+	}
+
+	
 	// generate data offset array
 	compressedDataOffset = (unsigned int *)malloc((inputFileLength + 1) * sizeof(unsigned int));
 

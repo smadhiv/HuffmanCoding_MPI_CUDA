@@ -91,7 +91,7 @@ void createDataOffsetArray(unsigned int *compressedDataOffset, unsigned char* in
 				compressedDataOffset[i] = compressedDataOffset[i] + (8 - (compressedDataOffset[i] % 8));
 			}
 			else{
-				compressedDataOffset[i + 1] = 0;			
+				compressedDataOffset[i + 1] = huffmanDictionary.bitSequenceLength[inputFileData[i]];			
 			}
 			j++;
 		}
@@ -121,7 +121,7 @@ void createDataOffsetArray(unsigned int *compressedDataOffset, unsigned char* in
 				compressedDataOffset[i] = compressedDataOffset[i] + (8 - (compressedDataOffset[i] % 8));
 			}
 			else{
-				compressedDataOffset[i + 1] = 0;			
+				compressedDataOffset[i + 1] = huffmanDictionary.bitSequenceLength[inputFileData[i]];			
 			}
 			j++;
 		}
@@ -151,7 +151,7 @@ void createDataOffsetArray(unsigned int *compressedDataOffset, unsigned char* in
 				compressedDataOffset[i] = compressedDataOffset[i] + (8 - (compressedDataOffset[i] % 8));
 			}
 			else{
-				compressedDataOffset[i + 1] = 0;			
+				compressedDataOffset[i + 1] = huffmanDictionary.bitSequenceLength[inputFileData[i]];			
 			}
 			k++;
 		}
@@ -163,7 +163,7 @@ void createDataOffsetArray(unsigned int *compressedDataOffset, unsigned char* in
 				compressedDataOffset[i] = compressedDataOffset[i] + (8 - (compressedDataOffset[i] % 8));
 			}
 			else{
-				compressedDataOffset[i + 1] = 0;	
+				compressedDataOffset[i + 1] = huffmanDictionary.bitSequenceLength[inputFileData[i]];	
 			}
 			j++;
 		}

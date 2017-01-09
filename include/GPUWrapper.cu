@@ -17,6 +17,7 @@ void lauchCUDAHuffmanCompress(unsigned char *inputFileData, unsigned int *compre
 	struct huffmanDictionary *d_huffmanDictionary;
 	unsigned int *gpuBitPaddingFlag, *bitPaddingFlag;
 	unsigned int *gpuMemoryOverflowIndex, *integerOverflowIndex;
+	long unsigned int mem_free, mem_total;
 	cudaError_t error;
 	
 	// generate offset 
@@ -100,6 +101,12 @@ void lauchCUDAHuffmanCompress(unsigned char *inputFileData, unsigned int *compre
 			if (error!= cudaSuccess)
 					printf("erro_8: %s\n", cudaGetErrorString(error));
 			
+			// debug
+			if(1){
+				cudaMemGetInfo(&mem_free, &mem_total);
+				printf("Free Mem: %lu\n", mem_free);		
+			}			
+			
 			// run kernel
 			compress<<<1, block_size>>>(d_inputFileData, d_compressedDataOffset, d_huffmanDictionary, d_byteCompressedData, inputFileLength, constMemoryFlag);
 			cudaError_t error_kernel = cudaGetLastError();
@@ -139,7 +146,13 @@ void lauchCUDAHuffmanCompress(unsigned char *inputFileData, unsigned int *compre
 			if (error!= cudaSuccess)
 					printf("erro_10: %s\n", cudaGetErrorString(error));
 			
-						// launch kernel
+			// debug
+			if(1){
+				cudaMemGetInfo(&mem_free, &mem_total);
+				printf("Free Mem: %lu\n", mem_free);		
+			}
+			
+			// launch kernel
 			compress<<<1, block_size>>>(d_inputFileData, d_compressedDataOffset, d_huffmanDictionary, d_byteCompressedData, d_byteCompressedDataOverflow, inputFileLength, constMemoryFlag, integerOverflowIndex[0]);
 			
 			// check status
@@ -182,6 +195,12 @@ void lauchCUDAHuffmanCompress(unsigned char *inputFileData, unsigned int *compre
 			error = cudaMalloc((void **)&d_byteCompressedData, (compressedDataOffset[gpuMemoryOverflowIndex[1]]) * sizeof(unsigned char));
 			if (error!= cudaSuccess)
 				printf("erro_7: %s\n", cudaGetErrorString(error));
+
+			// debug
+			if(1){
+				cudaMemGetInfo(&mem_free, &mem_total);
+				printf("Free Mem: %lu\n", mem_free);		
+			}		
 			
 			unsigned int pos = 0;
 			for(i = 0; i < numKernelRuns; i++){
@@ -229,7 +248,13 @@ void lauchCUDAHuffmanCompress(unsigned char *inputFileData, unsigned int *compre
 			error = cudaMalloc((void **)&d_byteCompressedDataOverflow, compressedDataOffset[gpuMemoryOverflowIndex[1]] * sizeof(unsigned char));
 			if (error!= cudaSuccess)
 					printf("erro_8: %s\n", cudaGetErrorString(error));
-				
+
+			// debug
+			if(1){
+				cudaMemGetInfo(&mem_free, &mem_total);
+				printf("Free Mem: %lu\n", mem_free);		
+			}		
+			
 			unsigned int pos = 0;
 			for(i = 0; i < numKernelRuns; i++){
 				if(integerOverflowIndex[i] != 0){
