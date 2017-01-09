@@ -1,5 +1,4 @@
 import os
-#import matplotlib.pyplot as plt
 import random
 
 # variables
@@ -7,47 +6,58 @@ KB = 1024
 MB = KB * 1024
 GB = MB * 1024
 
-with open('mb64', 'wb') as fout:
+if not os.path.isfile('mb64'):
+  with open('mb64', 'wb') as fout:
     fout.write(os.urandom(64 * MB))
-print "64"
+    print "64"
 
-with open('mb128', 'wb') as fout:
+if not os.path.isfile('mb128'):
+  with open('mb128', 'wb') as fout:
     fout.write(os.urandom(128 * MB))
-print "128"
+    print "128"
 
-with open('mb256', 'wb') as fout:
+if not os.path.isfile('mb256'):
+  with open('mb256', 'wb') as fout:
     fout.write(os.urandom(256 * MB))
-print "256"
+    print "256"
 
-with open('mb512', 'wb') as fout:
+if not os.path.isfile('mb512'):
+  with open('mb512', 'wb') as fout:
     fout.write(os.urandom(512 * MB))
-print "512"
+    print "512"
 	
-with open('mb768', 'wb') as fout:
+if not os.path.isfile('mb768'):
+  with open('mb768', 'wb') as fout:
     fout.write(os.urandom(786 * MB))
-print "786"
+    print "786"
 
-with open('mb1024', 'wb') as fout:
+if not os.path.isfile('mb1024'):
+  with open('mb1024', 'wb') as fout:
     fout.write(os.urandom(1024 * MB))
-print "1024"
+    print "1024"
 
-with open('mb1280', 'wb') as fout:
+if not os.path.isfile('mb1280'):
+  with open('mb1280', 'wb') as fout:
     fout.write(os.urandom(1280 * MB))
-print "1280"
+    print "1280"
 
-with open('mb1536', 'wb') as fout:
+if not os.path.isfile('mb1536'):
+  with open('mb1536', 'wb') as fout:
     fout.write(os.urandom(1536 * MB))
-print "1536"
+    print "1536"
 	
-with open('mb1792', 'wb') as fout:
+if not os.path.isfile('mb1792'):
+  with open('mb1792', 'wb') as fout:
     fout.write(os.urandom(1792 * MB))
-print "1792"
+    print "1792"
 
-with open('mb2048', 'wb') as fout:
+if not os.path.isfile('mb2048'):
+  with open('mb2048', 'wb') as fout:
     fout.write(os.urandom(2048 * MB))
-print "2048"
+    print "2048"
 
-with open('mb2304', 'wb') as fout:
+if not os.path.isfile('mb2304'):
+  with open('mb2304', 'wb') as fout:
     fout.write(os.urandom(2304 * MB))
-print "2304"
+    print "2304"
 
