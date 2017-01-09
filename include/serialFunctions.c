@@ -14,7 +14,7 @@ void sortHuffmanTree(int i, int distinctCharacterCount, int mergedHuffmanNodes){
 	for (a = mergedHuffmanNodes; a < distinctCharacterCount - 1 + i; a++){
 		for (b = mergedHuffmanNodes; b < distinctCharacterCount - 1 + i; b++){
 			if (huffmanTreeNode[b].count > huffmanTreeNode[b + 1].count){
-				temp_huffmanTreeNode = huffmanTreeNode[b];
+				struct huffmanTree temp_huffmanTreeNode = huffmanTreeNode[b];
 				huffmanTreeNode[b] = huffmanTreeNode[b + 1];
 				huffmanTreeNode[b + 1] = temp_huffmanTreeNode;
 			}
@@ -24,12 +24,10 @@ void sortHuffmanTree(int i, int distinctCharacterCount, int mergedHuffmanNodes){
 
 // build tree based on sort result
 void buildHuffmanTree(int i, int distinctCharacterCount, int mergedHuffmanNodes){
-	free(head_huffmanTreeNode);
-	head_huffmanTreeNode = malloc(sizeof(struct huffmanTree));
-	head_huffmanTreeNode->count = huffmanTreeNode[mergedHuffmanNodes].count + huffmanTreeNode[mergedHuffmanNodes + 1].count;
-	head_huffmanTreeNode->left = &huffmanTreeNode[mergedHuffmanNodes];
-	head_huffmanTreeNode->right = &huffmanTreeNode[mergedHuffmanNodes + 1];
-	huffmanTreeNode[distinctCharacterCount + i] = *head_huffmanTreeNode;
+	huffmanTreeNode[distinctCharacterCount + i].count = huffmanTreeNode[mergedHuffmanNodes].count + huffmanTreeNode[mergedHuffmanNodes + 1].count;
+	huffmanTreeNode[distinctCharacterCount + i].left = &huffmanTreeNode[mergedHuffmanNodes];
+	huffmanTreeNode[distinctCharacterCount + i].right = &huffmanTreeNode[mergedHuffmanNodes + 1];
+	head_huffmanTreeNode = &(huffmanTreeNode[distinctCharacterCount + i]);
 }
 
 // get bitSequence sequence for each char value

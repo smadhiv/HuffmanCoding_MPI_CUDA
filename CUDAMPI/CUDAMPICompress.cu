@@ -14,8 +14,8 @@
 #define block_size 1024
 #define MIN_SCRATCH_SIZE 50 * 1024 * 1024
 
-struct huffmanTree *head_huffmanTreeNode, *current_huffmanTreeNode;
-struct huffmanTree huffmanTreeNode[512], temp_huffmanTreeNode;
+struct huffmanTree *head_huffmanTreeNode;
+struct huffmanTree huffmanTreeNode[512];
 unsigned char bitSequenceConstMemory[256][255];
 struct huffmanDictionary huffmanDictionary;
 unsigned int constMemoryFlag = 0;

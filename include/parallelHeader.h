@@ -13,8 +13,8 @@ struct huffmanTree{
 	struct huffmanTree *left, *right;
 };
 
-extern struct huffmanTree *head_huffmanTreeNode, *current_huffmanTreeNode;
-extern struct huffmanTree huffmanTreeNode[512], temp_huffmanTreeNode;
+extern struct huffmanTree *head_huffmanTreeNode;
+extern struct huffmanTree huffmanTreeNode[512];
 extern unsigned char bitSequenceConstMemory[256][255];
 extern unsigned int constMemoryFlag;
 extern struct huffmanDictionary huffmanDictionary;

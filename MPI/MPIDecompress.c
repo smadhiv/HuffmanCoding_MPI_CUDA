@@ -11,9 +11,8 @@
 #include "../include/serialHeader.h"
 
 struct huffmanDictionary huffmanDictionary[256];
-struct huffmanTree *head_huffmanTreeNode, *current_huffmanTreeNode;
-struct huffmanTree huffmanTreeNode[512], temp_huffmanTreeNode;
-unsigned int frequency[256];
+struct huffmanTree *head_huffmanTreeNode;
+struct huffmanTree huffmanTreeNode[512];
 
 int main(int argc, char *argv[]){
 	clock_t start, end;
@@ -23,6 +22,7 @@ int main(int argc, char *argv[]){
 	unsigned int *compBlockLengthArray;
 	unsigned int decompBlockLengthCounter, distinctCharacterCount, outputFileLength, combinedHuffmanNodes, frequency[256], compressedFileLength;
 	unsigned char currentInputBit, currentInputByte, *compressedData, *outputData, bitSequence[255], bitSequenceLength = 0;
+	struct huffmanTree *current_huffmanTreeNode;
 	FILE *compressedFile;
 	
 	MPI_Init( &argc, &argv);

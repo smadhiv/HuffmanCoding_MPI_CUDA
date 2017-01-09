@@ -10,7 +10,7 @@ cd /home/smadhiv/Project/Compression/HuffmanCoding_MPI_CUDA
 make clean -C "CUDAMPI"
 make -C "CUDAMPI"
 
-echo "Run: CUDAMPI"
+echo "Run: CUDAMPI" >> logs/CUDAMPI.txt
 echo "Resource: select=16:ncpus=4:mpiprocs=1:ngpus=1:mem=124gb:phase=15" >> logs/CUDAMPI.txt
 
 echo ' ' >> logs/CUDAMPI.txt
