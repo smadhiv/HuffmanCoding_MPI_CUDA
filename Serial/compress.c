@@ -54,6 +54,10 @@ int main(int argc, char **argv){
 		sortHuffmanTree(i, distinctCharacterCount, combinedHuffmanNodes);
 		buildHuffmanTree(i, distinctCharacterCount, combinedHuffmanNodes);
 	}
+
+	if(distinctCharacterCount == 1){
+          head_huffmanTreeNode = &huffmanTreeNode[0];
+        }
 	
 	// build table having the bitSequence sequence and its length
 	buildHuffmanDictionary(head_huffmanTreeNode, bitSequence, bitSequenceLength);
